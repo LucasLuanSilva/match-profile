@@ -3,12 +3,16 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "",
+  "password": "9z2QSrIyXStbzxN",
   "database": "match_profile",
+  "entities": [
+    "./src/entities/*.ts"
+  ],
   "migrations": [
     "./src/database/migrations/*.ts"
   ],
   "cli": {
+    "entitiesDir": "./src/entities",
     "migrationsDir": "./src/database/migrations"
   }
 }
