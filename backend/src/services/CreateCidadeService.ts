@@ -3,14 +3,14 @@ import { getCustomRepository } from "typeorm";
 import CidadesRepository from "../repositories/CidadesRepository";
 import CustomError from "../class/CustomError";
 
-interface Request {
+interface ICidadeRequest {
   codigo_municipio: string;
   nome: string;
   uf: string;
 }
 
 class CreateCidadeService {
-  async execute({ codigo_municipio, nome, uf }: Request) {
+  async execute({ codigo_municipio, nome, uf }: ICidadeRequest) {
     const cidadesRepository = getCustomRepository(CidadesRepository);
 
     if (!codigo_municipio || codigo_municipio.length != 7) {

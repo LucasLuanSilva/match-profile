@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity('cidades')
 class Cidade {
   @PrimaryColumn('varchar')
-  codigo_municipio: string;
+  readonly codigo_municipio: string;
 
   @Column()
   nome: string;
