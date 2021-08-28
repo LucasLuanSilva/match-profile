@@ -55,7 +55,7 @@ class CreateEmpresaService {
       throw new CustomError(400, 'O CNPJ informado é inválido!');
     }
 
-    const data_termino_contrato = new Date(dayjs().add(7, 'day').format('DD/MM/YYYY'));
+    const data_termino_contrato = new Date(dayjs().add(7, 'day').format());
 
     const empresa = empresasRepository.create({
       cnpj,
