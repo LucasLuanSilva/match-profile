@@ -1,10 +1,10 @@
-import { getCustomRepository } from 'typeorm';
-import CustomError from '../class/CustomError';
-import { cnpj as cnpjValidator } from 'cpf-cnpj-validator';
+import { getCustomRepository } from "typeorm";
+import CustomError from "../class/CustomError";
+import { cnpj as cnpjValidator } from "cpf-cnpj-validator";
 
 import CidadesRepository from "../repositories/CidadesRepository";
 import EmpresasRepository from "../repositories/EmpresasRepository";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 interface IEmpresaRequest {
   cnpj: string;
