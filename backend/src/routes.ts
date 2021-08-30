@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import AuthenticateUsuarioController from './controllers/AuthenticateUsuarioController';
 import AuthenticateUsuarioEmpresarialController from './controllers/AuthenticateUsuarioEmpresarialController';
 import CreateCidadeController from './controllers/CreateCidadeController';
 import CreateEmpresaController from './controllers/CreateEmpresaController';
@@ -13,11 +14,13 @@ const createEmpresaController = new CreateEmpresaController();
 const createUsuarioEmpresarialController = new CreateUsuarioEmpresarialController();
 const authenticateUsuarioEmpresarialController = new AuthenticateUsuarioEmpresarialController();
 const createUsuarioController = new CreateUsuarioController();
+const authenticateUsuarioController = new AuthenticateUsuarioController();
 
 routes.post('/cidades', createCidadeController.handle);
 routes.post('/empresas', createEmpresaController.handle);
 routes.post('/usuarios/empresariais', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
 routes.post('/login/empresariais', authenticateUsuarioEmpresarialController.handle);
-routes.post('/usuarios', createUsuarioController.handle)
+routes.post('/usuarios', createUsuarioController.handle);
+routes.post('/login', authenticateUsuarioController.handle);
 
 export default routes;
