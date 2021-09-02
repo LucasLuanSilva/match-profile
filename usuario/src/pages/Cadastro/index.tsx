@@ -10,18 +10,18 @@ const Cadastro: React.FC =()=> {
 
     const [credencial, setCredencial] = useState({
         empresas_id:'d6cf0ba6-f803-428c-bed4-66f36c768ad5',
-        cpf: "66031030012",
+        cpf: "57872931001",
         nome: "Carlos",
         sobrenome: "Silva",
-        email: "cc@email.com",
+        email: "teste@email.com",
         rg: "101010",
         senha: "1234",
         cep: "20230000",
         cidades_codigo_municipio: "3550308",
-        logradouro: "putaqopariu",
+        logradouro: "Teste rua",
         numero: "111",
-        complemento: " ",
-        bairro: "t"
+        complemento: "2C ",
+        bairro: "Santa Gertrudes"
     })
     const [access, setAccess] = useState(true)
     const [cidade, setCidade] = useState([
@@ -176,9 +176,9 @@ const styles = StyleSheet.create({
       borderRadius:10,
       marginBottom:10,
       borderWidth: 1,
-      color:'white',
+      color:'#fff',
       fontWeight:'bold',
-      backgroundColor:'#3B55E6'
+      backgroundColor:'#D3D3D3'
     }
 
 

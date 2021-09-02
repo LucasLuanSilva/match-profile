@@ -36,30 +36,13 @@ const Login: React.FC =()=> {
     const cadastro = () => {
         navigation.navigate("Cadastro");
     }
-    // const [cidade, setCidade] = useState({
-    //   codigo_municipio: "5554567",
-    //   nome: "São João do Miriti",
-    //   uf: "RJ"
-    // })
-    // const cadastrarCidade = async ()=> {
-    //   await axios.post('http://10.0.2.2:3333/cidades', cidade).then(
-    //     (response) => {
-    //       console.log(response);
-    //     }
-    //   )
-    //   .catch(
-    //     (error) => {
-    //       console.log(error);
-    //     }
-    //   );
-    // }
+
     return(
         <Container>
             <View style={styles.title}>
                 <Text style={styles.titletext}>Login</Text>
                 <Text style={styles.subtitletext}>Por favor entre com sua conta</Text>
             </View>
-
             <TextInput placeholder="E-mail"
                         style={styles.input}
                         value={credencial.email}
@@ -69,7 +52,6 @@ const Login: React.FC =()=> {
                         style={styles.input}
                         secureTextEntry={true}
                         value={credencial.senha}
-
                         onChangeText={field('senha')} />
             <Button onPress={()=>{login()}}>Entrar</Button>
 
