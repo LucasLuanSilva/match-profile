@@ -16,7 +16,7 @@ app.use(routes);
 app.use((err: CustomError, request: Request, response: Response, next: NextFunction) => {
   if (err instanceof Error) {
     return response.status(typeof err.status === 'undefined' ? 500 : err.status).json({
-      error: err.message
+      message: err.message
     })
   }
 
