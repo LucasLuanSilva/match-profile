@@ -5,6 +5,7 @@ import CreateCidadeController from './controllers/CreateCidadeController';
 import CreateEmpresaController from './controllers/CreateEmpresaController';
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
+import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
 
 const routes = Router();
@@ -15,6 +16,7 @@ const createUsuarioEmpresarialController = new CreateUsuarioEmpresarialControlle
 const authenticateUsuarioEmpresarialController = new AuthenticateUsuarioEmpresarialController();
 const createUsuarioController = new CreateUsuarioController();
 const authenticateUsuarioController = new AuthenticateUsuarioController();
+const listUsuariosEmpresariaisController = new ListUsuariosEmpresariaisController();
 
 routes.post('/cidades', createCidadeController.handle);
 routes.post('/empresas', createEmpresaController.handle);
@@ -22,5 +24,8 @@ routes.post('/usuarios/empresariais', ensureAuthenticatedEmpresariais, createUsu
 routes.post('/login/empresariais', authenticateUsuarioEmpresarialController.handle);
 routes.post('/usuarios', createUsuarioController.handle);
 routes.post('/login', authenticateUsuarioController.handle);
+
+routes.get('/usuarios/empresariais/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+routes.get('/usuarios/empresariais', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 
 export default routes;
