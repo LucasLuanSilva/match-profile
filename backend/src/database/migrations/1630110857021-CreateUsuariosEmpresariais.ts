@@ -14,7 +14,8 @@ export class CreateUsuariosEmpresariais1630110857021 implements MigrationInterfa
           },
           {
             name: 'empresas_id',
-            type: 'uuid'
+            type: 'uuid',
+            isPrimary: true
           },
           {
             name: 'cpf',
