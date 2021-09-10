@@ -15,7 +15,12 @@ class CreateEmpresaController {
       complemento,
       bairro,
       site,
-      situacao
+      situacao,
+      cpf,
+      nome,
+      sobrenome,
+      email,
+      senha
     } = request.body;
 
     const createEmpresaService = new CreateEmpresaService();
@@ -31,7 +36,12 @@ class CreateEmpresaController {
       complemento,
       bairro,
       site,
-      situacao
+      situacao,
+      cpf,
+      nome,
+      sobrenome,
+      email,
+      senha
     });
 
     return response.json(empresa);
