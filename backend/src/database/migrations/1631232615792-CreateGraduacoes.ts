@@ -55,7 +55,7 @@ export class CreateGraduacoes1631232615792 implements MigrationInterface {
         foreignKeys: [
           {
             name: 'FK_graduacoes_curriculos_id',
-            referencedTableName: 'graduacoes',
+            referencedTableName: 'curriculos',
             referencedColumnNames: ['id'],
             columnNames: ['curriculos_id']
           }
