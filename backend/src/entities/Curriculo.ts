@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { v4 as uuid } from "uuid";
 
 import Usuario from './Usuario';
 
@@ -16,6 +17,12 @@ class Curriculo {
 
   @Column()
   arquivo: string;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
 }
 
 export default Curriculo;
