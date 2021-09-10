@@ -44,7 +44,8 @@ export class CreateGraduacoes1631232615792 implements MigrationInterface {
             name: 'cursando',
             type: 'int',
             isNullable: false,
-            comment: '0 = Não cursando, 1 = Cursando'
+            comment: '0 = Não cursando, 1 = Cursando',
+            default: 0
           },
           {
             name: 'curriculos_id',
