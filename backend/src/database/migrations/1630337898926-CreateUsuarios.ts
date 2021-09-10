@@ -36,7 +36,8 @@ export class CreateUsuarios1630337898926 implements MigrationInterface {
           },
           {
             name: 'rg',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'senha',
@@ -55,7 +56,8 @@ export class CreateUsuarios1630337898926 implements MigrationInterface {
           },
           {
             name: 'cidades_codigo_municipio',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: false
           },
           {
             name: 'logradouro',
@@ -69,7 +71,8 @@ export class CreateUsuarios1630337898926 implements MigrationInterface {
           },
           {
             name: 'complemento',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'bairro',

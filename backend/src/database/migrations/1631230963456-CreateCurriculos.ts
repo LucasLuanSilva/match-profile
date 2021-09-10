@@ -14,12 +14,12 @@ export class CreateCurriculos1631230963456 implements MigrationInterface {
           },
           {
             name: 'usuarios_id',
-            type: 'uuid',
-            isNullable: true
+            type: 'uuid'
           },
           {
             name: 'arquivo',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           }
         ],
         foreignKeys: [

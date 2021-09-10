@@ -30,7 +30,8 @@ export class CreateTelefones1631150769457 implements MigrationInterface {
           },
           {
             name: 'contato',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'usuarios_id',

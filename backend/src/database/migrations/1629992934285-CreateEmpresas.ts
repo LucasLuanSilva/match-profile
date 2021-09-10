@@ -25,7 +25,8 @@ export class CreateEmpresas1629992934285 implements MigrationInterface {
           },
           {
             name: 'nome_fantasia',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'cep',
@@ -34,7 +35,8 @@ export class CreateEmpresas1629992934285 implements MigrationInterface {
           },
           {
             name: 'cidades_codigo_municipio',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: false
           },
           {
             name: 'logradouro',
@@ -48,7 +50,8 @@ export class CreateEmpresas1629992934285 implements MigrationInterface {
           },
           {
             name: 'complemento',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'bairro',
@@ -57,7 +60,8 @@ export class CreateEmpresas1629992934285 implements MigrationInterface {
           },
           {
             name: 'site',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'situacao',

@@ -41,7 +41,8 @@ export class CreateUsuariosEmpresariais1630110857021 implements MigrationInterfa
           },
           {
             name: 'rg',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'senha',
@@ -60,7 +61,8 @@ export class CreateUsuariosEmpresariais1630110857021 implements MigrationInterfa
           },
           {
             name: 'cidades_codigo_municipio',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: false
           },
           {
             name: 'logradouro',
@@ -74,7 +76,8 @@ export class CreateUsuariosEmpresariais1630110857021 implements MigrationInterfa
           },
           {
             name: 'complemento',
-            type: 'varchar'
+            type: 'varchar',
+            isNullable: true
           },
           {
             name: 'bairro',
