@@ -43,7 +43,7 @@ export class CreateTelefones1631150769457 implements MigrationInterface {
             isNullable: true
           },
           {
-            name: 'empresas_id',
+            name: 'usuarios_empresariais_empresas_id',
             type: 'uuid',
             isNullable: true
           },
@@ -71,7 +71,7 @@ export class CreateTelefones1631150769457 implements MigrationInterface {
             name: 'FK_telefones_usuarios_empresariais_empresas_id',
             referencedTableName: 'usuarios_empresariais',
             referencedColumnNames: ['empresas_id', 'id'],
-            columnNames: ['empresas_id', 'usuarios_empresariais_id']
+            columnNames: ['usuarios_empresariais_empresas_id', 'usuarios_empresariais_id']
           }
         ]
       })

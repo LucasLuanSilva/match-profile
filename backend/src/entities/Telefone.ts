@@ -36,8 +36,8 @@ class Telefone {
   usuario_empresarial: UsuarioEmpresarial;
 
   @Column()
-  readonly empresas_id: string;
-  @JoinColumn({ name: 'empresas_id' })
+  readonly usuarios_empresariais_empresas_id: string;
+  @JoinColumn({ name: 'usuarios_empresariais_empresas_id' })
   @ManyToOne(() => Empresa)
   empresa: Empresa;
 
