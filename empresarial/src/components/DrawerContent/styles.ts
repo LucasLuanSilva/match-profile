@@ -8,7 +8,7 @@ export const Container = styled.View`
 
 export const NameUser = styled.Text`
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 24px;
   letter-spacing: 0.15px;
   color: #000;

@@ -30,7 +30,7 @@ const Login: React.FC = () => {
 
       setCredencial({ ...credencial, email: '', senha: '' });
 
-      navigation.navigate("Home");
+      navigation.navigate("DrawerNavigation");
     } catch (error) {
       Alert.alert(error.response.data.message);
       setCredencial({ ...credencial, senha: '' })
@@ -89,7 +89,6 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline'
   },
   logo: {
-    position: 'absolute',
     alignSelf: 'center',
     marginTop: 50
   }
