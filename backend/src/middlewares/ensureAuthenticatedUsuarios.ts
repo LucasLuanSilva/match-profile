@@ -20,7 +20,7 @@ export function ensureAuthenticatedUsuarios(
 
   try {
     // Validar se o token é válido
-    const { id } = verify(token, "senhaDesenvolvimento") as IPayload;
+    const { id } = verify(token, process.env.TOKEN_PASS_USUARIO) as IPayload;
 
     // Recuperar informações do usuário
     request.id = id;

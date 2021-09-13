@@ -21,7 +21,7 @@ export function ensureAuthenticatedEmpresariais(
 
   try {
     // Validar se o token é válido
-    const { id, empresas_id } = verify(token, "senhaDesenvolvimento") as IPayload;
+    const { id, empresas_id } = verify(token, process.env.TOKEN_PASS_EMPRESARIAL) as IPayload;
 
     // Recuperar informações do usuário
     request.id = id;

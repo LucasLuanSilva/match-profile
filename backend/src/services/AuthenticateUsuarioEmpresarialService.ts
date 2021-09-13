@@ -49,7 +49,7 @@ class AuthenticateUsuarioEmpresarialService {
     const token = sign({
       id: usuario.id,
       empresas_id: usuario.empresas_id
-    }, 'senhaDesenvolvimento', {
+    }, process.env.TOKEN_PASS_EMPRESARIAL, {
       subject: usuario.id,
       expiresIn: '12h'
     });

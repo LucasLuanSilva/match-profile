@@ -47,7 +47,7 @@ class AuthenticateUsuarioService {
     //Gerar Token
     const token = sign({
       id: usuario.id
-    }, 'senhaDesenvolvimento', {
+    }, process.env.TOKEN_PASS_USUARIO, {
       subject: usuario.id,
       expiresIn: '12h'
     });
