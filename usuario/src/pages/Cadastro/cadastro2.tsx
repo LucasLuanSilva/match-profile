@@ -1,21 +1,31 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import Button from '../../components/Button';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute  } from '@react-navigation/native';
 import api from '../../services/api';
 import { Picker } from '@react-native-picker/picker'
 
-const Cadastro: React.FC =()=> {
+const Cadastro2: React.FC =()=> {
     const navigation = useNavigation();
+    const route = useRoute();
+    const dados = route.params.credencial;
 
     const [credencial, setCredencial] = useState({
-        empresas_id:'d6cf0ba6-f803-428c-bed4-66f36c768ad5',
-        cpf: "71526318083",
-        nome: "Carlos",
-        sobrenome: "Silva",
-        email: "gxg@email.com",
-        rg: "101010",
-        senha: "1234",
+
+      empresas_id:dados.empresa_id,
+      cpf: dados.cpf,
+      nome: dados.nome,
+      sobrenome: dados.sobrenome,
+      email: dados.email,
+      rg: dados.rg,
+      senha: dados.senha,
+
+      cep: "20230000",
+      cidades_codigo_municipio: "3550308",
+      logradouro: "Teste rua",
+      numero: "111",
+      complemento: "2C ",
+      bairro: "Santa Gertrudes"
     })
     const [access, setAccess] = useState(true)
     const [cidade, setCidade] = useState([
@@ -36,6 +46,24 @@ const Cadastro: React.FC =()=> {
       },
     ]);
     const [cidadeSelecionada, setCidadeSelecionada] = useState([]);
+    const [estado, setEstado] = useState([
+      {
+        codigo_estado: "1",
+        nome: "São Paulo",
+        sigla: "SP"
+      },
+      {
+        codigo_estado: "2",
+        nome: "Rio de Janeiro",
+        uf: "RJ"
+      },
+      {
+        codigo_estado: "3",
+        nome: "Minas Gerais",
+        uf: "MG"
+      },
+    ]);
+    const [estadoSelecionado, setEstadoSelecionado] = useState([]);
 
     const field = (field) => {
         return (value) => {
@@ -64,54 +92,63 @@ const Cadastro: React.FC =()=> {
     return(
         <View>
           <ScrollView>
-            <View style={styles.title}>
-                <Text style={styles.titletext}>Cadastro</Text>
-            </View>
-            <Text style={styles.label}>Nome</Text>
-            <TextInput placeholder="Nome"
+            <Text style={styles.label}>Estado</Text>
+            <Picker
+              selectedValue={estadoSelecionado}
+              style={styles.selectPicker}
+              onValueChange={(itemValue)=>
+              setEstadoSelecionado(itemValue)
+            }>
+              {
+                estado.map(est =>{
+                  return <Picker.Item key={est.codigo_estado} label={est.nome} value={est.codigo_estado}/>
+                })
+              }
+            </Picker>
+            <Text style={styles.label}>Cidade</Text>
+            <Picker
+              selectedValue={cidadeSelecionada}
+              style={styles.selectPicker}
+              onValueChange={(itemValue)=>
+              setCidadeSelecionada(itemValue)
+            }>
+              {
+                cidade.map(cid =>{
+                  return <Picker.Item key={cid.codigo_municipio} label={cid.nome} value={cid.codigo_municipio}/>
+                })
+              }
+            </Picker>
+            <Text style={styles.label}>Logradouro</Text>
+            <TextInput placeholder="Logradouro"
                         style={styles.input}
-                        value={credencial.nome}
-                        onChangeText={field('nome')} />
-            <Text style={styles.label}>Sobrenome</Text>
-            <TextInput placeholder="Sobrenome"
-                        style={styles.input}
-                        value={credencial.sobrenome}
-                        onChangeText={field('sobrenome')} />
-            <Text style={styles.label}>E-mail</Text>
-            <TextInput placeholder="E-mail"
-                        style={styles.input}
-                        value={credencial.email}
-                        onChangeText={field('email')} />
+                        value={credencial.logradouro}
+                        onChangeText={field('logradouro')} />
             <View style={styles.rowView} >
               <View>
-                <Text>CPF</Text>
-                <TextInput placeholder="CPF"
+                <Text style={styles.label}>Numero</Text>
+                <TextInput placeholder="Numero"
                             style={styles.halfInput}
-                            value={credencial.cpf}
-                            onChangeText={field('cpf')} />
+                            value={credencial.numero}
+                            onChangeText={field('numero')} />
               </View>
               <View>
-                <Text>RG</Text>
-                <TextInput placeholder="RG"
+                <Text style={styles.label}>CEP</Text>
+                <TextInput placeholder="CEP"
                             style={styles.halfInput}
-                            value={credencial.rg}
-                            onChangeText={field('rg')} />
+                            value={credencial.cep}
+                            onChangeText={field('cep')} />
               </View>
             </View>
-            <Text style={styles.label}>Senha</Text>
-            <TextInput placeholder="Senha"
+            <TextInput placeholder="Complemento"
                         style={styles.input}
-                        secureTextEntry={true}
-                        value={credencial.senha}
-                        onChangeText={field('senha')} />
-            <Text style={styles.label}>Confirmar Senha</Text>
-            <TextInput placeholder="Senha"
+                        value={credencial.complemento}
+                        onChangeText={field('complemento')} />
+            <TextInput placeholder="Bairro"
                         style={styles.input}
-                        secureTextEntry={true}
-                        value={credencial.senha}
-                        onChangeText={field('senha')} />
-            <Button onPress={()=>{navigation.navigate('Cadastro2', {credencial})}}>
-                Próximo
+                        value={credencial.bairro}
+                        onChangeText={field('bairro')} />
+            <Button onPress={()=>{register()}}>
+                Cadastrar
             </Button>
           </ScrollView>
         </View>
@@ -134,12 +171,11 @@ const styles = StyleSheet.create({
         fontSize:16
     },
     label:{
-      fontSize:14,
-      marginLeft:60
+      fontSize:14
     },
     input:{
         width:'70%',
-        height:50,
+        height:40,
         borderRadius:10,
         justifyContent:'space-between',
         alignItems:'center',
@@ -156,8 +192,8 @@ const styles = StyleSheet.create({
         shadowRadius:2
     },
     halfInput:{
-      width:'70%',
-      height:50,
+      width:'35%',
+      height:60,
       borderRadius:10,
       justifyContent:'space-between',
       alignItems:'center',
@@ -185,4 +221,4 @@ const styles = StyleSheet.create({
 
 
 });
-export default Cadastro;
+export default Cadastro2;

@@ -3,12 +3,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from '../pages/Login';
 import Cadastro from '../pages/Cadastro';
+import Cadastro2 from '../pages/Cadastro/cadastro2';
 import Home from '../pages/Home';
+import Teste1 from '../pages/Testes/teste1';
+import Teste2 from '../pages/Testes/teste2';
+import Teste3 from '../pages/Testes/teste3';
+import Teste4 from '../pages/Testes/teste4';
+import Teste5 from '../pages/Testes/teste5';
 import DrawerContent from '../components/DrawerContent';
 
 export type RootDrawerParamList = {
-  Login: undefined;
-  Cadastro: undefined;
+  // Login: undefined;
+  // Cadastro: undefined;
+  Home: undefined;
 };
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
@@ -22,8 +29,7 @@ const DrawerNavigation: React.FC = () => {
       drawerContent={props => <DrawerContent {...props} />}
 
     >
-      <Drawer.Screen name="Login" component={Login} />
-      <Drawer.Screen name="Cadastro" component={Cadastro} />
+      <Drawer.Screen name="Home" component={Home} />
     </Drawer.Navigator>
   );
 };
@@ -37,9 +43,30 @@ const AuthRoutes: React.FC = () => (
     }}
     >
       <Auth.Screen name="DrawerNavigation" component={DrawerNavigation}/>
-      <Auth.Screen name="Login" component={Login}/>
+      <Auth.Screen name="Login" component={Login} options={{ title: 'My home',
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },}}/>
       <Auth.Screen name="Cadastro" component={Cadastro}/>
-      <Auth.Screen name="Home" component={Home}/>
+      <Auth.Screen name="Cadastro2" component={Cadastro2}/>
+      <Auth.Screen name="Home" component={Home} options={{ title: 'My home',
+          headerStyle: {
+            backgroundColor: '#3B55E6',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },}}/>
+      <Auth.Screen name="Teste1" component={Teste1}/>
+      <Auth.Screen name="Teste2" component={Teste2}/>
+      <Auth.Screen name="Teste3" component={Teste3}/>
+      <Auth.Screen name="Teste4" component={Teste4}/>
+      <Auth.Screen name="Teste5" component={Teste5}/>
+
     </Auth.Navigator>
 );
 export default AuthRoutes;
