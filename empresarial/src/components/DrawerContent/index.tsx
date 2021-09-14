@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather';
+import { useAuth } from '../../hooks/auth';
 
 import {
   Container,
@@ -24,6 +25,13 @@ const DrawerContent = (
     }
   ];
 
+  const { signOut } = useAuth();
+
+  const Deslogar = () => {
+    signOut();
+    props.navigation.navigate("Login");
+  }
+
   return (
     <Container>
       <Body>
@@ -34,7 +42,7 @@ const DrawerContent = (
         {
           menuItems.map((item, key) => {
             return (
-              <TouchableOpacity style={styles.menuItem} onPress={() => props.navigation.navigate(item.route)}>
+              <TouchableOpacity key={key} style={styles.menuItem} onPress={() => props.navigation.navigate(item.route)}>
                 <Text style={styles.textAnchor}>
                   <Icon style={styles.icon}
                     name={item.icon}
@@ -50,7 +58,7 @@ const DrawerContent = (
         }
       </Body>
       <Footer>
-        <TouchableOpacity style={styles.menuItem} onPress={() => props.navigation.navigate(Login)}>
+        <TouchableOpacity style={styles.menuItem} onPress={Deslogar}>
           <Text style={styles.textAnchor}>
             <Icon style={styles.icon}
               name='log-out'
