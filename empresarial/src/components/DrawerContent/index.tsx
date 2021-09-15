@@ -22,6 +22,11 @@ const DrawerContent = (
       label: 'Home',
       route: 'Home',
       icon: 'home',
+    },
+    {
+      label: 'Usuários',
+      route: 'Usuario',
+      icon: 'user',
     }
   ];
 
