@@ -27,7 +27,7 @@ export default function ListItem({ data, handleRight, onPress }) {
         <RightActions progress={progress} dragX={dragX} onPress={handleRight} />
       )}>
       <TouchableOpacity onPress={onPress} style={styles.container}>
-        <Text style={styles.text}> {data.tarefa} </Text>
+        <Text style={styles.text}> {data.email} </Text>
       </TouchableOpacity>
     </Swipeable>
   );

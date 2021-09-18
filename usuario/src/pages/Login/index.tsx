@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert  } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Image  } from 'react-native';
 import { Container } from './styles';
 import Button from '../../components/Button';
+import Input from '../../components/Input';
 import Icon from 'react-native-vector-icons/Feather'
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
@@ -38,63 +39,65 @@ const Login: React.FC =()=> {
     }
 
     return(
-        <Container>
-            <View style={styles.title}>
-                <Text style={styles.titletext}>Login</Text>
-                <Text style={styles.subtitletext}>Por favor entre com sua conta</Text>
-            </View>
-            <TextInput placeholder="E-mail"
-                        style={styles.input}
-                        value={credencial.email}
-                        onChangeText={field('email')} />
+        <View style={{ flex: 1 }}>
+          <Image style={styles.logo} source={require('../../images/logotipo.png')} />
 
-            <TextInput placeholder="Senha"
-                        style={styles.input}
-                        secureTextEntry={true}
-                        value={credencial.senha}
-                        onChangeText={field('senha')} />
-            <Button onPress={()=>{login()}}>Entrar</Button>
+            <Container>
+                <View style={styles.title}>
+                    <Text style={styles.titletext}>Login</Text>
+                    <Text style={styles.subtitletext}>Por favor entre com sua conta</Text>
+                </View>
+                <Input icon="mail"
+                    placeholder="E-mail"
+                    value={credencial.email}
+                    onChangeText={field('email')} />
 
-            <TouchableOpacity onPress={()=>{cadastro()}} style={styles.textAnchor}>
-                <Text><Icon name="log-in" size={20} color="#000"/>Fazer Cadastro</Text>
-            </TouchableOpacity>
-            <TouchableOpacity  onPress={()=>{}} style={styles.textAnchor}>
-                <Text>Esqueci minha senha</Text>
-            </TouchableOpacity>
-        </Container>
+                <Input icon="lock"
+                    placeholder="Senha"
+                    secureTextEntry={true}
+                    value={credencial.senha}
+                    onChangeText={field('senha')} />
+                
+                <Button onPress={()=>{login()}}>Entrar</Button>
+
+                <TouchableOpacity onPress={()=>{cadastro()}} style={styles.textAnchor}>
+                    <Text><Icon name="log-in" size={20} color="#000"/>Fazer Cadastro</Text>
+                </TouchableOpacity>
+                <TouchableOpacity  onPress={()=>{}} style={styles.textAnchor}>
+                    <Text>Esqueci minha senha</Text>
+                </TouchableOpacity>
+                <Text style={styles.subText}>Ao se inscrever você concorda com nossos&ensp;
+                <Text onPress={() => { console.log("teste") }} style={styles.textAnchor}>Termos e Condições</Text>
+                </Text>
+            </Container>
+        </View>
 
     )
 }
 
 const styles = StyleSheet.create({
-    title:{
-        marginTop:100,
-        marginLeft:'15%',
-        marginBottom:20,
-        alignItems:'flex-start'
-    },
-    titletext:{
-        fontWeight:'bold',
-        fontSize:20
-    },
-    subtitletext:{
-        fontSize:16
-    },
-    textAnchor:{
-        marginTop:20,
-        alignItems:'center'
-    },
-    input:{
-        width:'70%',
-        height:60,
-        borderRadius:10,
-        justifyContent:'space-between',
-        alignItems:'center',
-        marginBottom:10,
-        borderWidth: 1,
-        alignSelf:'center',
-        flexDirection:'row',
-    }
+  titleText: {    
+    fontWeight: 'bold',
+    fontSize: 20
+  },
+  subtitleText: {
+    fontSize: 16,
+    marginBottom: 10
+  },
+  subText: {
+    fontSize: 11,
+    marginTop: 20
+  },
+  textAnchor: {
+    fontSize: 11,
+    color: 'blue',
+    textDecorationLine: 'underline'
+  },
+  logo: {
+    alignSelf: 'center',
+    marginTop: 50
+  },
+  
 
 
 

@@ -4,7 +4,6 @@ import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather'
 import { useAuth } from '../../hooks/auth';
 
-
 import {
   Container,
   NameUser,
@@ -13,36 +12,67 @@ import {
   Footer,
   HeaderBody,
 } from './styles';
+import Login from '../../pages/Login';
 import { NavigationContainer } from '@react-navigation/native';
 
 const DrawerContent = (
   props: DrawerContentComponentProps,
 ): React.ReactElement => {
+  const menuItems = [
+    {
+      label: 'Home',
+      route: 'Home',
+      icon: 'home',
+    },
+    {
+      label: 'Usuários',
+      route: 'Usuario',
+      icon: 'user',
+    }
+  ];
 
   const { signOut } = useAuth();
 
   const Deslogar = () =>{
     signOut();
-    props.navigation.navigate("Login");
+    props.navigation.navigate(Login);
   }
 
   return (
     <Container>
       <Body>
         <HeaderBody>
-          <NameUser>Match</NameUser>
-          <TitleUser>Profile</TitleUser>
+          <NameUser>Usuário Teste</NameUser>
+          <TitleUser>teste@gmail.com</TitleUser>
         </HeaderBody>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Cadastro')}>
-          <Text style={styles.textanchor}>Cadastro</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
-          <Text style={styles.textanchor}>Home</Text>
-        </TouchableOpacity>
+        {
+          menuItems.map((item, key) => {
+            return (
+              <TouchableOpacity key={key} style={styles.menuItem} onPress={() => props.navigation.navigate(item.route)}>
+                <Text style={styles.textAnchor}>
+                  <Icon style={styles.icon}
+                    name={item.icon}
+                    size={20}>
+                  </Icon>
+                  &ensp;
+                  {item.label}
+                </Text>
+
+              </TouchableOpacity>
+            )
+          })
+        }
       </Body>
       <Footer>
-      <TouchableOpacity onPress={() =>Deslogar()}>
-          <Text style={styles.textanchor}><Icon name="log-out" size={20} color="#000"/>Log-out</Text>
+        <TouchableOpacity style={styles.menuItem} onPress={Deslogar}>
+          <Text style={styles.textAnchor}>
+            <Icon style={styles.icon}
+              name='log-out'
+              size={20}>
+            </Icon>
+            &ensp;
+            Sair
+          </Text>
         </TouchableOpacity>
       </Footer>
     </Container>
@@ -50,19 +80,28 @@ const DrawerContent = (
 };
 
 const styles = StyleSheet.create({
-  title:{
-      marginTop:100,
-      marginLeft:'15%',
-      marginBottom:20,
-      alignItems:'flex-start'
+  
+  title: {
+    marginTop: 100,
+    marginLeft: '15%',
+    marginBottom: 20,
+    alignItems: 'flex-start'
   },
-  textanchor:{
-      fontWeight:'bold',
-      fontSize:20,
-      marginLeft:20
+  textAnchor: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    color: '#000',
+    marginHorizontal: 10
   },
-
-
+  icon: {
+    marginHorizontal: 10,
+    color: '#000'
+  },
+  menuItem: {
+    justifyContent: 'center',
+    height: 50,
+    borderRadius: 2
+  }
 
 });
 

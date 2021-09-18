@@ -1,17 +1,19 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, FlatList } from 'react-native';
 import { Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../hooks/auth';
 import Icon from 'react-native-vector-icons/Feather';
 import ListItem from '../../components/ListItem';
+import AsyncStorage from "@react-native-community/async-storage";
+import api  from '../../services/api';
 
 const Usuario: React.FC = () => {
 
   const navigation = useNavigation();
   const { signIn } = useAuth();
-  const [credencial, setCredencial] = useState({ email: '', senha: '' })
-  const [access, setAccess] = useState(true)
+  const [usuario, setUsuario] = useState({ id: '', nome: '' })
+  const [usuarios, setUsuarios] = useState({ usuarios:[], error: '' })
 
   const field = (field) => {
     return (value) => {
@@ -20,22 +22,27 @@ const Usuario: React.FC = () => {
       setAccess(!isEnable)
     }
   }
-
-  const login = async () => {
-    try {
-      await signIn({
-        email: credencial.email,
-        senha: credencial.senha,
-      });
-
-      setCredencial({ ...credencial, email: '', senha: '' });
-
-      navigation.navigate("DrawerNavigation");
-    } catch (error) {
-      Alert.alert(error.response.data.message);
-      setCredencial({ ...credencial, senha: '' })
+  const token = async () => {
+      const token = await AsyncStorage.getItem('token');
+      console.log(token);
+      // if (token[1]) {
+      //   return token[1]
+      // }
     }
-  }
+    // console.log(token);
+  
+
+  useEffect(async() => {
+  
+    const token = await AsyncStorage.getItem('token');
+  
+    api.get("/usuarios/empresariais" , { headers: {"Authorization" : `Bearer ${token}`} })
+      .then(res => {
+        const persons = res.data;
+  
+        setUsuarios(persons)
+      })
+  }, []);
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
@@ -63,7 +70,7 @@ const Usuario: React.FC = () => {
 
       <FlatList
         style={styles.list}
-        data={tarefas}
+        data={usuarios}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <ListItem
