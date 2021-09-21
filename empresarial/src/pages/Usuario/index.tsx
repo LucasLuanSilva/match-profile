@@ -12,13 +12,11 @@ const Usuario: React.FC = () => {
   const [usuarios, setUsuarios] = useState({ usuarios: Array, error: String });
 
   useEffect(async () => {
-    const token = await AsyncStorage.getItem('token');
-
-    api.get("/usuarios/empresariais", { headers: { "Authorization": `Bearer ${token}` } })
+    api.get("/usuarios/empresariais")
       .then(res => {
-        const persons = res.data;
+        const usuarios = res.data;
 
-        setUsuarios(persons)
+        setUsuarios(usuarios)
       });
   }, []);
 
