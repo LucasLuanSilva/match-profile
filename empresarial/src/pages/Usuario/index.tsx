@@ -3,8 +3,8 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
-import AsyncStorage from "@react-native-community/async-storage";
 import api from '../../services/api';
+import FloatButton from '../../components/FloatButton';
 
 const Usuario: React.FC = () => {
 
@@ -40,6 +40,7 @@ const Usuario: React.FC = () => {
         ItemSeparatorComponent={() => <Separator />}
       />
 
+      <FloatButton icon={'plus'} />
     </Container>
   );
 }
