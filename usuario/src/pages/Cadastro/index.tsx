@@ -2,22 +2,24 @@ import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
-import api from '../../services/api';
-import { Picker } from '@react-native-picker/picker'
+import { Container } from './styles';
+import { customStyles } from './styles';
+import StepIndicator from 'react-native-step-indicator';
 
 const Cadastro: React.FC =()=> {
     const navigation = useNavigation();
 
     const [credencial, setCredencial] = useState({
         empresas_id:'d6cf0ba6-f803-428c-bed4-66f36c768ad5',
-        cpf: "71526318083",
-        nome: "Carlos",
-        sobrenome: "Silva",
-        email: "gxg@email.com",
-        rg: "101010",
-        senha: "1234",
+        cpf: "",
+        nome: "",
+        sobrenome: "",
+        email: "",
+        rg: "",
+        senha: "",
     })
     const [access, setAccess] = useState(true)
+    const [currentPosition, setPosition] = useState(0);
     const [cidade, setCidade] = useState([
       {
         codigo_municipio: "3550308",
@@ -46,74 +48,68 @@ const Cadastro: React.FC =()=> {
 
     }
 
-    const register = async() => {
-      await api.post('usuarios', credencial).then(
-        (response) => {
-          Alert.alert("Cadastro efetuado com sucesso");
-          navigation.navigate('Login');
-        }
-      )
-      .catch(
-        (error) => {
-          Alert.alert(error.response.data.error);
-        }
-      );
+
+    const changePosition = () =>{
+      setPosition(1)
+      navigation.navigate('Cadastro2', {credencial})
     }
 
 
     return(
         <View>
-          <ScrollView>
-            <View style={styles.title}>
-                <Text style={styles.titletext}>Cadastro</Text>
-            </View>
-            <Text style={styles.label}>Nome</Text>
-            <TextInput placeholder="Nome"
-                        style={styles.input}
-                        value={credencial.nome}
-                        onChangeText={field('nome')} />
-            <Text style={styles.label}>Sobrenome</Text>
-            <TextInput placeholder="Sobrenome"
-                        style={styles.input}
-                        value={credencial.sobrenome}
-                        onChangeText={field('sobrenome')} />
-            <Text style={styles.label}>E-mail</Text>
-            <TextInput placeholder="E-mail"
-                        style={styles.input}
-                        value={credencial.email}
-                        onChangeText={field('email')} />
-            <View style={styles.rowView} >
-              <View>
-                <Text>CPF</Text>
-                <TextInput placeholder="CPF"
-                            style={styles.halfInput}
-                            value={credencial.cpf}
-                            onChangeText={field('cpf')} />
+          {/* <Container> */}
+            <ScrollView>
+              <View style={styles.stepIndicator}>
+                <StepIndicator
+                    customStyles={customStyles}
+                    currentPosition={currentPosition}
+                    stepCount={2}
+                />
               </View>
-              <View>
-                <Text>RG</Text>
-                <TextInput placeholder="RG"
-                            style={styles.halfInput}
-                            value={credencial.rg}
-                            onChangeText={field('rg')} />
+              <Text style={styles.label}>Nome</Text>
+              <TextInput placeholder="Informe seu nome"
+                          style={styles.input}
+                          value={credencial.nome}
+                          onChangeText={field('nome')} />
+              <Text style={styles.label}>Sobrenome</Text>
+              <TextInput placeholder="Informe seu sobrenome"
+                          style={styles.input}
+                          value={credencial.sobrenome}
+                          onChangeText={field('sobrenome')} />
+              <Text style={styles.label}>E-mail</Text>
+              <TextInput placeholder="Informe seu E-mail"
+                          style={styles.input}
+                          value={credencial.email}
+                          onChangeText={field('email')} />
+              <Text style={styles.label}>CPF</Text>
+              <TextInput placeholder="Informe seu CPF"
+                          style={styles.input}
+                          value={credencial.cpf}
+                          onChangeText={field('cpf')} />
+              <Text style={styles.label}>RG</Text>
+              <TextInput placeholder="Informe seu RG"
+                          style={styles.input}
+                          value={credencial.rg}
+                          onChangeText={field('rg')} />
+              <Text style={styles.label}>Senha</Text>
+              <TextInput placeholder="Informe sua Senha"
+                          style={styles.input}
+                          secureTextEntry={true}
+                          value={credencial.senha}
+                          onChangeText={field('senha')} />
+              <Text style={styles.label}>Confirmar Senha</Text>
+              <TextInput placeholder="Confirme sua Senha"
+                          style={styles.input}
+                          secureTextEntry={true}
+                          value={credencial.senha}
+                          onChangeText={field('senha')} />
+              <View style={styles.viewButton}>
+                <Button onPress={()=>{changePosition()}}>
+                    Próximo
+                </Button>
               </View>
-            </View>
-            <Text style={styles.label}>Senha</Text>
-            <TextInput placeholder="Senha"
-                        style={styles.input}
-                        secureTextEntry={true}
-                        value={credencial.senha}
-                        onChangeText={field('senha')} />
-            <Text style={styles.label}>Confirmar Senha</Text>
-            <TextInput placeholder="Senha"
-                        style={styles.input}
-                        secureTextEntry={true}
-                        value={credencial.senha}
-                        onChangeText={field('senha')} />
-            <Button onPress={()=>{navigation.navigate('Cadastro2', {credencial})}}>
-                Próximo
-            </Button>
-          </ScrollView>
+            </ScrollView>
+          {/* </Container> */}
         </View>
 
     )
@@ -135,40 +131,32 @@ const styles = StyleSheet.create({
     },
     label:{
       fontSize:14,
-      marginLeft:60
+      marginLeft:"8%"
     },
     input:{
-        width:'70%',
+        width:'84%',
         height:50,
+        marginHorizontal:10,
         borderRadius:10,
         justifyContent:'space-between',
         alignItems:'center',
         marginBottom:10,
         borderWidth: 1,
+        borderColor:'#d3d3d3',
         alignSelf:'center',
-        flexDirection:'row',
-        shadowColor:'#fff',
-        shadowOffset:{
-          width:2,
-          height:2
-        },
-        shadowOpacity:0.9,
-        shadowRadius:2
+        flexDirection:'row'
     },
-    halfInput:{
-      width:'70%',
-      height:50,
-      borderRadius:10,
-      justifyContent:'space-between',
-      alignItems:'center',
-      marginBottom:10,
-      borderWidth: 1,
-      alignSelf:'center',
-      flexDirection:'row',
+    stepIndicator:{
+      marginVertical:20
+    },
+    viewButton:{
+      marginHorizontal:'10%',
+      marginTop:20
     },
     rowView:{
       flexDirection:'row',
-      justifyContent:'center',
+      justifyContent:'space-around',
+      marginHorizontal:10
     },
     selectPicker:{
       width:'70%',

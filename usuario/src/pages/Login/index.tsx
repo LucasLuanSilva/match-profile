@@ -44,8 +44,8 @@ const Login: React.FC =()=> {
 
             <Container>
                 <View style={styles.title}>
-                    <Text style={styles.titletext}>Login</Text>
-                    <Text style={styles.subtitletext}>Por favor entre com sua conta</Text>
+                    <Text style={styles.titleText}>Login</Text>
+                    <Text style={styles.subtitleText}>Por favor entre com sua conta</Text>
                 </View>
                 <Input icon="mail"
                     placeholder="E-mail"
@@ -57,18 +57,17 @@ const Login: React.FC =()=> {
                     secureTextEntry={true}
                     value={credencial.senha}
                     onChangeText={field('senha')} />
-                
-                <Button onPress={()=>{login()}}>Entrar</Button>
 
-                <TouchableOpacity onPress={()=>{cadastro()}} style={styles.textAnchor}>
-                    <Text><Icon name="log-in" size={20} color="#000"/>Fazer Cadastro</Text>
-                </TouchableOpacity>
-                <TouchableOpacity  onPress={()=>{}} style={styles.textAnchor}>
-                    <Text>Esqueci minha senha</Text>
-                </TouchableOpacity>
-                <Text style={styles.subText}>Ao se inscrever você concorda com nossos&ensp;
-                <Text onPress={() => { console.log("teste") }} style={styles.textAnchor}>Termos e Condições</Text>
-                </Text>
+                <Button onPress={()=>{login()}}>Entrar</Button>
+                <View style={styles.viewAnchor}>
+                  <Text style={styles.subText}>Não possui uma conta?&ensp;
+                  <Text onPress={()=>{cadastro()}} style={styles.textAnchor}>Criar conta agora!</Text>
+                  </Text>
+                  <Text style={styles.subText}>Ao se inscrever você concorda com nossos&ensp;
+                  <Text onPress={() => { console.log("teste") }} style={styles.textAnchor}>Termos e Condições</Text>
+                  </Text>
+                </View>
+
             </Container>
         </View>
 
@@ -76,13 +75,16 @@ const Login: React.FC =()=> {
 }
 
 const styles = StyleSheet.create({
-  titleText: {    
+  titleText: {
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 28,
+    marginTop:-30,
+    marginBottom: 10
+
   },
   subtitleText: {
-    fontSize: 16,
-    marginBottom: 10
+    fontSize: 20,
+    marginBottom: 30
   },
   subText: {
     fontSize: 11,
@@ -97,7 +99,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 50
   },
-  
+  title:{
+
+  },
+  viewAnchor:{
+    alignContent:'center'
+  }
+
 
 
 

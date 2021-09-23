@@ -4,6 +4,9 @@ import Button from '../../components/Button';
 import { useNavigation, useRoute  } from '@react-navigation/native';
 import api from '../../services/api';
 import { Picker } from '@react-native-picker/picker'
+import { customStyles } from './styles';
+import StepIndicator from 'react-native-step-indicator';
+
 
 const Cadastro2: React.FC =()=> {
     const navigation = useNavigation();
@@ -64,6 +67,7 @@ const Cadastro2: React.FC =()=> {
       },
     ]);
     const [estadoSelecionado, setEstadoSelecionado] = useState([]);
+    const [currentPosition, setPosition] = useState(1);
 
     const field = (field) => {
         return (value) => {
@@ -92,6 +96,13 @@ const Cadastro2: React.FC =()=> {
     return(
         <View>
           <ScrollView>
+            <View style={styles.stepIndicator}>
+                <StepIndicator
+                    customStyles={customStyles}
+                    currentPosition={currentPosition}
+                    stepCount={2}
+                />
+              </View>
             <Text style={styles.label}>Estado</Text>
             <Picker
               selectedValue={estadoSelecionado}
@@ -123,33 +134,31 @@ const Cadastro2: React.FC =()=> {
                         style={styles.input}
                         value={credencial.logradouro}
                         onChangeText={field('logradouro')} />
-            <View style={styles.rowView} >
-              <View>
-                <Text style={styles.label}>Numero</Text>
-                <TextInput placeholder="Numero"
-                            style={styles.halfInput}
-                            value={credencial.numero}
-                            onChangeText={field('numero')} />
-              </View>
-              <View>
-                <Text style={styles.label}>CEP</Text>
-                <TextInput placeholder="CEP"
-                            style={styles.halfInput}
-                            value={credencial.cep}
-                            onChangeText={field('cep')} />
-              </View>
-            </View>
+            <Text style={styles.label}>Numero</Text>
+            <TextInput placeholder="Numero"
+                        style={styles.input}
+                        value={credencial.numero}
+                        onChangeText={field('numero')} />
+            <Text style={styles.label}>CEP</Text>
+            <TextInput placeholder="CEP"
+                        style={styles.input}
+                        value={credencial.cep}
+                        onChangeText={field('cep')} />
+            <Text style={styles.label}>Complemento</Text>
             <TextInput placeholder="Complemento"
                         style={styles.input}
                         value={credencial.complemento}
                         onChangeText={field('complemento')} />
+            <Text style={styles.label}>Bairro</Text>
             <TextInput placeholder="Bairro"
                         style={styles.input}
                         value={credencial.bairro}
                         onChangeText={field('bairro')} />
-            <Button onPress={()=>{register()}}>
-                Cadastrar
-            </Button>
+            <View style={styles.viewButton}>
+              <Button onPress={()=>{register()}}>
+                  Cadastrar
+              </Button>
+            </View>
           </ScrollView>
         </View>
 
@@ -171,44 +180,31 @@ const styles = StyleSheet.create({
         fontSize:16
     },
     label:{
-      fontSize:14
+      fontSize:14,
+      marginLeft:"8%"
     },
     input:{
-        width:'70%',
-        height:40,
-        borderRadius:10,
-        justifyContent:'space-between',
-        alignItems:'center',
-        marginBottom:10,
-        borderWidth: 1,
-        alignSelf:'center',
-        flexDirection:'row',
-        shadowColor:'#fff',
-        shadowOffset:{
-          width:2,
-          height:2
-        },
-        shadowOpacity:0.9,
-        shadowRadius:2
-    },
-    halfInput:{
-      width:'35%',
-      height:60,
+      width:'84%',
+      height:50,
       borderRadius:10,
       justifyContent:'space-between',
       alignItems:'center',
       marginBottom:10,
       borderWidth: 1,
+      borderColor:'#d3d3d3',
       alignSelf:'center',
-      flexDirection:'row',
+      flexDirection:'row'
     },
-    rowView:{
-      flexDirection:'row',
-      justifyContent:'center',
+    stepIndicator:{
+      marginVertical:20
+    },
+    viewButton:{
+      marginHorizontal:'10%',
+      marginTop:20
     },
     selectPicker:{
-      width:'70%',
-      height:60,
+      width:'84%',
+      height:50,
       alignSelf:'center',
       borderRadius:10,
       marginBottom:10,

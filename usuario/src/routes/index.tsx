@@ -39,20 +39,28 @@ const Auth = createStackNavigator();
 const AuthRoutes: React.FC = () => (
     <Auth.Navigator
     screenOptions={{
-      headerShown:false
+      headerShown:true
     }}
     >
+
       <Auth.Screen name="DrawerNavigation" component={DrawerNavigation}/>
-      <Auth.Screen name="Login" component={Login} options={{ title: 'My home',
+      <Auth.Screen name="Login"  options={{ headerShown: false }} component={Login} />
+      <Auth.Screen name="Cadastro" component={Cadastro} options={{ title: 'Cadastro',
           headerStyle: {
-            backgroundColor: '#fff',
+            backgroundColor: '#3B55E6',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },}}/>
-      <Auth.Screen name="Cadastro" component={Cadastro}/>
-      <Auth.Screen name="Cadastro2" component={Cadastro2}/>
+      <Auth.Screen name="Cadastro2" component={Cadastro2} options={{ title: 'Cadastro',
+          headerStyle: {
+            backgroundColor: '#3B55E6',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },}}/>
       <Auth.Screen name="Home" component={Home} options={{ title: 'My home',
           headerStyle: {
             backgroundColor: '#3B55E6',
