@@ -40,7 +40,7 @@ const Usuario: React.FC = () => {
         ItemSeparatorComponent={() => <Separator />}
       />
 
-      <FloatButton icon={'plus'} />
+      <FloatButton icon={'plus'} onPress={() => navigation.navigate('Cadastro')} />
     </Container>
   );
 }

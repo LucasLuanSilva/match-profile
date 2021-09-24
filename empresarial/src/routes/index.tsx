@@ -5,6 +5,7 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import DrawerContent from '../components/DrawerContent';
 import Usuario from '../pages/Usuario';
+import CadastroUsuario from '../pages/CadastroUsuario';
 
 const Drawer = createDrawerNavigator();
 
@@ -33,12 +34,16 @@ const StackNavigation: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false
+        headerStyle: {
+          backgroundColor: '#3B55E6'
+        },
+        headerTintColor: '#fff'
       }}
     >
 
       <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-      <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} />
+      <Stack.Screen name="DrawerNavigation" options={{ headerShown: false }} component={DrawerNavigation} />
+      <Stack.Screen name="Cadastro" options={{ title: 'Cadastro de Usuário' }} component={CadastroUsuario} />
 
     </Stack.Navigator>
   );
