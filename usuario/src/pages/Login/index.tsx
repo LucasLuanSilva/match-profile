@@ -28,9 +28,9 @@ const Login: React.FC =()=> {
               email:credencial.email,
               senha:credencial.senha,
           });
-          navigation.navigate("Home");
+          navigation.navigate("DrawerNavigation");
         }catch(error){
-          Alert.alert("Erro: "+ error);
+          Alert.alert(error.response.data.message);
         }
     }
 
