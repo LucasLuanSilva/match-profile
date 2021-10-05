@@ -7,7 +7,7 @@ const Home: React.FC =()=> {
     return(
         <View>
             <View style={styles.buttonHome}>
-                <TouchableOpacity onPress={()=>{navigation.navigate('Teste1')}} >
+                <TouchableOpacity onPress={()=>{navigation.navigate('ListaTestes')}} >
                     <View style={styles.buttonHomeBlue}>
                       <Text style={styles.subtitletext}>Testes</Text>
                       <Image style={styles.imagens}

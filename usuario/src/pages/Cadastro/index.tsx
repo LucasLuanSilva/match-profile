@@ -50,7 +50,7 @@ const Cadastro: React.FC =()=> {
 
 
     const changePosition = () =>{
-      setPosition(1)
+      // setPosition(1)
       navigation.navigate('Cadastro2', {credencial})
     }
 

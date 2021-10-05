@@ -23,11 +23,6 @@ const DrawerContent = (
       label: 'Home',
       route: 'Home',
       icon: 'home',
-    },
-    {
-      label: 'Usuários',
-      route: 'Usuario',
-      icon: 'user',
     }
   ];
 
@@ -80,7 +75,7 @@ const DrawerContent = (
 };
 
 const styles = StyleSheet.create({
-  
+
   title: {
     marginTop: 100,
     marginLeft: '15%',
