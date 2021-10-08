@@ -4,7 +4,7 @@ interface IEstado {
 }
 
 class Estado {
-  getEstados() {
+  static getEstados() {
     const estados: IEstado[] = [
       {
         sigla: 'AC',
@@ -119,3 +119,5 @@ class Estado {
     return estados;
   }
 }
+
+export default Estado;
