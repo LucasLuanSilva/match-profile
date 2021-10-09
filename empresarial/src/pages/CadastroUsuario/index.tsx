@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
@@ -8,11 +8,12 @@ import StepIndicator from 'react-native-step-indicator';
 import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 import Estado from '../../functions/Estado';
+import TextInputMask from 'react-native-text-input-mask';
 
 const CadastroUsuario: React.FC = () => {
   const navigation = useNavigation();
 
-  const [credencial, setCredencial] = useState({
+  const [usuario, setUsuario] = useState({
     cpf: '',
     nome: '',
     sobrenome: '',
@@ -33,31 +34,45 @@ const CadastroUsuario: React.FC = () => {
 
   const field = (field) => {
     return (value) => {
-      setCredencial({ ...credencial, [field]: value });
+      setUsuario({ ...usuario, [field]: value });
     }
-  }
+  };
 
-  const changePosition = () => {
+  const fieldMask = (formatted, extracted, field) => {
+    setUsuario({ ...usuario, [field]: extracted });
+  };
+
+  const nextPosition = () => {
     setPosition(currentPosition + 1);
   }
 
-  const [cidade, setCidade] = useState([]);
+  const backPosition = () => {
+    setPosition(currentPosition - 1);
+  }
+
+  const [cidades, setCidades] = useState([]);
 
   const [cidadeSelecionada, setCidadeSelecionada] = useState([]);
 
-  const [estado] = useState(Estado.getEstados());
+  const [estados] = useState(Estado.getEstados());
 
-  const setEstado = async (siglaEstado: string) => {
-    await api.get('cidades', { params: siglaEstado }).then((response) => {
-      setCidade(response.data);
+  const [estadoSelecionado, setEstadoSelecionado] = useState();
+
+  const setEstado = async (siglaEstado: any) => {
+    setEstadoSelecionado(siglaEstado);
+
+    await api.get('cidades/' + siglaEstado).then((response) => {
+      setCidades(response.data);
+
+      setCidadeSelecionada(response.data[0]);
     }).catch((error) => {
       Alert.alert(error.response.data.error);
     });
   }
 
   const register = async () => {
-    console.log(credencial);
-    // await api.post('usuarios', credencial).then((response) => {
+    console.log(usuario);
+    // await api.post('usuarios', usuario).then((response) => {
     //   Alert.alert("Cadastro efetuado com sucesso");
     //   navigation.navigate('Login');
     // }).catch((error) => {
@@ -65,41 +80,45 @@ const CadastroUsuario: React.FC = () => {
     // });
   }
 
+  useEffect(() => {
+    setEstado('SP');
+  }, []);
+
   const Page1 = () => {
     return (
       <View>
         <Text style={styles.label}>Nome</Text>
         <TextInput placeholder="Informe seu nome"
           style={styles.input}
-          value={credencial.nome}
+          value={usuario.nome}
           onChangeText={field('nome')}
         />
 
         <Text style={styles.label}>Sobrenome</Text>
         <TextInput placeholder="Informe seu sobrenome"
           style={styles.input}
-          value={credencial.sobrenome}
+          value={usuario.sobrenome}
           onChangeText={field('sobrenome')}
         />
 
         <Text style={styles.label}>E-mail</Text>
         <TextInput placeholder="Informe seu E-mail"
           style={styles.input}
-          value={credencial.email}
+          value={usuario.email}
           onChangeText={field('email')}
         />
 
         <Text style={styles.label}>CPF</Text>
         <TextInput placeholder="Informe seu CPF"
           style={styles.input}
-          value={credencial.cpf}
+          value={usuario.cpf}
           onChangeText={field('cpf')}
         />
 
         <Text style={styles.label}>RG</Text>
         <TextInput placeholder="Informe seu RG"
           style={styles.input}
-          value={credencial.rg}
+          value={usuario.rg}
           onChangeText={field('rg')}
         />
 
@@ -107,7 +126,7 @@ const CadastroUsuario: React.FC = () => {
         <TextInput placeholder="Informe sua Senha"
           style={styles.input}
           secureTextEntry={true}
-          value={credencial.senha}
+          value={usuario.senha}
           onChangeText={field('senha')}
         />
 
@@ -115,12 +134,12 @@ const CadastroUsuario: React.FC = () => {
         <TextInput placeholder="Confirme sua Senha"
           style={styles.input}
           secureTextEntry={true}
-          value={credencial.confirmarSenha}
+          value={usuario.confirmarSenha}
           onChangeText={field('confirmarSenha')}
         />
 
         <View style={styles.containerButton}>
-          <Button onPress={() => { changePosition() }}>
+          <Button onPress={() => { nextPosition() }}>
             Próximo
           </Button>
         </View>
@@ -134,11 +153,12 @@ const CadastroUsuario: React.FC = () => {
         <Text style={styles.label}>Estado</Text>
         <View style={styles.selectPicker}>
           <Picker
+            selectedValue={estadoSelecionado}
             onValueChange={(itemValue) =>
               setEstado(itemValue)
             }>
             {
-              estado.map(estado => {
+              estados.map(estado => {
                 return <Picker.Item key={estado.sigla} label={estado.nome} value={estado.sigla} />
               })
             }
@@ -153,7 +173,7 @@ const CadastroUsuario: React.FC = () => {
               setCidadeSelecionada(itemValue)
             }>
             {
-              cidade.map(cid => {
+              cidades.map(cid => {
                 return <Picker.Item key={cid.codigo_municipio} label={cid.nome} value={cid.codigo_municipio} />
               })
             }
@@ -161,42 +181,48 @@ const CadastroUsuario: React.FC = () => {
         </View>
 
         <Text style={styles.label}>CEP</Text>
-        <TextInput placeholder="CEP"
+        <TextInputMask placeholder="CEP"
           style={styles.input}
-          value={credencial.cep}
-          onChangeText={field('cep')}
+          value={usuario.cep}
+          onChangeText={(formatted, extracted) => {
+            fieldMask(formatted, extracted, 'cep');
+          }}
+          mask={"[00000]-[000]"}
         />
 
         <Text style={styles.label}>Logradouro</Text>
         <TextInput placeholder="Logradouro"
           style={styles.input}
-          value={credencial.logradouro}
+          value={usuario.logradouro}
           onChangeText={field('logradouro')}
         />
 
         <Text style={styles.label}>Número / Apto</Text>
         <TextInput placeholder="Numero"
           style={styles.input}
-          value={credencial.numero}
+          value={usuario.numero}
           onChangeText={field('numero')}
         />
 
         <Text style={styles.label}>Complemento</Text>
         <TextInput placeholder="Complemento"
           style={styles.input}
-          value={credencial.complemento}
+          value={usuario.complemento}
           onChangeText={field('complemento')}
         />
 
         <Text style={styles.label}>Bairro</Text>
         <TextInput placeholder="Bairro"
           style={styles.input}
-          value={credencial.bairro}
+          value={usuario.bairro}
           onChangeText={field('bairro')}
         />
 
         <View style={styles.containerButton}>
-          <Button onPress={() => { changePosition() }}>
+          <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+            Voltar
+          </Button>
+          <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
             Próximo
           </Button>
         </View>
@@ -208,7 +234,10 @@ const CadastroUsuario: React.FC = () => {
     return (
       <View>
         <View style={styles.containerButton}>
-          <Button onPress={async () => { await register() }}>
+          <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+            Voltar
+          </Button>
+          <Button style={{ width: '49%' }} onPress={async () => { await register() }}>
             Finalizar
           </Button>
         </View>
@@ -261,7 +290,9 @@ const styles = StyleSheet.create({
     marginVertical: 20
   },
   containerButton: {
-    marginTop: 10
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   selectPicker: {
     height: 45,
