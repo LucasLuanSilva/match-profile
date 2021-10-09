@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import AtualizaTabelaCidadesController from './controllers/AtualizaTabelaCidadesController';
 import AuthenticateUsuarioController from './controllers/AuthenticateUsuarioController';
 import AuthenticateUsuarioEmpresarialController from './controllers/AuthenticateUsuarioEmpresarialController';
 import CreateCidadeController from './controllers/CreateCidadeController';
@@ -17,6 +18,7 @@ const authenticateUsuarioEmpresarialController = new AuthenticateUsuarioEmpresar
 const createUsuarioController = new CreateUsuarioController();
 const authenticateUsuarioController = new AuthenticateUsuarioController();
 const listUsuariosEmpresariaisController = new ListUsuariosEmpresariaisController();
+const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
 
 routes.post('/cidades', createCidadeController.handle);
 routes.post('/empresas', createEmpresaController.handle);
@@ -24,6 +26,7 @@ routes.post('/usuarios/empresariais', ensureAuthenticatedEmpresariais, createUsu
 routes.post('/login/empresariais', authenticateUsuarioEmpresarialController.handle);
 routes.post('/usuarios', createUsuarioController.handle);
 routes.post('/login', authenticateUsuarioController.handle);
+routes.post('/cidades/atualiza', atualizaTabelaCidadesController.handle);
 
 routes.get('/usuarios/empresariais/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/usuarios/empresariais', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
