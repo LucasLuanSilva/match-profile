@@ -43,15 +43,14 @@ routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsu
 routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
 
 //// GET
+routes.get('/cidades/:uf', listCidadesController.handle);
+routes.get('/cidades', listCidadesController.handle);
 
 // CANDIDATO
-routes.get('/cidades/:uf', ensureAuthenticatedUsuarios, listCidadesController.handle);
-routes.get('/cidades', ensureAuthenticatedUsuarios, listCidadesController.handle);
+
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
-routes.get('/empresariais/cidades/:uf', ensureAuthenticatedEmpresariais, listCidadesController.handle);
-routes.get('/empresariais/cidades', ensureAuthenticatedEmpresariais, listCidadesController.handle);
 
 export default routes;
