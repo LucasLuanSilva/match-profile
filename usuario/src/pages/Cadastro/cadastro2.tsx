@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation, useRoute  } from '@react-navigation/native';
@@ -6,12 +6,17 @@ import api from '../../services/api';
 import { Picker } from '@react-native-picker/picker'
 import { customStyles } from './styles';
 import StepIndicator from 'react-native-step-indicator';
+import Estado from '../../functions/Estado';
 
 
 const Cadastro2: React.FC =()=> {
     const navigation = useNavigation();
     const route = useRoute();
     const dados = route.params.credencial;
+
+    useEffect(() => {
+      setEstado('SP');
+    }, []);
 
     const [credencial, setCredencial] = useState({
 
@@ -23,62 +28,43 @@ const Cadastro2: React.FC =()=> {
       rg: dados.rg,
       senha: dados.senha,
 
-      cep: "20230000",
-      cidades_codigo_municipio: "3550308",
-      logradouro: "Teste rua",
-      numero: "111",
-      complemento: "2C ",
-      bairro: "Santa Gertrudes"
+      cep: "",
+      cidades_codigo_municipio: "",
+      logradouro: "",
+      numero: "",
+      complemento: "",
+      bairro: ""
     })
-    const [access, setAccess] = useState(true)
-    const [cidade, setCidade] = useState([
-      {
-        codigo_municipio: "3550308",
-        nome: "São Paulo",
-        uf: "SP"
-      },
-      {
-        codigo_municipio: "3550308",
-        nome: "Maracá",
-        uf: "SP"
-      },
-      {
-        codigo_municipio: "3550308",
-        nome: "São Joaão do miriti",
-        uf: "SP"
-      },
-    ]);
-    const [cidadeSelecionada, setCidadeSelecionada] = useState([]);
-    const [estado, setEstado] = useState([
-      {
-        codigo_estado: "1",
-        nome: "São Paulo",
-        sigla: "SP"
-      },
-      {
-        codigo_estado: "2",
-        nome: "Rio de Janeiro",
-        uf: "RJ"
-      },
-      {
-        codigo_estado: "3",
-        nome: "Minas Gerais",
-        uf: "MG"
-      },
-    ]);
+    
+    const setEstado = async (siglaEstado: any) => {
+      setEstadoSelecionado(siglaEstado);
+  
+      await api.get('cidades/' + siglaEstado).then((response) => {
+        setCidades(response.data);
+        setCredencial({ ...credencial, ['cidades_codigo_municipio']: response.data[0].codigo_municipio });
+      }).catch((error) => {
+        console.log(error)
+        Alert.alert(error.response.data.error);
+      });
+    }
+  
+    const [cidades, setCidades] = useState([]);
+
+    const [estados] = useState(Estado.getEstados());
+
     const [estadoSelecionado, setEstadoSelecionado] = useState([]);
+
     const [currentPosition, setPosition] = useState(1);
 
     const field = (field) => {
         return (value) => {
             setCredencial({...credencial, [field]: value })
-            // let isEnable = (credencial.empresas_id != '' && credencial.password != '')
-            // setAccess(!isEnable)
         }
 
     }
 
     const register = async() => {
+      console.log(credencial)
       await api.post('usuarios', credencial).then(
         (response) => {
           Alert.alert("Cadastro efetuado com sucesso");
@@ -104,31 +90,34 @@ const Cadastro2: React.FC =()=> {
                 />
               </View>
             <Text style={styles.label}>Estado</Text>
-            <Picker
-              selectedValue={estadoSelecionado}
-              style={styles.selectPicker}
-              onValueChange={(itemValue)=>
-              setEstadoSelecionado(itemValue)
-            }>
-              {
-                estado.map(est =>{
-                  return <Picker.Item key={est.codigo_estado} label={est.nome} value={est.codigo_estado}/>
-                })
-              }
-            </Picker>
+            <View style={styles.selectPicker}>
+              <Picker
+                selectedValue={estadoSelecionado}
+                onValueChange={(itemValue) =>
+                  setEstado(itemValue)
+                }>
+                {
+                  estados.map(estado => {
+                    return <Picker.Item key={estado.sigla} label={estado.nome} value={estado.sigla} />
+                  })
+                }
+              </Picker>
+            </View>
             <Text style={styles.label}>Cidade</Text>
-            <Picker
-              selectedValue={cidadeSelecionada}
-              style={styles.selectPicker}
-              onValueChange={(itemValue)=>
-              setCidadeSelecionada(itemValue)
-            }>
-              {
-                cidade.map(cid =>{
-                  return <Picker.Item key={cid.codigo_municipio} label={cid.nome} value={cid.codigo_municipio}/>
-                })
-              }
-            </Picker>
+            <View style={styles.selectPicker}>
+              <Picker
+                key="codigo_municipio"
+                selectedValue={credencial.cidades_codigo_municipio}
+                onValueChange={(itemValue) =>
+                  setCredencial({ ...credencial, ['cidades_codigo_municipio']: itemValue })
+                }>
+                {
+                  cidades.map(cid => {
+                    return <Picker.Item key={cid.codigo_municipio} label={cid.nome} value={cid.codigo_municipio} />
+                  })
+                }
+              </Picker>
+            </View>
             <Text style={styles.label}>Logradouro</Text>
             <TextInput placeholder="Logradouro"
                         style={styles.input}

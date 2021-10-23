@@ -14,7 +14,7 @@ const Home: React.FC =()=> {
                           source={require('../../images/testes.png')}/>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={()=>{navigation.navigate('EditaCurriculo')}} >
                   <View style={styles.buttonHomeBlue}>
                       <Text style={styles.subtitletext}>Meu Currículo</Text>
                       <Image style={styles.imagens}

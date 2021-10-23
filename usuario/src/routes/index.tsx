@@ -11,6 +11,7 @@ import Teste2 from '../pages/Testes/teste2';
 import Teste3 from '../pages/Testes/teste3';
 import Teste4 from '../pages/Testes/teste4';
 import Teste5 from '../pages/Testes/teste5';
+import EditaCurriculo from '../pages/EditaCurriculo';
 import DrawerContent from '../components/DrawerContent';
 
 export type RootDrawerParamList = {
@@ -35,7 +36,8 @@ const DrawerNavigation: React.FC = () => {
     >
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="ListaTestes"  options={{ title: 'Testes' }} component={ListaTestes}/>
-      <Drawer.Screen name="Teste1"  options={{ title: 'Teste' }} component={Teste1}/>
+      {/* <Drawer.Screen name="EditaCurriculo"  options={{ title: 'Preenchimento Currículo' }} component={EditaCurriculo}/> */}
+      <Drawer.Screen name="Teste1"  options={{ title: 'Testes' }} component={Teste1}/>
       <Drawer.Screen name="Teste2" component={Teste2}/>
       <Drawer.Screen name="Teste3" component={Teste3}/>
       <Drawer.Screen name="Teste4" component={Teste4}/>
@@ -60,12 +62,7 @@ const AuthRoutes: React.FC = () => (
       <Auth.Screen name="DrawerNavigation" options={{ headerShown: false }} component={DrawerNavigation}/>
       <Auth.Screen name="Cadastro" component={Cadastro} options={{ title: 'Cadastro'}}/>
       <Auth.Screen name="Cadastro2" options={{ title: 'Cadastro'}} component={Cadastro2}/>
-      {/* <Auth.Screen name="Home" options={{ title: 'Home'}} component={Home}/>
-      <Auth.Screen name="Teste1" component={Teste1}/>
-      <Auth.Screen name="Teste2" component={Teste2}/>
-      <Auth.Screen name="Teste3" component={Teste3}/>
-      <Auth.Screen name="Teste4" component={Teste4}/>
-      <Auth.Screen name="Teste5" component={Teste5}/> */}
+      <Auth.Screen name="EditaCurriculo"  options={{ title: 'Preenchimento Currículo' }} component={EditaCurriculo}/>
 
     </Auth.Navigator>
 );

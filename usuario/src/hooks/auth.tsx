@@ -34,27 +34,36 @@ const AuthProvider: React.FC = ({ children }) =>{
     loadStorageData();
   }, [])
 
-  const signIn = useCallback(async ({ email, senha }) =>{
-    try{
-      var token = "";
+  const signIn = useCallback(async ({ email, senha }) => {
+    try {
       const response = await api.post('login', {
-        cpf:'',
+        cpf: '',
         email,
         senha
       });
-      console.log(response)
-      token = response.data;
+
+      const token = response.data;
+
       await AsyncStorage.setItem('token', token);
-      setData({ token});
-    }catch(error){
+
+      api.interceptors.request.use((req) => {
+        if (token) {
+          req.headers.Authorization = `Bearer ${token}`;
+        }
+        return req;
+      });
+    } catch (error) {
       throw error;
     }
   }, []);
 
-  const signOut = useCallback(async() =>{
+  const signOut = useCallback(async () => {
     await AsyncStorage.removeItem('&usuario:token');
 
-    setData({} as AuthState);
+    api.interceptors.request.use((req) => {
+      req.headers.Authorization = null;
+      return req;
+    });
   }, []);
 
   return (
