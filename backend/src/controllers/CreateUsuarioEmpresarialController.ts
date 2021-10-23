@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 
 import CreateUsuarioEmpresarialService from "../services/CreateUsuarioEmpresarialService";
 
+import { decode } from 'jsonwebtoken';
+
 class CreateUsuarioEmpresarialController {
   async handle(request: Request, response: Response) {
     const {
-      empresas_id,
       cpf,
       nome,
       sobrenome,
@@ -23,6 +24,11 @@ class CreateUsuarioEmpresarialController {
       nivel,
       telefones
     } = request.body;
+
+    const authToken = request.headers.authorization;
+    const [, token] = authToken.split(" ");
+
+    const { empresas_id } = decode(token);
 
     const createUsuarioEmpresarialService = new CreateUsuarioEmpresarialService();
 

@@ -5,11 +5,13 @@ import AuthenticateUsuarioEmpresarialController from './controllers/Authenticate
 import CreateCidadeController from './controllers/CreateCidadeController';
 import CreateEmpresaController from './controllers/CreateEmpresaController';
 import CreateTelefoneController from './controllers/CreateTelefoneController';
+import CreateTelefoneEmpresarialController from './controllers/CreateTelefoneEmpresarialController';
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
 import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
+import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUsuarios';
 
 const routes = Router();
 
@@ -23,19 +25,33 @@ const listUsuariosEmpresariaisController = new ListUsuariosEmpresariaisControlle
 const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
 const listCidadesController = new ListCidadesController();
 const createTelefoneController = new CreateTelefoneController();
+const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
 
-routes.post('/cidades', createCidadeController.handle);
-routes.post('/empresas', createEmpresaController.handle);
-routes.post('/usuarios/empresariais', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
-routes.post('/login/empresariais', authenticateUsuarioEmpresarialController.handle);
-routes.post('/usuarios', createUsuarioController.handle);
-routes.post('/login', authenticateUsuarioController.handle);
+//// POST
+// routes.post('/cidades', createCidadeController.handle);
 routes.post('/cidades/atualiza', atualizaTabelaCidadesController.handle);
-routes.post('/telefone', createTelefoneController.handle);
 
-routes.get('/usuarios/empresariais/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
-routes.get('/usuarios/empresariais', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
-routes.get('/cidades/:uf', ensureAuthenticatedEmpresariais, listCidadesController.handle);
-routes.get('/cidades', ensureAuthenticatedEmpresariais, listCidadesController.handle);
+// CANDIDATO
+routes.post('/login', authenticateUsuarioController.handle);
+routes.post('/usuarios', createUsuarioController.handle);
+routes.post('/telefones', ensureAuthenticatedUsuarios, createTelefoneController.handle);
+
+// EMPRESARIAL
+routes.post('/empresas', createEmpresaController.handle);
+routes.post('/empresariais/login', authenticateUsuarioEmpresarialController.handle);
+routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
+routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
+
+//// GET
+
+// CANDIDATO
+routes.get('/cidades/:uf', ensureAuthenticatedUsuarios, listCidadesController.handle);
+routes.get('/cidades', ensureAuthenticatedUsuarios, listCidadesController.handle);
+
+// EMPRESARIAL
+routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+routes.get('/empresariais/cidades/:uf', ensureAuthenticatedEmpresariais, listCidadesController.handle);
+routes.get('/empresariais/cidades', ensureAuthenticatedEmpresariais, listCidadesController.handle);
 
 export default routes;

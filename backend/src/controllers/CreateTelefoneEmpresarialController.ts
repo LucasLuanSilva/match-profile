@@ -2,21 +2,19 @@ import { Request, Response } from "express";
 import CreateTelefoneService from "../services/CreateTelefoneService";
 import { decode } from 'jsonwebtoken';
 
-class CreateTelefoneController {
+class CreateTelefoneEmpresarialController {
   async handle(request: Request, response: Response) {
     const {
       ddd,
       numero,
       tipo,
-      contato,
-      usuarios_empresariais_id,
-      usuarios_empresariais_empresas_id
+      contato
     } = request.body;
 
     const authToken = request.headers.authorization;
     const [, token] = authToken.split(" ");
 
-    const { id } = decode(token);
+    const { id, empresas_id } = decode(token);
 
     const createTelefoneService = new CreateTelefoneService();
 
@@ -25,11 +23,12 @@ class CreateTelefoneController {
       numero,
       tipo,
       contato,
-      usuarios_id: id
+      usuarios_empresariais_id: id,
+      usuarios_empresariais_empresas_id: empresas_id
     });
 
     return response.json(telefone);
   }
 }
 
-export default CreateTelefoneController;
+export default CreateTelefoneEmpresarialController;
