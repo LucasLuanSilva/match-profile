@@ -12,7 +12,7 @@ const Usuario: React.FC = () => {
   const [usuarios, setUsuarios] = useState({ usuarios: Array, error: String });
 
   useEffect(async () => {
-    api.get("/usuarios/empresariais")
+    api.get("empresariais/usuarios")
       .then(res => {
         const usuarios = res.data;
 
@@ -47,6 +47,7 @@ const Usuario: React.FC = () => {
 
 const styles = StyleSheet.create({
   list: {
+    minHeight: '35%',
     maxHeight: '85%'
   }
 });

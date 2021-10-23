@@ -79,7 +79,7 @@ const CadastroUsuario: React.FC = () => {
   const setEstado = async (siglaEstado: any) => {
     setEstadoSelecionado(siglaEstado);
 
-    await api.get('cidades/' + siglaEstado).then((response) => {
+    await api.get('empresariais/cidades/' + siglaEstado).then((response) => {
       setCidades(response.data);
 
       setUsuario({ ...usuario, ['cidades_codigo_municipio']: response.data[0].codigo_municipio });
@@ -315,8 +315,10 @@ const CadastroUsuario: React.FC = () => {
     setTelefones(copiaTelefones);
   }
 
-  const editarTelefone = () => {
+  const editarTelefone = (item) => {
+    setTelefone(JSON.parse(JSON.stringify(item)));
 
+    toggleModal();
   }
 
   const Page3 = () => {
@@ -381,7 +383,7 @@ const CadastroUsuario: React.FC = () => {
               title={item.numero}
               subtitle={item.contato}
               handleRight={() => deletarTelefone(index)}
-              onPress={() => toggleModal()}
+              onPress={() => editarTelefone(item)}
             />
           )}
           ItemSeparatorComponent={() => Separator()}

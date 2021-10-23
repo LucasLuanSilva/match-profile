@@ -32,7 +32,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
   const signIn = useCallback(async ({ email, senha }) => {
     try {
-      const response = await api.post('login/empresariais', {
+      const response = await api.post('empresariais/login', {
         cpf: '',
         email,
         senha

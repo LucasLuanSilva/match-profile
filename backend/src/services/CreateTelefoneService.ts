@@ -9,7 +9,7 @@ import UsuariosRepository from "../repositories/UsuariosRepository";
 interface ITelefoneRequest {
   ddd: string;
   numero: string;
-  tipo: number;
+  tipo: number | string;
   contato: string;
   usuarios_id?: string;
   usuarios_empresariais_id?: string;
@@ -39,7 +39,7 @@ class CreateTelefoneService {
       throw new CustomError(400, "Infome um número valido.");
     }
 
-    if ([0, 1, 2].indexOf(tipo) == -1) {
+    if ([0, 1, 2].indexOf(Number(tipo)) == -1) {
       throw new CustomError(400, "Informe um tipo valido.");
     }
 
