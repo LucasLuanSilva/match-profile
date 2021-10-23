@@ -20,7 +20,8 @@ class CreateUsuarioEmpresarialController {
       complemento,
       bairro,
       situacao,
-      nivel
+      nivel,
+      telefones
     } = request.body;
 
     const createUsuarioEmpresarialService = new CreateUsuarioEmpresarialService();
@@ -41,7 +42,8 @@ class CreateUsuarioEmpresarialController {
       complemento,
       bairro,
       situacao,
-      nivel
+      nivel,
+      telefones
     });
 
     return response.json(usuarioEmpresarial);

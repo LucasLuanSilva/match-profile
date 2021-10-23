@@ -18,7 +18,8 @@ class CreateUsuarioController {
       numero,
       complemento,
       bairro,
-      situacao
+      situacao,
+      telefones
     } = request.body;
 
     const createUsuarioService = new CreateUsuarioService();
@@ -37,7 +38,8 @@ class CreateUsuarioController {
       numero,
       complemento,
       bairro,
-      situacao
+      situacao,
+      telefones
     });
 
     return response.json(usuario);

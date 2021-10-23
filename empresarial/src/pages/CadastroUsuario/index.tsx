@@ -335,9 +335,9 @@ const CadastroUsuario: React.FC = () => {
                   setTelefone({ ...telefone, ['tipo']: itemValue })
                 }
               >
-                <Picker.Item label="Residencial" value="RESIDENCIAL" />
-                <Picker.Item label="Pessoal" value="PESSOAL" />
-                <Picker.Item label="Contato" value="CONTATO" />
+                <Picker.Item label="Residencial" value="0" />
+                <Picker.Item label="Pessoal" value="1" />
+                <Picker.Item label="Contato" value="2" />
               </Picker>
             </View>
 

@@ -1,4 +1,4 @@
-import { getCustomRepository } from "typeorm";
+import { getConnection, getCustomRepository } from "typeorm";
 
 import CustomError from "../class/CustomError";
 import CidadesRepository from "../repositories/CidadesRepository";
@@ -6,6 +6,14 @@ import EmpresasRepository from "../repositories/EmpresasRepository";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
 import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariaisRepository";
 import { hash } from "bcryptjs";
+import TelefoneRepository from "../repositories/TelefonesRepository";
+
+interface ITelefoneRequest {
+  ddd: string;
+  numero: string;
+  tipo: number;
+  contato: string;
+}
 
 interface IUsuarioEmpresarialRequest {
   empresas_id: string;
@@ -24,6 +32,7 @@ interface IUsuarioEmpresarialRequest {
   bairro: string;
   situacao: Number;
   nivel: Number;
+  telefones?: Array<ITelefoneRequest>
 }
 
 class CreateUsuarioEmpresarialService {
@@ -43,7 +52,8 @@ class CreateUsuarioEmpresarialService {
     complemento,
     bairro,
     situacao,
-    nivel
+    nivel,
+    telefones
   }: IUsuarioEmpresarialRequest) {
     const usuariosEmpresariaisRepository = getCustomRepository(UsuariosEmpresariaisRepository);
     const empresasRepository = getCustomRepository(EmpresasRepository);
@@ -102,7 +112,38 @@ class CreateUsuarioEmpresarialService {
       nivel
     });
 
-    await usuariosEmpresariaisRepository.save(usuarioEmpresarial);
+    const telefonesRepository = getCustomRepository(TelefoneRepository);
+
+    for (var i in telefones) {
+      if (!telefones[i].ddd || telefones[i].ddd.length != 2) {
+        throw new CustomError(400, "Informe um DDD valido.");
+      }
+
+      if (!telefones[i].numero || telefones[i].numero.length != 8) {
+        throw new CustomError(400, "Infome um número valido.");
+      }
+
+      if ([0, 1, 2].indexOf(telefones[i].tipo) == -1) {
+        throw new CustomError(400, "Informe um tipo valido.");
+      }
+    }
+
+    await getConnection().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(usuarioEmpresarial);
+
+      telefones?.map(async ({ ddd, numero, tipo, contato }) => {
+        const telefone = telefonesRepository.create({
+          ddd,
+          numero,
+          tipo,
+          contato,
+          usuarios_empresariais_id: usuarioEmpresarial.id,
+          usuarios_empresariais_empresas_id: empresas_id
+        });
+
+        await transactionalEntityManager.save(telefone);
+      })
+    });
 
     return usuarioEmpresarial;
   }

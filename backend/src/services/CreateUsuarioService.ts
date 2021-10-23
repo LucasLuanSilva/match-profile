@@ -1,10 +1,18 @@
-import { getCustomRepository } from "typeorm";
+import { getConnection, getCustomRepository } from "typeorm";
 
 import CustomError from "../class/CustomError";
 import CidadesRepository from "../repositories/CidadesRepository";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
 import UsuariosRepository from "../repositories/UsuariosRepository";
 import { hash } from "bcryptjs";
+import TelefoneRepository from "../repositories/TelefonesRepository";
+
+interface ITelefoneRequest {
+  ddd: string;
+  numero: string;
+  tipo: number;
+  contato: string;
+}
 
 interface IUsuarioRequest {
   cpf: string;
@@ -21,6 +29,7 @@ interface IUsuarioRequest {
   complemento?: string;
   bairro: string;
   situacao: Number;
+  telefones?: Array<ITelefoneRequest>
 }
 
 class CreateUsuarioService {
@@ -38,7 +47,8 @@ class CreateUsuarioService {
     numero,
     complemento,
     bairro,
-    situacao
+    situacao,
+    telefones
   }: IUsuarioRequest) {
     const usuariosRepository = getCustomRepository(UsuariosRepository);
     const cidadesRepository = getCustomRepository(CidadesRepository);
@@ -88,7 +98,37 @@ class CreateUsuarioService {
       situacao
     });
 
-    await usuariosRepository.save(usuario);
+    const telefonesRepository = getCustomRepository(TelefoneRepository);
+
+    for (var i in telefones) {
+      if (!telefones[i].ddd || telefones[i].ddd.length != 2) {
+        throw new CustomError(400, "Informe um DDD valido.");
+      }
+
+      if (!telefones[i].numero || telefones[i].numero.length != 8) {
+        throw new CustomError(400, "Infome um número valido.");
+      }
+
+      if ([0, 1, 2].indexOf(telefones[i].tipo) == -1) {
+        throw new CustomError(400, "Informe um tipo valido.");
+      }
+    }
+
+    await getConnection().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(usuario);
+
+      telefones?.map(async ({ ddd, numero, tipo, contato }) => {
+        const telefone = telefonesRepository.create({
+          ddd,
+          numero,
+          tipo,
+          contato,
+          usuarios_id: usuario.id
+        });
+
+        await transactionalEntityManager.save(telefone);
+      })
+    });
 
     return usuario;
   }
