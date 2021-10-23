@@ -31,17 +31,20 @@ class CreateTelefoneService {
     const empresasRepository = getCustomRepository(EmpresasRepository);
     const usuariosRepository = getCustomRepository(UsuariosRepository);
 
-    if (!ddd || ddd.length != 2) {
+    if (!ddd || ddd.replace(/[^\d]+/g, '').length != 2) {
       throw new CustomError(400, "Informe um DDD valido.");
     }
+    ddd = ddd.replace(/[^\d]+/g, '');
 
-    if (!numero || numero.length != 8) {
+    if (!numero || (numero.replace(/[^\d]+/g, '').length != 8 && numero.replace(/[^\d]+/g, '').length != 9)) {
       throw new CustomError(400, "Infome um número valido.");
     }
+    numero = numero.replace(/[^\d]+/g, '');
 
     if ([0, 1, 2].indexOf(Number(tipo)) == -1) {
       throw new CustomError(400, "Informe um tipo valido.");
     }
+    tipo = Number(tipo);
 
     if (usuarios_empresariais_id) {
       usuarios_id = undefined;
