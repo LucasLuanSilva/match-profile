@@ -10,15 +10,22 @@ const Usuario: React.FC = () => {
 
   const navigation = useNavigation();
   const [usuarios, setUsuarios] = useState({ usuarios: Array, error: String });
+  const [load, setLoad] = useState(true)
 
-  useEffect(async () => {
-    api.get("empresariais/usuarios")
+  const listaUsuarios = async () => {
+    await api.get("empresariais/usuarios")
       .then(res => {
         const usuarios = res.data;
 
         setUsuarios(usuarios)
       });
-  }, []);
+  };
+
+  useEffect(async () => {
+    await listaUsuarios();
+
+    navigation.addListener('focus', () => setLoad(!load))
+  }, [load, navigation])
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
@@ -47,7 +54,7 @@ const Usuario: React.FC = () => {
 
 const styles = StyleSheet.create({
   list: {
-    minHeight: '35%',
+    minHeight: '85%',
     maxHeight: '85%'
   }
 });

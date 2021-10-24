@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { Container } from './styles';
@@ -32,7 +32,7 @@ const CadastroUsuario: React.FC = () => {
     rg: '',
     senha: '',
     confirmarSenha: '',
-    estado_civil: '',
+    estado_civil: 0,
     cep: '',
     cidades_codigo_municipio: '',
     logradouro: '',
@@ -71,24 +71,28 @@ const CadastroUsuario: React.FC = () => {
 
   const [telefone, setTelefone] = useState({
     id: 0,
+    ddd: '',
     numero: '',
-    tipo: '',
+    tipo: 0,
     contato: ''
   });
 
   const setEstado = async (siglaEstado: any) => {
     setEstadoSelecionado(siglaEstado);
 
-    await api.get('empresariais/cidades/' + siglaEstado).then((response) => {
+    await api.get('cidades/' + siglaEstado).then((response) => {
       setCidades(response.data);
 
       setUsuario({ ...usuario, ['cidades_codigo_municipio']: response.data[0].codigo_municipio });
     }).catch((error) => {
-      Alert.alert(error.response.data.error);
+      Alert.alert(error.response.data.message);
     });
   }
 
   const consultaCep = async (cepBusca: string) => {
+    if (cepBusca.length < 8)
+      return;
+
     const {
       cep,
       logradouro,
@@ -111,14 +115,17 @@ const CadastroUsuario: React.FC = () => {
     }
   };
 
-  const register = async () => {
-    console.log(usuario);
-    // await api.post('usuarios', usuario).then((response) => {
-    //   Alert.alert("Cadastro efetuado com sucesso");
-    //   navigation.navigate('Login');
-    // }).catch((error) => {
-    //   Alert.alert(error.response.data.error);
-    // });
+  const registrarUsuario = async () => {
+    if (usuario.senha != usuario.confirmarSenha) {
+      return Alert.alert("As senha estão diferentes !");
+    }
+
+    await api.post('empresariais/usuarios', { ...usuario, telefones }).then((response) => {
+      Alert.alert("Cadastro realizado com sucesso !");
+      navigation.navigate('Usuario');
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
   }
 
   useEffect(() => {
@@ -127,7 +134,7 @@ const CadastroUsuario: React.FC = () => {
 
   const Page1 = () => {
     return (
-      <View>
+      <KeyboardAvoidingView behavior="position" enabled>
         <Text style={styles.label}>Nome</Text>
         <TextInput placeholder="Informe seu nome"
           style={styles.input}
@@ -188,13 +195,13 @@ const CadastroUsuario: React.FC = () => {
             Próximo
           </Button>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
   const Page2 = () => {
     return (
-      <View>
+      <KeyboardAvoidingView behavior="position" enabled>
         <Text style={styles.label}>Estado</Text>
         <View style={styles.selectPicker}>
           <Picker
@@ -274,7 +281,7 @@ const CadastroUsuario: React.FC = () => {
             Próximo
           </Button>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -287,21 +294,34 @@ const CadastroUsuario: React.FC = () => {
   };
 
   const incluirTelefone = () => {
-    const { numero } = telefone;
+    const { id, ddd, numero } = telefone;
 
-    if (numero.replace(/[^\d]+/g, '').length < 10) {
-      return alert("Informe um número valido !");
+    if (ddd.replace(/[^\d]+/g, '').length != 2) {
+      return Alert.alert("Informe um número valido !");
     }
 
-    telefone.id = telefones.length;
+    if (
+      numero.replace(/[^\d]+/g, '').length != 8 &&
+      numero.replace(/[^\d]+/g, '').length != 9
+    ) {
+      return Alert.alert("Informe um número valido !");
+    }
 
-    setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
+    if (telefone.id == 0) {
+      telefone.id = telefones.length;
+
+      setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
+    } else {
+      const idx = telefones.findIndex(tel => tel.id == id);
+      telefones[idx] = JSON.parse(JSON.stringify(telefone));
+    }
 
     setTelefone({
       ...telefone,
       ['id']: 0,
+      ['ddd']: '',
       ['numero']: '',
-      ['tipo']: '',
+      ['tipo']: 0,
       ['contato']: ''
     });
 
@@ -321,9 +341,34 @@ const CadastroUsuario: React.FC = () => {
     toggleModal();
   }
 
+  const cancelarTelefone = () => {
+    setTelefone({
+      ...telefone,
+      ['id']: 0,
+      ['ddd']: '',
+      ['numero']: '',
+      ['tipo']: 0,
+      ['contato']: ''
+    });
+
+    toggleModal();
+  }
+
+  const formataTelefone = (ddd: String, numero: String) => {
+    let telefone = '(' + ddd + ') ';
+
+    if (numero.length > 8) {
+      telefone += numero.substring(0, 5) + '-' + numero.substring(5);
+    } else {
+      telefone += numero.substring(0, 4) + '-' + numero.substring(4);
+    }
+
+    return telefone;
+  }
+
   const Page3 = () => {
     return (
-      <View>
+      <KeyboardAvoidingView behavior="position" enabled>
         <Modal
           isVisible={isModalVisible}
           onBackdropPress={() => toggleModal()}
@@ -343,14 +388,25 @@ const CadastroUsuario: React.FC = () => {
               </Picker>
             </View>
 
+            <Text style={styles.label}>DDD</Text>
+            <TextInputMask placeholder="DDD"
+              style={styles.input}
+              value={telefone.ddd}
+              onChangeText={(formatted, extracted) => {
+                setTelefone({ ...telefone, ['ddd']: extracted });
+              }}
+              mask={"[00]"}
+              keyboardType='numeric'
+            />
+
             <Text style={styles.label}>Número</Text>
             <TextInputMask placeholder="Número"
               style={styles.input}
               value={telefone.numero}
               onChangeText={(formatted, extracted) => {
-                setTelefone({ ...telefone, ['numero']: formatted });
+                setTelefone({ ...telefone, ['numero']: extracted });
               }}
-              mask={"([00]) [0000]-[0000]"}
+              mask={"[000000000]"}
               keyboardType='numeric'
             />
 
@@ -364,7 +420,7 @@ const CadastroUsuario: React.FC = () => {
             />
 
             <View style={styles.containerButton}>
-              <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { toggleModal() }}>
+              <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { cancelarTelefone() }}>
                 Cancelar
               </Button>
               <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { incluirTelefone() }}>
@@ -373,6 +429,21 @@ const CadastroUsuario: React.FC = () => {
             </View>
           </View>
         </Modal>
+        <Text style={styles.label}>Estado Civil</Text>
+        <View style={styles.selectPicker}>
+          <Picker
+            selectedValue={usuario.estado_civil}
+            onValueChange={(itemValue) =>
+              setUsuario({ ...usuario, ['estado_civil']: itemValue })
+            }
+          >
+            <Picker.Item label="Solteiro" value="0" />
+            <Picker.Item label="Casado" value="1" />
+            <Picker.Item label="Separado" value="2" />
+            <Picker.Item label="Divorciado " value="3" />
+            <Picker.Item label="Viúvo " value="4" />
+          </Picker>
+        </View>
         <Text style={styles.label}>Telefones</Text>
         <FlatList
           style={styles.listaTelefone}
@@ -380,7 +451,7 @@ const CadastroUsuario: React.FC = () => {
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <ListItem
-              title={item.numero}
+              title={formataTelefone(item.ddd, item.numero)}
               subtitle={item.contato}
               handleRight={() => deletarTelefone(index)}
               onPress={() => editarTelefone(item)}
@@ -398,11 +469,11 @@ const CadastroUsuario: React.FC = () => {
           <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
             Voltar
           </Button>
-          <Button style={{ width: '49%' }} onPress={async () => { await register() }}>
+          <Button style={{ width: '49%' }} onPress={async () => { await registrarUsuario() }}>
             Finalizar
           </Button>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -464,12 +535,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listaTelefone: {
-    maxHeight: '70%',
-    minHeight: '70%',
+    maxHeight: '58%',
+    minHeight: '58%',
   },
   modal: {
-    minHeight: '60%',
-    maxHeight: '60%',
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
