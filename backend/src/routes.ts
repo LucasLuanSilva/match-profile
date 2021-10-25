@@ -8,6 +8,7 @@ import CreateTelefoneController from './controllers/CreateTelefoneController';
 import CreateTelefoneEmpresarialController from './controllers/CreateTelefoneEmpresarialController';
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
+import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
 import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
@@ -26,6 +27,7 @@ const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
 const listCidadesController = new ListCidadesController();
 const createTelefoneController = new CreateTelefoneController();
 const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
+const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialController();
 
 //// POST
 // routes.post('/cidades', createCidadeController.handle);
@@ -42,6 +44,7 @@ routes.post('/empresariais/login', authenticateUsuarioEmpresarialController.hand
 routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
 routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
 
+
 //// GET
 routes.get('/cidades/:uf', listCidadesController.handle);
 routes.get('/cidades', listCidadesController.handle);
@@ -52,5 +55,13 @@ routes.get('/cidades', listCidadesController.handle);
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+
+//// DELETE
+
+// CANDIDATO
+
+
+// EMPRESARIAL
+routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
 
 export default routes;

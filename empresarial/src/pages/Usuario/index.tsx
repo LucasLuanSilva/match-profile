@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
@@ -25,7 +25,17 @@ const Usuario: React.FC = () => {
     await listaUsuarios();
 
     navigation.addListener('focus', () => setLoad(!load))
-  }, [load, navigation])
+  }, [load, navigation]);
+
+  const deleteUsuario = async (id) => {
+    await api.delete('empresariais/usuarios/' + id).then((response) => {
+      Alert.alert("Usuário excluido com sucesso !");
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
+
+    setLoad(!load);
+  };
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
@@ -40,7 +50,7 @@ const Usuario: React.FC = () => {
           <ListItem
             title={item.nome}
             subtitle={item.email}
-            handleRight={() => alert('Tarefa foi excluida!')}
+            handleRight={() => deleteUsuario(item.id)}
             onPress={() => alert('Abriu informações!')}
           />
         )}
