@@ -11,6 +11,7 @@ import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpre
 import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
 import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
+import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpresarialController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
 import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUsuarios';
 
@@ -28,9 +29,10 @@ const listCidadesController = new ListCidadesController();
 const createTelefoneController = new CreateTelefoneController();
 const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
 const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialController();
+const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialController();
 
-//// POST
-// routes.post('/cidades', createCidadeController.handle);
+//// POST ////
+routes.post('/cidades', createCidadeController.handle);
 routes.post('/cidades/atualiza', atualizaTabelaCidadesController.handle);
 
 // CANDIDATO
@@ -45,7 +47,7 @@ routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsu
 routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
 
 
-//// GET
+//// GET ////
 routes.get('/cidades/:uf', listCidadesController.handle);
 routes.get('/cidades', listCidadesController.handle);
 
@@ -56,12 +58,21 @@ routes.get('/cidades', listCidadesController.handle);
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 
-//// DELETE
+//// DELETE ////
 
 // CANDIDATO
 
 
 // EMPRESARIAL
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
+
+
+//// UPDATE ////
+
+// CANDIDATO
+
+
+// EMPRESARIAL
+routes.put('/empresariais/usuarios', ensureAuthenticatedEmpresariais, updateUsuarioEmpresarialController.handle);
 
 export default routes;
