@@ -10,6 +10,8 @@ import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
 import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
+import ListTelefonesController from './controllers/ListTelefonesController';
+import ListTelefonesEmpresariaisController from './controllers/ListTelefonesEmpresariaisController';
 import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
 import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpresarialController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
@@ -30,6 +32,8 @@ const createTelefoneController = new CreateTelefoneController();
 const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
 const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialController();
 const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialController();
+const listTelefonesEmpresariaisController = new ListTelefonesEmpresariaisController();
+const listTelefonesController = new ListTelefonesController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -52,11 +56,14 @@ routes.get('/cidades/:uf', listCidadesController.handle);
 routes.get('/cidades', listCidadesController.handle);
 
 // CANDIDATO
+routes.get('/telefones/:id', ensureAuthenticatedUsuarios, listTelefonesController.handle);
 
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listTelefonesEmpresariaisController.handle);
+
 
 //// DELETE ////
 
