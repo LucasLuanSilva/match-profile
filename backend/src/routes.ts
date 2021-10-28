@@ -8,6 +8,7 @@ import CreateTelefoneController from './controllers/CreateTelefoneController';
 import CreateTelefoneEmpresarialController from './controllers/CreateTelefoneEmpresarialController';
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
+import DeleteTelefoneController from './controllers/DeleteTelefoneController';
 import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
 import ListTelefonesController from './controllers/ListTelefonesController';
@@ -34,6 +35,7 @@ const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialControlle
 const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialController();
 const listTelefonesEmpresariaisController = new ListTelefonesEmpresariaisController();
 const listTelefonesController = new ListTelefonesController();
+const deleteTelefoneController = new DeleteTelefoneController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -68,10 +70,11 @@ routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listT
 //// DELETE ////
 
 // CANDIDATO
-
+routes.delete('/telefones/:id', ensureAuthenticatedUsuarios, deleteTelefoneController.handle);
 
 // EMPRESARIAL
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
+routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
 
 
 //// UPDATE ////
