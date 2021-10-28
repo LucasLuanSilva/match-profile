@@ -1,7 +1,7 @@
 import { classToPlain } from "class-transformer";
 import { getConnection, getCustomRepository } from "typeorm";
 import CustomError from "../class/CustomError";
-import TelefoneRepository from "../repositories/TelefonesRepository";
+import TelefonesRepository from "../repositories/TelefonesRepository";
 import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariaisRepository";
 
 interface IUsuarioEmpresarialRequest {
@@ -12,7 +12,7 @@ interface IUsuarioEmpresarialRequest {
 class DeleteUsuarioEmpresarialService {
   async execute({ id, empresas_id }: IUsuarioEmpresarialRequest) {
     const usuariosEmpresariaisRepository = getCustomRepository(UsuariosEmpresariaisRepository);
-    const telefonesRepository = getCustomRepository(TelefoneRepository);
+    const telefonesRepository = getCustomRepository(TelefonesRepository);
 
     const usuario = await usuariosEmpresariaisRepository.findOne({ id, empresas_id });
 

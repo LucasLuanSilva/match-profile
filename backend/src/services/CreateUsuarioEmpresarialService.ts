@@ -6,7 +6,7 @@ import EmpresasRepository from "../repositories/EmpresasRepository";
 import { cpf as cpfValidator } from "cpf-cnpj-validator";
 import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariaisRepository";
 import { hash } from "bcryptjs";
-import TelefoneRepository from "../repositories/TelefonesRepository";
+import TelefonesRepository from "../repositories/TelefonesRepository";
 
 interface ITelefoneRequest {
   ddd: string;
@@ -148,7 +148,7 @@ class CreateUsuarioEmpresarialService {
       nivel
     });
 
-    const telefonesRepository = getCustomRepository(TelefoneRepository);
+    const telefonesRepository = getCustomRepository(TelefonesRepository);
 
     for (var i in telefones) {
       if (!telefones[i].ddd.replace(/[^\d]+/g, '') ||

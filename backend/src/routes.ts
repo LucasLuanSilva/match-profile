@@ -14,6 +14,7 @@ import ListCidadesController from './controllers/ListCidadesController';
 import ListTelefonesController from './controllers/ListTelefonesController';
 import ListTelefonesEmpresariaisController from './controllers/ListTelefonesEmpresariaisController';
 import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpresariaisController';
+import UpdateTelefoneController from './controllers/UpdateTelefoneController';
 import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpresarialController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
 import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUsuarios';
@@ -36,6 +37,7 @@ const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialControlle
 const listTelefonesEmpresariaisController = new ListTelefonesEmpresariaisController();
 const listTelefonesController = new ListTelefonesController();
 const deleteTelefoneController = new DeleteTelefoneController();
+const updateTelefoneController = new UpdateTelefoneController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -80,9 +82,10 @@ routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, de
 //// UPDATE ////
 
 // CANDIDATO
-
+routes.put('/telefones', ensureAuthenticatedUsuarios, updateTelefoneController.handle);
 
 // EMPRESARIAL
 routes.put('/empresariais/usuarios', ensureAuthenticatedEmpresariais, updateUsuarioEmpresarialController.handle);
+routes.put('/empresariais/telefones', ensureAuthenticatedEmpresariais, updateTelefoneController.handle);
 
 export default routes;

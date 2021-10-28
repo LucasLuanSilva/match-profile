@@ -1,12 +1,12 @@
 import { getCustomRepository } from "typeorm";
 import CustomError from "../class/CustomError";
-import TelefoneRepository from "../repositories/TelefonesRepository";
+import TelefonesRepository from "../repositories/TelefonesRepository";
 
 class DeleteTelefoneService {
   async execute(
     id: string
   ) {
-    const telefonesRepository = getCustomRepository(TelefoneRepository);
+    const telefonesRepository = getCustomRepository(TelefonesRepository);
 
     const telefone = await telefonesRepository.findOne({ id });
 
