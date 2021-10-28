@@ -5,7 +5,7 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import DrawerContent from '../components/DrawerContent';
 import Usuario from '../pages/Usuario';
-import CadastroUsuario from '../pages/CadastroUsuario';
+import FormularioUsuario from '../pages/FormularioUsuario';
 
 const Drawer = createDrawerNavigator();
 
@@ -43,7 +43,7 @@ const StackNavigation: React.FC = () => {
 
       <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
       <Stack.Screen name="DrawerNavigation" options={{ headerShown: false }} component={DrawerNavigation} />
-      <Stack.Screen name="Cadastro" options={{ title: 'Cadastro de Usuário' }} component={CadastroUsuario} />
+      <Stack.Screen name="Cadastro" options={{ title: 'Formulário de Usuário' }} component={FormularioUsuario} />
 
     </Stack.Navigator>
   );

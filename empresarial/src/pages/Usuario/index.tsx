@@ -37,6 +37,10 @@ const Usuario: React.FC = () => {
     setLoad(!load);
   };
 
+  const editarUsuario = (item) => {
+    navigation.navigate('Cadastro', { usuario: item })
+  }
+
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
   return (
@@ -51,7 +55,7 @@ const Usuario: React.FC = () => {
             title={item.nome}
             subtitle={item.email}
             handleRight={() => deleteUsuario(item.id)}
-            onPress={() => alert('Abriu informações!')}
+            onPress={() => editarUsuario(item)}
           />
         )}
         ItemSeparatorComponent={() => <Separator />}

@@ -1,8 +1,5 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
-padding-horizontal: 8%;`
-
 export const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
