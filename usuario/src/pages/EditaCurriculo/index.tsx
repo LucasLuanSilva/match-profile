@@ -192,7 +192,7 @@ const EditaC: React.FC =()=> {
                     onChangeText={(formatted, extracted) => {
                       setTelefone({ ...telefone, ['numero']: formatted });
                     }}
-                    mask={"([00])[0000]-[0000]"}
+                    mask={"([00])[000000000]"}
                     keyboardType='numeric'
                   />
 

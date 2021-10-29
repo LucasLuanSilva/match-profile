@@ -12,6 +12,7 @@ import Teste3 from '../pages/Testes/teste3';
 import Teste4 from '../pages/Testes/teste4';
 import Teste5 from '../pages/Testes/teste5';
 import EditaCurriculo from '../pages/EditaCurriculo';
+import MostraCurriculo from '../pages/MostraCurriculo';
 import DrawerContent from '../components/DrawerContent';
 
 export type RootDrawerParamList = {
@@ -63,6 +64,7 @@ const AuthRoutes: React.FC = () => (
       <Auth.Screen name="Cadastro" component={Cadastro} options={{ title: 'Cadastro'}}/>
       <Auth.Screen name="Cadastro2" options={{ title: 'Cadastro'}} component={Cadastro2}/>
       <Auth.Screen name="EditaCurriculo"  options={{ title: 'Preenchimento Currículo' }} component={EditaCurriculo}/>
+      <Auth.Screen name="MostraCurriculo"  options={{ title: 'Meu Currículo' }} component={MostraCurriculo}/>
 
     </Auth.Navigator>
 );
