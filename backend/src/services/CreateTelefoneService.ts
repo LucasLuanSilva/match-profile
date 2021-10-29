@@ -2,7 +2,7 @@ import { getCustomRepository } from "typeorm";
 
 import CustomError from "../class/CustomError";
 import EmpresasRepository from "../repositories/EmpresasRepository";
-import TelefoneRepository from "../repositories/TelefonesRepository";
+import TelefonesRepository from "../repositories/TelefonesRepository";
 import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariaisRepository";
 import UsuariosRepository from "../repositories/UsuariosRepository";
 
@@ -26,7 +26,7 @@ class CreateTelefoneService {
     usuarios_empresariais_id,
     usuarios_empresariais_empresas_id
   }: ITelefoneRequest) {
-    const telefonesRepository = getCustomRepository(TelefoneRepository);
+    const telefonesRepository = getCustomRepository(TelefonesRepository);
     const usuariosEmpresariaisRepository = getCustomRepository(UsuariosEmpresariaisRepository);
     const empresasRepository = getCustomRepository(EmpresasRepository);
     const usuariosRepository = getCustomRepository(UsuariosRepository);

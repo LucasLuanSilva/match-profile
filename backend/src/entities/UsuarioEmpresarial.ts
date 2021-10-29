@@ -58,7 +58,7 @@ class UsuarioEmpresarial {
   numero: string;
 
   @Column()
-  complemento: string;
+  complemento?: string;
 
   @Column()
   bairro: string;

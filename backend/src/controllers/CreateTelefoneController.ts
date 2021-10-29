@@ -5,18 +5,12 @@ import { decode } from 'jsonwebtoken';
 class CreateTelefoneController {
   async handle(request: Request, response: Response) {
     const {
+      usuarios_id,
       ddd,
       numero,
       tipo,
-      contato,
-      usuarios_empresariais_id,
-      usuarios_empresariais_empresas_id
+      contato
     } = request.body;
-
-    const authToken = request.headers.authorization;
-    const [, token] = authToken.split(" ");
-
-    const { id } = decode(token);
 
     const createTelefoneService = new CreateTelefoneService();
 
@@ -25,7 +19,7 @@ class CreateTelefoneController {
       numero,
       tipo,
       contato,
-      usuarios_id: id
+      usuarios_id
     });
 
     return response.json(telefone);

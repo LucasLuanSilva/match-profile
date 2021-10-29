@@ -5,6 +5,7 @@ import { decode } from 'jsonwebtoken';
 class CreateTelefoneEmpresarialController {
   async handle(request: Request, response: Response) {
     const {
+      usuarios_empresariais_id,
       ddd,
       numero,
       tipo,
@@ -14,7 +15,7 @@ class CreateTelefoneEmpresarialController {
     const authToken = request.headers.authorization;
     const [, token] = authToken.split(" ");
 
-    const { id, empresas_id } = decode(token);
+    const { empresas_id } = decode(token);
 
     const createTelefoneService = new CreateTelefoneService();
 
@@ -23,7 +24,7 @@ class CreateTelefoneEmpresarialController {
       numero,
       tipo,
       contato,
-      usuarios_empresariais_id: id,
+      usuarios_empresariais_id: usuarios_empresariais_id,
       usuarios_empresariais_empresas_id: empresas_id
     });
 
