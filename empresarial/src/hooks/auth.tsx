@@ -20,16 +20,6 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
 
-  useEffect(() => {
-    async function loadStorageData(): Promise<void> {
-      const [token] = await AsyncStorage.multiGet([
-        '&usuario:token',
-      ]);
-    }
-
-    loadStorageData();
-  }, [])
-
   const signIn = useCallback(async ({ email, senha }) => {
     try {
       const response = await api.post('empresariais/login', {
@@ -48,13 +38,30 @@ const AuthProvider: React.FC = ({ children }) => {
         }
         return req;
       });
+
+      const { data } = await api.get("empresariais/usuarios", { params: { logado: true } })
+
+      const { id, nome, sobrenome } = data[0];
+
+      await AsyncStorage.multiSet([
+        ['id', id],
+        ['nome', nome],
+        ['sobrenome', sobrenome],
+        ['email', email],
+      ]);
     } catch (error) {
       throw error;
     }
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.removeItem('&usuario:token');
+    await AsyncStorage.multiRemove([
+      '&usuario:token',
+      '&usuario:id',
+      '&usuario:nome',
+      '&usuario:sobrenome',
+      '&usuario:email'
+    ]);
 
     api.interceptors.request.use((req) => {
       req.headers.Authorization = null;

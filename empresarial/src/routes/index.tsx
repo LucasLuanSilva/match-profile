@@ -6,6 +6,7 @@ import Home from '../pages/Home';
 import DrawerContent from '../components/DrawerContent';
 import Usuario from '../pages/Usuario';
 import FormularioUsuario from '../pages/FormularioUsuario';
+import Configuracao from '../pages/Configuracao';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +24,7 @@ const DrawerNavigation: React.FC = () => {
 
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Usuario" options={{ title: 'Usuários' }} component={Usuario} />
+      <Drawer.Screen name="Configuracao" options={{ title: 'Configurações' }} component={Configuracao} />
 
     </Drawer.Navigator>
   );
