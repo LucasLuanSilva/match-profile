@@ -42,6 +42,18 @@ export class CreateTestesAtribuidos1635602577413 implements MigrationInterface {
             type: 'timestamp with time zone',
             isNullable: false,
             default: 'now()'
+          },
+          {
+            name: 'respondido',
+            type: 'int',
+            isNullable: false,
+            default: 0,
+            comment: '0 - Não / 1 - Sim'
+          },
+          {
+            name: 'data_respondido',
+            type: 'timestamp with time zone',
+            isNullable: true
           }
         ],
         foreignKeys: [

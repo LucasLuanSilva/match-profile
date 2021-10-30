@@ -44,6 +44,12 @@ class TesteAtribuido {
   @CreateDateColumn()
   data: Date;
 
+  @Column()
+  respondido: number;
+
+  @CreateDateColumn()
+  data_respondido: Date;
+
   constructor() {
     if (!this.id) {
       this.id = uuid();
