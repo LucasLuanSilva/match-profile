@@ -45,18 +45,6 @@ export class CreateTestes1635595501376 implements MigrationInterface {
             default: 'now()'
           },
           {
-            name: 'obrigatorio',
-            type: 'int',
-            default: 0,
-            isNullable: false,
-            comment: '0 - Não / 1 - Sim'
-          },
-          {
-            name: 'vagas_id',
-            type: 'uuid',
-            isNullable: false
-          },
-          {
             name: 'usuarios_empresariais_id',
             type: 'uuid',
             isNullable: false
@@ -69,18 +57,11 @@ export class CreateTestes1635595501376 implements MigrationInterface {
         ],
         foreignKeys: [
           {
-            name: 'FK_testes_vagas_id',
-            referencedTableName: 'vagas',
-            referencedColumnNames: ['id'],
-            columnNames: ['vagas_id']
-          },
-          {
             name: 'FK_testes_usuarios_empresariais_id',
             referencedTableName: 'usuarios_empresariais',
             referencedColumnNames: ['id', 'empresas_id'],
             columnNames: ['usuarios_empresariais_id', 'usuarios_empresariais_empresas_id']
-          },
-
+          }
         ]
       })
     )
