@@ -1,0 +1,48 @@
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { v4 as uuid } from "uuid";
+
+import Usuario from "./Usuario";
+import UsuarioEmpresarial from "./UsuarioEmpresarial";
+import Empresa from "./Empresa";
+
+@Entity('feedbacks')
+class Feedback {
+
+  @PrimaryColumn()
+  readonly id: string;
+
+  @Column()
+  nota: number;
+
+  @Column()
+  motivo: string;
+
+  @Column()
+  readonly usuarios_id: string;
+  @JoinColumn({ name: 'usuarios_id' })
+  @ManyToOne(() => Usuario)
+  usuario: Usuario;
+
+  @Column()
+  readonly usuarios_empresariais_id: string;
+  @JoinColumn({ name: 'usuarios_empresariais_id' })
+  @ManyToOne(() => UsuarioEmpresarial)
+  usuario_empresarial: UsuarioEmpresarial;
+
+  @Column()
+  readonly usuarios_empresariais_empresas_id: string;
+  @JoinColumn({ name: 'usuarios_empresariais_empresas_id' })
+  @ManyToOne(() => Empresa)
+  empresa: Empresa;
+
+  @CreateDateColumn()
+  data: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
+}
+
+export default Feedback;
