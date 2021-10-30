@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Container } from './styles';
 import { customStyles } from './styles';
 import StepIndicator from 'react-native-step-indicator';
 import { Picker } from '@react-native-picker/picker';
@@ -142,7 +141,7 @@ const FormularioUsuario: React.FC = () => {
 
     await api.put('empresariais/usuarios', usuario).then((response) => {
       Alert.alert("Usuário atualizado com sucesso !");
-      navigation.navigate('Usuario');
+      navigation.goBack();
     }).catch((error) => {
       Alert.alert(error.response.data.message);
     });
@@ -373,7 +372,7 @@ const FormularioUsuario: React.FC = () => {
       }
     } else {
       if (telefone.id == 0) {
-        telefone.id = telefones.length;
+        telefone.id = telefones.length + 1;
 
         setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
       } else {

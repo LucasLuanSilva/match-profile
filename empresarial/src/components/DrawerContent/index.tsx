@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../hooks/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {
   Container,
@@ -12,11 +13,14 @@ import {
   Footer,
   HeaderBody,
 } from './styles';
-import Login from '../../pages/Login';
 
-const DrawerContent = (
-  props: DrawerContentComponentProps,
-): React.ReactElement => {
+const DrawerContent = (props: DrawerContentComponentProps): React.ReactElement => {
+  const [usuario, setUsuario] = useState({
+    nome: '',
+    sobrenome: '',
+    email: ''
+  });
+
   const menuItems = [
     {
       label: 'Home',
@@ -37,12 +41,27 @@ const DrawerContent = (
     props.navigation.navigate("Login");
   }
 
+  useEffect(async () => {
+    const [nome, sobrenome, email] = await AsyncStorage.multiGet([
+      'nome',
+      'sobrenome',
+      'email',
+    ]);
+
+    setUsuario({
+      ...usuario,
+      ['nome']: nome[1],
+      ['sobrenome']: sobrenome[1],
+      ['email']: email[1]
+    })
+  }, [props.state])
+
   return (
     <Container>
       <Body>
         <HeaderBody>
-          <NameUser>Usuário Teste</NameUser>
-          <TitleUser>teste@gmail.com</TitleUser>
+          <NameUser>{usuario.nome + ' ' + usuario.sobrenome}</NameUser>
+          <TitleUser>{usuario.email}</TitleUser>
         </HeaderBody>
         {
           menuItems.map((item, key) => {

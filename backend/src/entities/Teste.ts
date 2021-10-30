@@ -27,15 +27,6 @@ class Teste {
   data_criacao: Date;
 
   @Column()
-  obrigatorio: number;
-
-  @Column()
-  readonly vagas_id: string;
-  @JoinColumn({ name: 'vagas_id' })
-  @ManyToOne(() => Vaga)
-  vaga: Vaga;
-
-  @Column()
   readonly usuarios_empresariais_id: string;
   @JoinColumn({ name: 'usuarios_empresariais_id' })
   @ManyToOne(() => UsuarioEmpresarial)

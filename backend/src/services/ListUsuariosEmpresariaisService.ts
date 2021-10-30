@@ -1,14 +1,23 @@
 import { classToPlain } from "class-transformer";
-import { getCustomRepository, Not } from "typeorm"
+import { getCustomRepository, Not } from "typeorm";
 import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariaisRepository";
 
 class ListUsuariosEmpresariaisService {
   async execute(id: string, idBusca?: string) {
     const usuariosEmpresariaisRepository = getCustomRepository(UsuariosEmpresariaisRepository);
 
-    const usuario = await usuariosEmpresariaisRepository.find(idBusca ? {
-      id: idBusca
-    } : { id: Not(id) });
+    let usuario = {};
+
+    if (idBusca) {
+      usuario = await usuariosEmpresariaisRepository.find({
+        where: {
+          id: idBusca
+        },
+        relations: ['cidade']
+      });
+    } else {
+      usuario = await usuariosEmpresariaisRepository.find({ id: Not(id) })
+    }
 
     return classToPlain(usuario);
   }

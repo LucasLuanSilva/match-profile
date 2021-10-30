@@ -6,6 +6,8 @@ class ListUsuariosEmpresariaisController {
   async handle(request: Request, response: Response) {
     const idBusca = request.params.id;
 
+    const { logado } = request.query;
+
     const authToken = request.headers.authorization;
     const [, token] = authToken.split(" ");
 
@@ -13,7 +15,10 @@ class ListUsuariosEmpresariaisController {
 
     const listUsuariosEmpresariaisService = new ListUsuariosEmpresariaisService();
 
-    const usuario = await listUsuariosEmpresariaisService.execute(id, idBusca);
+    const usuario = await listUsuariosEmpresariaisService.execute(
+      id,
+      logado == 'true' ? id : idBusca
+    );
 
     return response.json(usuario);
   }

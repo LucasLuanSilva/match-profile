@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   return (
     <View>
       <View style={styles.viewHome}>
-        <TouchableOpacity onPress={() => { navigation.navigate('Cadastro') }} >
+        <TouchableOpacity >
           <View style={styles.buttonHomeBlue}>
             <Text style={styles.subtitletext}>Testes</Text>
             <Image style={styles.imagens}
@@ -16,7 +16,7 @@ const Home: React.FC = () => {
         </TouchableOpacity>
         <TouchableOpacity >
           <View style={styles.buttonHomeBlue}>
-            <Text style={styles.subtitletext}>Meu Currículo</Text>
+            <Text style={styles.subtitletext}>Perfis</Text>
             <Image style={styles.imagens}
               source={require('../../images/meu_curriculo.png')} />
           </View>
@@ -30,7 +30,7 @@ const Home: React.FC = () => {
               source={require('../../images/vagas.png')} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() => { navigation.navigate('Configuracao') }} >
           <View style={styles.buttonHomeBlue}>
             <Text style={styles.subtitletext}>Configurações</Text>
             <Image style={styles.imagens}

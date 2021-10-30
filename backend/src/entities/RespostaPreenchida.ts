@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import Questao from "./Questao";
 import Resposta from "./Resposta";
 import TesteAtribuido from "./TesteAtribuido";
@@ -12,7 +12,7 @@ class RespostaPreenchida {
   @ManyToOne(() => Questao)
   questao: Questao
 
-  @Column()
+  @PrimaryColumn()
   readonly respostas_id: string;
   @JoinColumn({ name: 'respostas_id' })
   @ManyToOne(() => Resposta)
