@@ -9,6 +9,7 @@ import CreateTelefoneEmpresarialController from './controllers/CreateTelefoneEmp
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
 import CreateCurriculoController from './controllers/CreateCurriculoController';
+import CreateCursoController from './controllers/CreateCursoController';
 import DeleteTelefoneController from './controllers/DeleteTelefoneController';
 import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
@@ -28,6 +29,7 @@ const createUsuarioEmpresarialController = new CreateUsuarioEmpresarialControlle
 const authenticateUsuarioEmpresarialController = new AuthenticateUsuarioEmpresarialController();
 const createUsuarioController = new CreateUsuarioController();
 const createCurriculoController = new CreateCurriculoController();
+const createCursoController = new CreateCursoController();
 const authenticateUsuarioController = new AuthenticateUsuarioController();
 const listUsuariosEmpresariaisController = new ListUsuariosEmpresariaisController();
 const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
@@ -50,6 +52,7 @@ routes.post('/login', authenticateUsuarioController.handle);
 routes.post('/usuarios', createUsuarioController.handle);
 routes.post('/telefones', ensureAuthenticatedUsuarios, createTelefoneController.handle);
 routes.post('/curriculos', ensureAuthenticatedUsuarios, createCurriculoController.handle);
+routes.post('/cursos', ensureAuthenticatedUsuarios, createCursoController.handle);
 
 // EMPRESARIAL
 routes.post('/empresas', createEmpresaController.handle);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Button from '../../components/Button';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import TextInputMask from 'react-native-text-input-mask';
 import { customStyles } from './styles';
 import { Picker } from '@react-native-picker/picker'
@@ -17,15 +17,8 @@ import ListItem from '../../components/ListItem'
 
 const EditaC: React.FC =()=> {
     const navigation = useNavigation();
-
-    const [curriculo, setCurriculo] = useState({
-        graduacao:"",
-        estado: "",
-        curso: "",
-        rg: "",
-        senha: "",
-        data:""
-    });
+    const route = useRoute();
+    const dados = route.params.dados;
 
     const [experiencia, setExperiencia] = useState({
       empresa:'',
@@ -99,12 +92,6 @@ const EditaC: React.FC =()=> {
 
     const toggleModalExp = () => {
       setModalVisibleExp(!isModalVisibleExp);
-    };
-
-    const [isModalVisibleCurso, setModalVisibleCurso] = useState(false);
-
-    const toggleModalCurso = () => {
-      setModalVisibleCurso(!isModalVisibleCurso);
     };
 
     const [telefones, setTelefones] = useState([]);
@@ -338,6 +325,78 @@ const EditaC: React.FC =()=> {
       );
     }
 
+    
+    const [isModalVisibleCurso, setModalVisibleCurso] = useState(false);
+
+    const toggleModalCurso = () => {
+      setModalVisibleCurso(!isModalVisibleCurso);
+    };
+
+    
+    const [curso, setCurso] = useState({
+      id:"",
+      nome: "",
+      instituicao: "",
+      data_inicio: "",
+      data_termino: "",
+      curriculos_id: ""
+    });
+
+    const incluirCurso = async () => {
+      if(curso.id == ''){
+        await api.post('cursos', curso).then(
+          (response) => {
+            curso.id = response.data.id;
+            
+            // listaTelefones()
+            Alert.alert("Curso salvo com sucesso");
+            toggleModalCurso();
+            curso.id = ''
+            curso.nome = ''
+            curso.instituicao = ''
+            curso.data_inicio = ''
+            curso.data_termino = ''
+            curso.curriculos_id = ''
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+          }
+        );
+      }else{
+        await api.put('cursos', curso).then(
+          (response) => {
+            Alert.alert("Curso salvo com sucesso");
+            toggleModalCurso();
+            curso.id = ''
+            curso.nome = ''
+            curso.instituicao = ''
+            curso.data_inicio = ''
+            curso.data_termino = ''
+            curso.curriculos_id = ''
+            // listaTelefones()
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+            console.log(error)
+          }
+        );
+      }
+    }
+
+    const cursoDataIni = (date) => {
+      setCurso({ ...curso, ['data_inicio']: dayjs(date).format('DD/MM/YYYY') });
+      hideDatePicker();
+    };
+
+    const cursoDataFin = (date) => {
+      setCurso({ ...curso, ['data_termino']: dayjs(date).format('DD/MM/YYYY') });
+      hideDatePicker();
+    };
+
     const Page3 = () => {
       return (
         <View>
@@ -346,22 +405,51 @@ const EditaC: React.FC =()=> {
               <Text style={styles.label}>Curso</Text>
               <TextInput placeholder="Informe seu curso"
                           style={styles.input}
-                          value={curriculo.curso}
-                          onChangeText={field('curso')} />
-              <View style={{flexDirection:'row'}}>
-                <TouchableOpacity onPress={showDatePicker}>
-                  <Text>Inicio</Text>
-                </TouchableOpacity>
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleConfirm}
-                  onCancel={hideDatePicker}
-                />
+                          value={curso.nome}
+                          onChangeText={field('nome')} />
+              <Text style={styles.label}>Instituição</Text>
+              <TextInput placeholder="Informe a instituição"
+                          style={styles.input}
+                          value={curso.instituicao}
+                          onChangeText={field('instituicao')} />
+              <View style={styles.inputDates}>
+                <View>
+                  <Text style={styles.label}>Inicio</Text>
+                  <View style={styles.inputeDate}>
+                    <TouchableOpacity onPress={showDatePicker}>
+                      <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={cursoDataIni}
+                        onCancel={hideDatePicker}
+                      />
+                      <Input icon="calendar"
+                        value={curso.data_inicio}/>
+                    </TouchableOpacity>
+                  </View>    
+                </View>
+                <View>
+                  <Text style={styles.label}>Fim</Text>
+                  <View style={styles.inputeDate}>
+                    <TouchableOpacity onPress={showDatePicker}>
+                      <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={cursoDataFin}
+                        onCancel={hideDatePicker}
+                      />
+                      <Input icon="calendar"
+                        value={curso.data_termino}/>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-              <View style={styles.viewButton}>
-                <Button onPress={()=>{toggleModalCurso()}}>
-                    Salvar
+              <View style={styles.containerButton}>
+                <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { toggleModalCurso() }}>
+                  Cancelar
+                </Button>
+                <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { incluirCurso() }}>
+                  Gravar
                 </Button>
               </View>
             </View>

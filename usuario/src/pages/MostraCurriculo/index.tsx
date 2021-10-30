@@ -9,13 +9,14 @@ const MostraCurriculo: React.FC =()=> {
     const route = useRoute();
     const dados = route.params.id;
 
-    function handleItemClick({index}) {
-        // console.log(index);
-      };
+    function handleItemClick({index}) {    
+    };
     
     function editaCurriculo(){
-      navigation.navigate('EditaCurriculo')
+      navigation.navigate('EditaCurriculo', {dados})
     }
+
+    // const [curriculoId, setCurriculoId] = useState(0);    
 
     useEffect(()=>{
       console.log(dados)
@@ -63,12 +64,11 @@ const MostraCurriculo: React.FC =()=> {
             subCategory: [{id: '22', name: 'Sub Cat 22'}],
         },
         
-      ];
+    ];
 
     return(
         <View>
             <Text></Text>
-
             <ExpandableListView
                 data={CONTENT} // required
                 itemLabelStyle={styles.labelExpandable}
@@ -76,8 +76,6 @@ const MostraCurriculo: React.FC =()=> {
                 renderInnerItemSeparator={true} // true or false, render separator between inner items
                 renderItemSeparator={true} // true or false, render separator between Items
                 itemContainerStyle={styles.labelExpandable} // add your styles to all item container of your list
-                chevronColor="white" // color of the default indicator
-                // innerItemContainerStyle={styles.innerContainer} // add your styles to all inner item containers of your list
                 itemImageIndicatorStyle={{}} // add your styles to the image indicator of your list
                 animated={true}
                 onItemClick={handleItemClick}
