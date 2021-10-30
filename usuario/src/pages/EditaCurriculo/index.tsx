@@ -35,9 +35,10 @@ const EditaC: React.FC =()=> {
     });
 
     
-    useEffect(() => {
+    useEffect(async()=>{
       setExperiencia({ ...experiencia, ['dataIni']: dayjs().format('DD/MM/YYYY') });
       setExperiencia({ ...experiencia, ['dataFin']: dayjs().format('DD/MM/YYYY') });
+      await listaTelefones()
     }, []);
 
     const [escolaridade, setEscolaridade] = useState(1)
@@ -109,17 +110,29 @@ const EditaC: React.FC =()=> {
     const [telefones, setTelefones] = useState([]);
 
     const [telefone, setTelefone] = useState({
+      id:'',
       ddd: '',
       numero: '',
       tipo: 0,
       contato: ''
     });
 
-    const deletarTelefone = (index) => {
+    const deletarTelefone = async(index, id) => {
       var copiaTelefones = JSON.parse(JSON.stringify(telefones));
       copiaTelefones.splice(index, 1);
   
       setTelefones(copiaTelefones);
+      await api.delete('telefones/'+id).then(
+        (response) => {
+          Alert.alert("Telefone deletado com sucesso");
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+          console.log(error)
+        }
+      );
     }
 
     const backPosition = () => {
@@ -143,20 +156,57 @@ const EditaC: React.FC =()=> {
     const incluirTelefone = async() => {
       const { numero } = telefone;
       let fone = numero.replace(/[^a-z0-9]/gi,'')
-      console.log(fone)
       telefone.ddd = fone.substr(0,2);
       telefone.numero = fone.substr(2);
 
       if (telefone.numero.length < 8) {
         return alert("Informe um número valido !");
       }
-  
-      setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
-      console.log(telefone)
-      await api.post('telefones', telefone).then(
+      if(telefone.id == ''){
+        await api.post('telefones', telefone).then(
+          (response) => {
+            telefone.id = response.data.id;
+            // setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
+            listaTelefones()
+            Alert.alert("Telefone salvo com sucesso");
+            toggleModalTel();
+            telefone.id = ''
+            telefone.ddd = ''
+            telefone.numero = ''
+            telefone.tipo = 0
+            telefone.contato = ''
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+          }
+        );
+      }else{
+        await api.put('telefones', telefone).then(
+          (response) => {
+            Alert.alert("Telefone salvo com sucesso");
+            toggleModalTel();
+            telefone.id = ''
+            telefone.ddd = ''
+            telefone.numero = ''
+            telefone.tipo = 0
+            telefone.contato = ''
+            listaTelefones()
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+            console.log(error)
+          }
+        );
+      }  
+    }
+    const listaTelefones = async() =>{
+      await api.get('telefones').then(
         (response) => {
-          Alert.alert("Telefone efetuado com sucesso");
-          toggleModalTel();
+          setTelefones(response.data);
         }
       )
       .catch(
@@ -165,6 +215,12 @@ const EditaC: React.FC =()=> {
           console.log(error)
         }
       );  
+    }
+
+    const editarTelefone=(tel)=>{
+      tel.numero = tel.ddd + tel.numero
+      setTelefone(tel)
+      toggleModalTel();
     }
 
     const Page1 = () => {
@@ -223,8 +279,8 @@ const EditaC: React.FC =()=> {
                 <ListItem
                   title={formataTelefone(item.ddd, item.numero)}
                   subtitle={item.contato}
-                  handleRight={() => deletarTelefone(index)}
-                  onPress={() => toggleModalTel()}
+                  handleRight={() => deletarTelefone(index, item.id)}
+                  onPress={() => editarTelefone(item)}
                 />
               )}
               ItemSeparatorComponent={() => Separator()}

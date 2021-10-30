@@ -1,9 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import api from '../../services/api';
 
 const Home: React.FC =()=> {
     const navigation = useNavigation();
+
+    const curriculo = async() =>{
+        let id = '';
+        await api.post('curriculos').then(
+            (response) => {
+                id = response.data.id;
+            }
+          )
+          .catch(
+            (error) => {
+              Alert.alert(error.response.data.error);
+            }
+          );
+        navigation.navigate('MostraCurriculo', {id})
+    }
     return(
         <View>
             <View style={styles.buttonHome}>
@@ -14,7 +30,7 @@ const Home: React.FC =()=> {
                           source={require('../../images/testes.png')}/>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{navigation.navigate('MostraCurriculo')}} >
+                <TouchableOpacity onPress={()=>{curriculo()}} >
                   <View style={styles.buttonHomeBlue}>
                       <Text style={styles.subtitletext}>Meu Currículo</Text>
                       <Image style={styles.imagens}

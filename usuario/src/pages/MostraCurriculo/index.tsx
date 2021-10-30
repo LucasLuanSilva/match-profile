@@ -1,19 +1,25 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, useE } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import {ExpandableListView} from 'react-native-expandable-listview';
 import Button from '../../components/Button';
 
 const MostraCurriculo: React.FC =()=> {
     const navigation = useNavigation();
+    const route = useRoute();
+    const dados = route.params.id;
 
     function handleItemClick({index}) {
-        console.log(index);
+        // console.log(index);
       };
     
-      function editaCurriculo(){
-        navigation.navigate('EditaCurriculo')
-      }
+    function editaCurriculo(){
+      navigation.navigate('EditaCurriculo')
+    }
+
+    useEffect(()=>{
+      console.log(dados)
+    }, []);
 
     const CONTENT = [
         {

@@ -8,6 +8,7 @@ import CreateTelefoneController from './controllers/CreateTelefoneController';
 import CreateTelefoneEmpresarialController from './controllers/CreateTelefoneEmpresarialController';
 import CreateUsuarioController from './controllers/CreateUsuarioController';
 import CreateUsuarioEmpresarialController from './controllers/CreateUsuarioEmpresarialController';
+import CreateCurriculoController from './controllers/CreateCurriculoController';
 import DeleteTelefoneController from './controllers/DeleteTelefoneController';
 import DeleteUsuarioEmpresarialController from './controllers/DeleteUsuarioEmpresarialController';
 import ListCidadesController from './controllers/ListCidadesController';
@@ -26,6 +27,7 @@ const createEmpresaController = new CreateEmpresaController();
 const createUsuarioEmpresarialController = new CreateUsuarioEmpresarialController();
 const authenticateUsuarioEmpresarialController = new AuthenticateUsuarioEmpresarialController();
 const createUsuarioController = new CreateUsuarioController();
+const createCurriculoController = new CreateCurriculoController();
 const authenticateUsuarioController = new AuthenticateUsuarioController();
 const listUsuariosEmpresariaisController = new ListUsuariosEmpresariaisController();
 const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
@@ -47,6 +49,7 @@ routes.post('/cidades/atualiza', atualizaTabelaCidadesController.handle);
 routes.post('/login', authenticateUsuarioController.handle);
 routes.post('/usuarios', createUsuarioController.handle);
 routes.post('/telefones', ensureAuthenticatedUsuarios, createTelefoneController.handle);
+routes.post('/curriculos', ensureAuthenticatedUsuarios, createCurriculoController.handle);
 
 // EMPRESARIAL
 routes.post('/empresas', createEmpresaController.handle);
@@ -60,7 +63,8 @@ routes.get('/cidades/:uf', listCidadesController.handle);
 routes.get('/cidades', listCidadesController.handle);
 
 // CANDIDATO
-routes.get('/telefones/:id', ensureAuthenticatedUsuarios, listTelefonesController.handle);
+// routes.get('/telefones/:id', ensureAuthenticatedUsuarios, listTelefonesController.handle);
+routes.get('/telefones', ensureAuthenticatedUsuarios, listTelefonesController.handle);
 
 
 // EMPRESARIAL
