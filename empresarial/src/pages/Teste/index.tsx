@@ -28,7 +28,7 @@ const Teste: React.FC = () => {
   }, [load, navigation]);
 
   const editarUsuario = (item) => {
-    navigation.navigate('FormularioTeste', { teste: item })
+    navigation.navigate('FormularioTeste', { teste: item, visualizar: true })
   }
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
@@ -50,7 +50,7 @@ const Teste: React.FC = () => {
         ItemSeparatorComponent={() => <Separator />}
       />
 
-      <FloatButton icon={'plus'} onPress={() => navigation.navigate('FormularioTeste')} />
+      <FloatButton icon={'plus'} onPress={() => navigation.navigate('FormularioTeste', { visualizar: false })} />
     </Container>
   );
 }

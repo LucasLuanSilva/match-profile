@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
 import Button from '../../components/Button';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -14,12 +14,19 @@ const FormularioTeste: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
-  const [edita] = useState(typeof route.params != 'undefined');
+  const [edita] = useState(typeof route.params.teste != 'undefined');
 
-  const [teste, setTeste] = useState({
-    titulo: '',
-    descricao: ''
-  });
+  const [visualizar, setVisualizar] = useState(route.params.visualizar)
+
+  const [teste, setTeste] = useState(
+    edita ?
+      route.params.teste
+      :
+      {
+        titulo: '',
+        descricao: ''
+      }
+  );
 
   const [questoes, setQuestoes] = useState([{ pergunta: '', respostas: [] }]);
   const [indiceResposta, setIndiceResposta] = useState(-1);
@@ -52,20 +59,22 @@ const FormularioTeste: React.FC = () => {
   };
 
   const nextPosition = () => {
-    if (teste.titulo.trim().length == 0) {
-      return Alert.alert('Informe um título valido!');
-    }
-
-    if ((currentPosition + 1) > (questoes.length - 1)) {
-      if (questoes[currentPosition].pergunta.trim().length == 0) {
-        return Alert.alert('Informe uma pergunta valida!');
+    if (visualizar == false) {
+      if (teste.titulo.trim().length == 0) {
+        return Alert.alert('Informe um título valido!');
       }
 
-      if (questoes[currentPosition].respostas.length == 0) {
-        return Alert.alert('Informe ao menos uma resposta!');
-      }
+      if ((currentPosition + 1) > (questoes.length - 1)) {
+        if (questoes[currentPosition].pergunta.trim().length == 0) {
+          return Alert.alert('Informe uma pergunta valida!');
+        }
 
-      questoes.push({ pergunta: '', respostas: [] });
+        if (questoes[currentPosition].respostas.length == 0) {
+          return Alert.alert('Informe ao menos uma resposta!');
+        }
+
+        questoes.push({ pergunta: '', respostas: [] });
+      }
     }
 
     setPosition(currentPosition + 1);
@@ -103,6 +112,9 @@ const FormularioTeste: React.FC = () => {
   };
 
   const deletarResposta = async (index) => {
+    if (visualizar)
+      return;
+
     var copiaRespostas = JSON.parse(JSON.stringify(questoes[currentPosition].respostas));
     copiaRespostas.splice(index, 1);
 
@@ -116,6 +128,9 @@ const FormularioTeste: React.FC = () => {
   }
 
   const editarResposta = (indice) => {
+    if (visualizar)
+      return;
+
     setIndiceResposta(indice);
 
     setResposta(JSON.parse(JSON.stringify(questoes[currentPosition].respostas[indice])));
@@ -168,6 +183,27 @@ const FormularioTeste: React.FC = () => {
     setQuestoes(copiaQuestoes);
   }
 
+  useEffect(async () => {
+    if (visualizar) {
+      styles.listaRespostas = {
+        maxHeight: '62%',
+        minHeight: '62%'
+      }
+
+      await api.get("empresariais/questoes", {
+        params: {
+          testes_id: teste.id,
+          testes_versao: teste.versao
+        }
+      })
+        .then(res => {
+          const questoes = res.data;
+
+          setQuestoes(questoes)
+        });
+    }
+  }, [])
+
   const Page1 = () => {
     return (
       <ScrollView>
@@ -179,6 +215,7 @@ const FormularioTeste: React.FC = () => {
             style={styles.input}
             value={teste.titulo}
             onChangeText={fieldTeste('titulo')}
+            editable={!visualizar}
           />
 
           <Text style={styles.label}>Descrição</Text>
@@ -188,6 +225,7 @@ const FormularioTeste: React.FC = () => {
             style={styles.inputDescricao}
             value={teste.descricao}
             onChangeText={fieldTeste('descricao')}
+            editable={!visualizar}
           />
 
           <View style={styles.containerButton}>
@@ -255,6 +293,7 @@ const FormularioTeste: React.FC = () => {
           style={styles.input}
           value={questoes[currentPosition].pergunta}
           onChangeText={fieldQuestao('pergunta')}
+          editable={!visualizar}
         />
 
         <Text style={styles.label}>Respostas</Text>
@@ -273,37 +312,54 @@ const FormularioTeste: React.FC = () => {
           ItemSeparatorComponent={() => Separator()}
         />
 
-        <View style={styles.containerButton}>
-          <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModal() }}>
-            Incluir Resposta
-          </Button>
-        </View>
-
-        <View style={styles.containerButton}>
-          <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
-            Voltar
-          </Button>
-          <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
-            Proxima
-          </Button>
-        </View>
+        {
+          visualizar ?
+            null
+            :
+            <View style={styles.containerButton}>
+              <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModal() }}>
+                Incluir Resposta
+              </Button>
+            </View>
+        }
 
         {
-          currentPosition > 0 ?
+          (visualizar == true && (questoes.length - 1) == currentPosition) ?
             <View style={styles.containerButton}>
-              <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={async () => { removerQuestao() }}>
-                Remover Questão
-              </Button>
-              <Button style={{ width: '49%' }} onPress={async () => { await registrarTeste() }}>
-                Finalizar
+              <Button onPress={() => { backPosition() }}>
+                Voltar
               </Button>
             </View>
             :
             <View style={styles.containerButton}>
-              <Button onPress={async () => { await registrarTeste() }}>
-                Finalizar
+              <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+                Voltar
+              </Button>
+              <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
+                Proxima
               </Button>
             </View>
+        }
+
+        {
+          visualizar ?
+            null
+            :
+            currentPosition > 0 ?
+              <View style={styles.containerButton}>
+                <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={async () => { removerQuestao() }}>
+                  Remover Questão
+                </Button>
+                <Button style={{ width: '49%' }} onPress={async () => { await registrarTeste() }}>
+                  Finalizar
+                </Button>
+              </View>
+              :
+              <View style={styles.containerButton}>
+                <Button onPress={async () => { await registrarTeste() }}>
+                  Finalizar
+                </Button>
+              </View>
         }
 
       </KeyboardAvoidingView>
