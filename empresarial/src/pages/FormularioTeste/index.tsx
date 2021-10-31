@@ -246,7 +246,7 @@ const FormularioTeste: React.FC = () => {
           </View>
 
           {
-            visualizar ?
+            visualizar && teste.tipo != 1 ?
               <View style={styles.containerButton}>
                 <Button onPress={async () => { setVisualizar(false) }}>
                   Editar Informações
@@ -386,7 +386,7 @@ const FormularioTeste: React.FC = () => {
         }
 
         {
-          visualizar ?
+          visualizar && teste.tipo != 1 ?
             <View style={styles.containerButton}>
               <Button onPress={async () => { setVisualizar(false) }}>
                 Editar Informações
@@ -399,6 +399,7 @@ const FormularioTeste: React.FC = () => {
       </KeyboardAvoidingView>
     );
   }
+  console.log(teste)
 
   const CurrentPage = () => {
     if (currentPosition > -1) {

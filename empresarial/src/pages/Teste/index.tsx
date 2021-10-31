@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
@@ -32,6 +32,9 @@ const Teste: React.FC = () => {
   }
 
   const excluirTeste = async (item) => {
+    if (item.tipo == 1)
+      return;
+
     await api.delete('empresariais/testes/' + item.id + '/' + item.versao).then((response) => {
       Alert.alert("Exclusão realizada com sucesso !");
 
@@ -45,22 +48,24 @@ const Teste: React.FC = () => {
 
   return (
     <Container>
-      <TouchableOpacity onPress={() => {
-
-      }} style={styles.buttonTesteDISC}>
-        <Text>Teste D.I.S.C</Text>
-      </TouchableOpacity>
-
       <FlatList
         style={styles.list}
         data={testes}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <ListItem
-            title={item.titulo}
-            handleRight={() => { excluirTeste(item) }}
-            onPress={() => visualizarTeste(item)}
-          />
+          item.tipo == 1 ?
+            <ListItem
+              title={item.titulo}
+              onPress={() => visualizarTeste(item)}
+              containerStyle={styles.buttonTesteDISC}
+              titleStyle={styles.labelTesteDISC}
+            />
+            :
+            <ListItem
+              title={item.titulo}
+              handleRight={() => { excluirTeste(item) }}
+              onPress={() => visualizarTeste(item)}
+            />
         )}
         ItemSeparatorComponent={() => <Separator />}
       />
@@ -76,7 +81,15 @@ const styles = StyleSheet.create({
     maxHeight: '85%'
   },
   buttonTesteDISC: {
-    marginVertical: '5%'
+    backgroundColor: '#3B55E6',
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    borderRadius: 10,
+    margin: 0.5,
+  },
+  labelTesteDISC: {
+    color: 'white',
+    fontSize: 20
   }
 });
 
