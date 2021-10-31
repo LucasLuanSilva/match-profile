@@ -7,6 +7,8 @@ import DrawerContent from '../components/DrawerContent';
 import Usuario from '../pages/Usuario';
 import FormularioUsuario from '../pages/FormularioUsuario';
 import Configuracao from '../pages/Configuracao';
+import Teste from '../pages/Teste';
+import FormularioTeste from '../pages/FormularioTeste';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,6 +27,7 @@ const DrawerNavigation: React.FC = () => {
       <Drawer.Screen name="Home" component={Home} />
       <Drawer.Screen name="Usuario" options={{ title: 'Usuários' }} component={Usuario} />
       <Drawer.Screen name="Configuracao" options={{ title: 'Configurações' }} component={Configuracao} />
+      <Drawer.Screen name="Teste" options={{ title: 'Testes' }} component={Teste} />
 
     </Drawer.Navigator>
   );
@@ -46,6 +49,7 @@ const StackNavigation: React.FC = () => {
       <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
       <Stack.Screen name="DrawerNavigation" options={{ headerShown: false }} component={DrawerNavigation} />
       <Stack.Screen name="Cadastro" options={{ title: 'Formulário de Usuário' }} component={FormularioUsuario} />
+      <Stack.Screen name="FormularioTeste" options={{ title: 'Formulário de Teste' }} component={FormularioTeste} />
 
     </Stack.Navigator>
   );

@@ -54,10 +54,6 @@ class CreateTesteService {
       throw new CustomError(400, 'Informe um titulo!');
     }
 
-    if (!descricao) {
-      throw new CustomError(400, 'Informe uma descrição!');
-    }
-
     for (var i in questoes) {
       if (!questoes[i].pergunta) {
         throw new CustomError(400, 'Informe uma pergunta valida!');
