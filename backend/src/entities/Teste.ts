@@ -23,6 +23,9 @@ class Teste {
   @Column()
   descricao: string;
 
+  @Column()
+  tipo: number;
+
   @CreateDateColumn()
   data_criacao: Date;
 

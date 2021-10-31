@@ -39,6 +39,13 @@ export class CreateTestes1635595501376 implements MigrationInterface {
             isNullable: false
           },
           {
+            name: 'tipo',
+            type: 'int',
+            default: 0,
+            isNullable: false,
+            comment: '0 - Personalizado / 1 - DISC'
+          },
+          {
             name: 'data_criacao',
             type: 'timestamp with time zone',
             isNullable: false,
