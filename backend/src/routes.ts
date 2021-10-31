@@ -22,6 +22,7 @@ import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUs
 import ListTestesEmpresariaisController from './controllers/ListTestesEmpresariaisController';
 import CreateTesteController from './controllers/CreateTesteController';
 import ListQuestoesController from './controllers/ListQuestoesController';
+import DeleteTesteController from './controllers/DeleteTesteController';
 
 const routes = Router();
 
@@ -46,6 +47,7 @@ const updateTelefoneController = new UpdateTelefoneController();
 const listTestesEmpresariaisController = new ListTestesEmpresariaisController();
 const createTesteController = new CreateTesteController();
 const listQuestoesController = new ListQuestoesController();
+const deleteTesteController = new DeleteTesteController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -90,6 +92,7 @@ routes.delete('/telefones/:id', ensureAuthenticatedUsuarios, deleteTelefoneContr
 // EMPRESARIAL
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
+routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
 
 
 //// UPDATE ////

@@ -27,8 +27,18 @@ const Teste: React.FC = () => {
     navigation.addListener('focus', () => setLoad(!load))
   }, [load, navigation]);
 
-  const editarUsuario = (item) => {
+  const visualizarTeste = (item) => {
     navigation.navigate('FormularioTeste', { teste: item, visualizar: true })
+  }
+
+  const excluirTeste = async (item) => {
+    await api.delete('empresariais/testes/' + item.id + '/' + item.versao).then((response) => {
+      Alert.alert("Exclusão realizada com sucesso !");
+
+      listaTestes();
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
   }
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
@@ -43,8 +53,8 @@ const Teste: React.FC = () => {
         renderItem={({ item }) => (
           <ListItem
             title={item.titulo}
-            handleRight={() => { }}
-            onPress={() => editarUsuario(item)}
+            handleRight={() => { excluirTeste(item) }}
+            onPress={() => visualizarTeste(item)}
           />
         )}
         ItemSeparatorComponent={() => <Separator />}
