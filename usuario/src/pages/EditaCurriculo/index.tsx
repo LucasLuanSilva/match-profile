@@ -19,31 +19,17 @@ const EditaC: React.FC =()=> {
     const navigation = useNavigation();
     const route = useRoute();
     const dados = route.params.dados;
-
-    const [experiencia, setExperiencia] = useState({
-      empresa:'',
-      cargo: "",
-      dataIni: "" ,
-      dataFin:""
-    });
-
     
     useEffect(async()=>{
-      setExperiencia({ ...experiencia, ['dataIni']: dayjs().format('DD/MM/YYYY') });
-      setExperiencia({ ...experiencia, ['dataFin']: dayjs().format('DD/MM/YYYY') });
       await listaTelefones()
+      await listaCurso()
+      await listaExperiencia()
     }, []);
 
     const [escolaridade, setEscolaridade] = useState(1)
     const [escolaridadeSelecionada, setEscolaridadeSelecionada] = useState([]);
 
     const [currentPosition, setPosition] = useState(0);
-
-    const field = (field) => {
-      return (value) => {
-        setCurriculo({ ...curriculo, [field]: value });
-      }
-    }
 
     const exp = (exp) => {
       return (value) => {
@@ -65,22 +51,6 @@ const EditaC: React.FC =()=> {
       setDatePickerVisibility(false);
     };
 
-    const handleConfirm = (date) => {
-      console.log(date)
-      setCurriculo({ ...curriculo, ['data']: date });
-      hideDatePicker();
-      console.log(curriculo)
-    };
-
-    const handleConfirmDataIni = (date) => {
-      setExperiencia({ ...experiencia, ['dataIni']: dayjs(date).format('DD/MM/YYYY') });
-      hideDatePicker();
-    };
-
-    const handleConfirmDataFin = (date) => {
-      setExperiencia({ ...experiencia, ['dataFin']: dayjs(date).format('DD/MM/YYYY') });
-      hideDatePicker();
-    };
 
     const [isModalVisibleTel, setModalVisibleTel] = useState(false);
 
@@ -88,11 +58,6 @@ const EditaC: React.FC =()=> {
       setModalVisibleTel(!isModalVisibleTel);
     };
 
-    const [isModalVisibleExp, setModalVisibleExp] = useState(false);
-
-    const toggleModalExp = () => {
-      setModalVisibleExp(!isModalVisibleExp);
-    };
 
     const [telefones, setTelefones] = useState([]);
 
@@ -308,11 +273,11 @@ const EditaC: React.FC =()=> {
                 <Picker.Item label="Ensino Superior Completo" value="6" />
               </Picker>
             </View>
-            <Text style={styles.label}>Graduação</Text>
+            {/* <Text style={styles.label}>Graduação</Text>
             <TextInput placeholder="Informe a graduação"
                         style={styles.input}
                         value={curriculo.graduacao}
-                        onChangeText={field('graduacao')} />
+                        onChangeText={field('graduacao')} /> */}
             <View style={styles.containerButton}>
               <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
                 Voltar
@@ -332,24 +297,26 @@ const EditaC: React.FC =()=> {
       setModalVisibleCurso(!isModalVisibleCurso);
     };
 
+    const [cursos, setCursos] = useState([]);
     
     const [curso, setCurso] = useState({
       id:"",
       nome: "",
       instituicao: "",
-      data_inicio: "",
-      data_termino: "",
+      data_inicio: dayjs().format('DD/MM/YYYY'),
+      data_termino: dayjs().format('DD/MM/YYYY'),
       curriculos_id: ""
     });
 
     const incluirCurso = async () => {
       if(curso.id == ''){
+        curso.curriculos_id = dados
         await api.post('cursos', curso).then(
           (response) => {
+            console.log(response.data)
             curso.id = response.data.id;
-            
-            // listaTelefones()
             Alert.alert("Curso salvo com sucesso");
+            listaCurso()
             toggleModalCurso();
             curso.id = ''
             curso.nome = ''
@@ -361,7 +328,8 @@ const EditaC: React.FC =()=> {
         )
         .catch(
           (error) => {
-            Alert.alert(error.response.data.error);
+            Alert.alert(error.response.data.message);
+            console.log(error)
           }
         );
       }else{
@@ -375,7 +343,7 @@ const EditaC: React.FC =()=> {
             curso.data_inicio = ''
             curso.data_termino = ''
             curso.curriculos_id = ''
-            // listaTelefones()
+            listaCurso()
           }
         )
         .catch(
@@ -387,15 +355,61 @@ const EditaC: React.FC =()=> {
       }
     }
 
+    const listaCurso = async () => {
+      
+      await api.get('cursos/' + dados).then(
+        (response) => {
+          console.log(response)
+          setCursos(response.data);
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.message);
+          console.log(error)
+        }
+      );
+    }
+
     const cursoDataIni = (date) => {
-      setCurso({ ...curso, ['data_inicio']: dayjs(date).format('DD/MM/YYYY') });
+      setCurso({ ...curso, ['data_inicio']: date });
       hideDatePicker();
     };
 
     const cursoDataFin = (date) => {
-      setCurso({ ...curso, ['data_termino']: dayjs(date).format('DD/MM/YYYY') });
+      setCurso({ ...curso, ['data_termino']: date });
       hideDatePicker();
     };
+
+    
+    const fieldCurso = (field) => {
+      return (value) => {
+        setCurso({ ...curso, [field]: value });
+      }
+    }
+
+    const deletarCurso = async(index, id) => {
+      var copiaCursos = JSON.parse(JSON.stringify(cursos));
+      copiaCursos.splice(index, 1);
+  
+      setCursos(copiaCursos);
+      await api.delete('cursos/'+id).then(
+        (response) => {
+          Alert.alert("Curso deletado com sucesso");
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+          console.log(error)
+        }
+      );
+    }
+
+    const editarCurso=(item)=>{
+      setCurso(item)
+      toggleModalCurso();
+    }
 
     const Page3 = () => {
       return (
@@ -406,12 +420,12 @@ const EditaC: React.FC =()=> {
               <TextInput placeholder="Informe seu curso"
                           style={styles.input}
                           value={curso.nome}
-                          onChangeText={field('nome')} />
+                          onChangeText={fieldCurso('nome')} />
               <Text style={styles.label}>Instituição</Text>
               <TextInput placeholder="Informe a instituição"
                           style={styles.input}
                           value={curso.instituicao}
-                          onChangeText={field('instituicao')} />
+                          onChangeText={fieldCurso('instituicao')} />
               <View style={styles.inputDates}>
                 <View>
                   <Text style={styles.label}>Inicio</Text>
@@ -424,7 +438,7 @@ const EditaC: React.FC =()=> {
                         onCancel={hideDatePicker}
                       />
                       <Input icon="calendar"
-                        value={curso.data_inicio}/>
+                        value={dayjs(curso.data_inicio).format('DD/MM/YYYY')}/>
                     </TouchableOpacity>
                   </View>    
                 </View>
@@ -439,7 +453,7 @@ const EditaC: React.FC =()=> {
                         onCancel={hideDatePicker}
                       />
                       <Input icon="calendar"
-                        value={curso.data_termino}/>
+                        value={dayjs(curso.data_termino).format('DD/MM/YYYY')}/>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -454,7 +468,21 @@ const EditaC: React.FC =()=> {
               </View>
             </View>
           </Modal>
-          <Text style={{fontWeight:'bold', fontSize:16, marginHorizontal:10}}>Cursos</Text>
+          <Text style={styles.label}>Cursos</Text>
+          <FlatList
+              style={styles.listaTelefone}
+              data={cursos}
+              keyExtractor={item => item.id}
+              renderItem={({ item, index }) => (
+                <ListItem
+                  title={item.nome}
+                  subtitle={item.instituicao}
+                  handleRight={() => deletarCurso(index, item.id)}
+                  onPress={() => editarCurso(item)}
+                />
+              )}
+              ItemSeparatorComponent={() => Separator()}
+            />
           <View style={styles.containerButton}>
             <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModalCurso() }}>
               Incluir Curso
@@ -472,6 +500,129 @@ const EditaC: React.FC =()=> {
       );
     }
 
+    const [isModalVisibleExp, setModalVisibleExp] = useState(false);
+
+    const toggleModalExp = () => {
+      setModalVisibleExp(!isModalVisibleExp);
+    };
+
+    const [experiencias, setExperiencias] = useState([]);
+    
+    const [experiencia, setExperiencia] = useState({
+      id:"",
+      empresa:'',
+      cargo: "",
+      descricao:"",
+      data_inicio: dayjs().format('DD/MM/YYYY'),
+      data_termino: dayjs().format('DD/MM/YYYY'),
+      curriculos_id: ""
+    });
+      
+    const incluirExperiencia = async () => {
+      if(experiencia.id == ''){
+        experiencia.curriculos_id = dados
+        console.log(experiencia.data_inicio)
+        await api.post('experiencias', experiencia).then(
+          (response) => {
+            console.log(response.data)
+            experiencia.id = response.data.id;
+            Alert.alert("Experiencia salvo com sucesso");
+            listaExperiencia()
+            toggleModalExp();
+            experiencia.id = ''
+            experiencia.cargo = ''
+            experiencia.descricao = ''
+            experiencia.empresa = ''
+            experiencia.data_inicio = ''
+            experiencia.data_termino = ''
+            experiencia.curriculos_id = ''
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.message);
+            console.log(error)
+          }
+        );
+      }else{
+        await api.put('experiencias', experiencia).then(
+          (response) => {
+            Alert.alert("Experiencia salvo com sucesso");
+            toggleModalExp();
+            experiencia.id = ''
+            experiencia.cargo = ''
+            experiencia.descricao = ''
+            experiencia.empresa = ''
+            experiencia.data_inicio = ''
+            experiencia.data_termino = ''
+            experiencia.curriculos_id = ''
+            listaExperiencia()
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+            console.log(error)
+          }
+        );
+      }
+    }
+
+    const listaExperiencia = async () => {
+      
+      await api.get('experiencias/' + dados).then(
+        (response) => {
+          console.log(response)
+          setExperiencias(response.data);
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.message);
+          console.log(error)
+        }
+      );
+    }
+
+    const experienciaDataIni = (date) => {
+      setExperiencia({ ...experiencia, ['data_inicio']: date });
+      hideDatePicker();
+    };
+
+    const experienciaDataFin = (date) => {
+      setExperiencia({ ...experiencia, ['data_termino']: date });
+      hideDatePicker();
+    };
+
+    
+    const fieldExperiencia = (field) => {
+      return (value) => {
+        setExperiencia({ ...experiencia, [field]: value });
+      }
+    }
+
+    const deletarExperiencia = async(index, id) => {
+      var copiaExperiencias = JSON.parse(JSON.stringify(experiencias));
+      copiaExperiencias.splice(index, 1);
+  
+      setExperiencias(copiaExperiencias);
+      await api.delete('experiencias/'+id).then(
+        (response) => {
+          Alert.alert("Experiencia deletado com sucesso");
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+          console.log(error)
+        }
+      );
+    }
+
+    const editarExperiencia=(item)=>{
+      setExperiencia(item)
+      toggleModalExp();
+    }
     const Page4 = () => {
       return (
         <View>
@@ -482,10 +633,16 @@ const EditaC: React.FC =()=> {
                         style={styles.input}
                         value={experiencia.empresa}
                         onChangeText={exp('empresa')} />
+                  <Text style={styles.label}>Cargo</Text>
                   <TextInput placeholder="Cargo"
                         style={styles.input}
                         value={experiencia.cargo}
                         onChangeText={exp('cargo')} />
+                  <Text style={styles.label}>Descrição</Text>
+                  <TextInput placeholder="Descrição"
+                        style={styles.input}
+                        value={experiencia.descricao}
+                        onChangeText={exp('descricao')} />
                   <View style={styles.inputDates}>
                     <View>
                       <Text style={styles.label}>Inicio</Text>
@@ -494,11 +651,11 @@ const EditaC: React.FC =()=> {
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
                             mode="date"
-                            onConfirm={handleConfirmDataIni}
+                            onConfirm={experienciaDataIni}
                             onCancel={hideDatePicker}
                           />
                           <Input icon="calendar"
-                            value={experiencia.dataIni}/>
+                            value={dayjs(experiencia.data_inicio).format('DD/MM/YYYY')}/>
                         </TouchableOpacity>
                       </View>    
                     </View>
@@ -509,11 +666,11 @@ const EditaC: React.FC =()=> {
                           <DateTimePickerModal
                             isVisible={isDatePickerVisible}
                             mode="date"
-                            onConfirm={handleConfirmDataFin}
+                            onConfirm={experienciaDataFin}
                             onCancel={hideDatePicker}
                           />
                           <Input icon="calendar"
-                            value={experiencia.dataFin}/>
+                            value={dayjs(experiencia.data_termino).format('DD/MM/YYYY')}/>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -522,27 +679,39 @@ const EditaC: React.FC =()=> {
                     <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { toggleModalExp() }}>
                       Cancelar
                     </Button>
-                    <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { console.log("Experiencia") }}>
+                    <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { incluirExperiencia() }}>
                       Gravar
                     </Button>
                   </View>
                 </View>
           </Modal>
-            <View style={styles.containerButton}>
-              <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModalExp() }}>
-                Incluir Experiência
-              </Button>
-            </View>
+          <Text style={styles.label}>Experiencias</Text>
+          <FlatList
+              style={styles.listaTelefone}
+              data={experiencias}
+              keyExtractor={item => item.id}
+              renderItem={({ item, index }) => (
+                <ListItem
+                  title={item.cargo}
+                  subtitle={item.empresa}
+                  handleRight={() => deletarExperiencia(index, item.id)}
+                  onPress={() => editarExperiencia(item)}
+                />
+              )}
+              ItemSeparatorComponent={() => Separator()}
+            />
+          <View style={styles.containerButton}>
+            <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModalExp() }}>
+              Incluir Experiência
+            </Button>
+          </View>
 
-            <View style={styles.containerButton}>
-              <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
-                Voltar
-              </Button>
-              <Button style={{ width: '49%' }} onPress={async () => { changePosition() }}>
-                Finalizar
-              </Button>
-            </View>
-        </View>
+          <View style={styles.containerButton}>
+            <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+              Voltar
+            </Button>
+          </View>
+      </View>
       );
     }
 

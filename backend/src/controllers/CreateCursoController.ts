@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import CreateCursoService from '../services/CreateCursoService';
-import { decode } from "jsonwebtoken";
 
 class CreateCurriculoController {
   async handle(request: Request, response: Response) {
