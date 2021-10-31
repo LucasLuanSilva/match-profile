@@ -13,14 +13,18 @@ class Questao {
   pergunta: string;
 
   @Column()
-  readonly testes_id: string;
-  @JoinColumn({ name: 'testes_id' })
-  @ManyToOne(() => Teste)
+  tipo: number;
 
   @Column()
+  readonly testes_id: string;
+  @Column()
   readonly testes_versao: number;
-  @JoinColumn({ name: 'testes_versao' })
+  @JoinColumn([
+    { name: 'testes_id' },
+    { name: 'testes_versao' }
+  ])
   @ManyToOne(() => Teste)
+  teste: Teste;
 
   @CreateDateColumn()
   data_criacao: Date;

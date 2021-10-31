@@ -29,6 +29,9 @@ import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpre
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
 import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUsuarios';
 import ListTestesEmpresariaisController from './controllers/ListTestesEmpresariaisController';
+import CreateTesteController from './controllers/CreateTesteController';
+import ListQuestoesController from './controllers/ListQuestoesController';
+import DeleteTesteController from './controllers/DeleteTesteController';
 
 const routes = Router();
 
@@ -60,6 +63,9 @@ const updateTelefoneController = new UpdateTelefoneController();
 const updateCursoController = new UpdateCursoController();
 const updateExperienciaController = new UpdateExperienciaController();
 const listTestesEmpresariaisController = new ListTestesEmpresariaisController();
+const createTesteController = new CreateTesteController();
+const listQuestoesController = new ListQuestoesController();
+const deleteTesteController = new DeleteTesteController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -78,6 +84,7 @@ routes.post('/empresas', createEmpresaController.handle);
 routes.post('/empresariais/login', authenticateUsuarioEmpresarialController.handle);
 routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
 routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
+routes.post('/empresariais/testes', ensureAuthenticatedEmpresariais, createTesteController.handle);
 
 
 //// GET ////
@@ -97,6 +104,7 @@ routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUs
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listTelefonesEmpresariaisController.handle);
 routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEmpresariaisController.handle);
+routes.get('/empresariais/questoes', ensureAuthenticatedEmpresariais, listQuestoesController.handle);
 
 
 //// DELETE ////
@@ -109,6 +117,7 @@ routes.delete('/experiencia/:id', ensureAuthenticatedUsuarios, deleteExperiencia
 // EMPRESARIAL
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
+routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
 
 
 //// UPDATE ////

@@ -11,7 +11,7 @@ class Teste {
   @PrimaryColumn()
   readonly id: string;
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryColumn()
   readonly versao: number;
 
   @Column()
@@ -41,6 +41,10 @@ class Teste {
   constructor() {
     if (!this.id) {
       this.id = uuid();
+    }
+
+    if (!this.versao) {
+      this.versao = 1;
     }
   }
 }
