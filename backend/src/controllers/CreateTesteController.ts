@@ -5,6 +5,8 @@ import CreateTesteService from "../services/CreateTesteService";
 class CreateTesteController {
   async handle(request: Request, response: Response) {
     const {
+      id,
+      versao,
       situacao,
       titulo,
       descricao,
@@ -14,17 +16,20 @@ class CreateTesteController {
     const authToken = request.headers.authorization;
     const [, token] = authToken.split(" ");
 
-    const { id, empresas_id } = decode(token);
+    const usuarios_empresariais_id = decode(token).id;
+    const usuarios_empresariais_empresas_id = decode(token).empresas_id;
 
     const createTesteService = new CreateTesteService();
 
     const teste = await createTesteService.execute({
+      id,
+      versao,
       situacao,
       titulo,
       descricao,
       questoes,
-      usuarios_empresariais_id: id,
-      usuarios_empresariais_empresas_id: empresas_id
+      usuarios_empresariais_id,
+      usuarios_empresariais_empresas_id
     });
 
     return response.json(teste);

@@ -1,5 +1,6 @@
 import { getConnection, getCustomRepository } from "typeorm";
 import CustomError from "../class/CustomError";
+import Teste from "../entities/Teste";
 import QuestoesRepository from "../repositories/QuestoesRepository";
 import RespostasRepository from "../repositories/RespostasRepository";
 import TestesRepository from "../repositories/TestesRepository";
@@ -16,6 +17,8 @@ interface IQuestoesRequest {
 }
 
 interface ITesteRequest {
+  id?: string,
+  versao?: string | number,
   situacao: number,
   titulo: string,
   descricao: string,
@@ -26,6 +29,8 @@ interface ITesteRequest {
 
 class CreateTesteService {
   async execute({
+    id,
+    versao,
     situacao,
     titulo,
     descricao,
@@ -76,6 +81,8 @@ class CreateTesteService {
     }
 
     const teste = testesRepository.create({
+      id: id && versao ? id : undefined,
+      versao: id && versao ? Number(versao) + 1 : undefined,
       titulo,
       descricao,
       situacao,
@@ -84,6 +91,26 @@ class CreateTesteService {
     });
 
     await getConnection().transaction(async transactionalEntityManager => {
+
+
+      if (id && versao) {
+        const currentTeste = await testesRepository.findOne({
+          id,
+          versao: Number(versao)
+        });
+
+        const newTesteData = {
+          ...currentTeste,
+          situacao: 0
+        }
+
+        await transactionalEntityManager
+          .update(Teste, { id, versao: Number(versao) }, newTesteData)
+          .catch(err => {
+            throw new CustomError(400, err.message);
+          });
+      }
+
       await transactionalEntityManager.save(teste);
 
       for (var i in questoes) {

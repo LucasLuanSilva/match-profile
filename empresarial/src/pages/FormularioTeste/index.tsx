@@ -96,7 +96,7 @@ const FormularioTeste: React.FC = () => {
     }
 
     await api.post('empresariais/testes', { ...teste, questoes, situacao: 1 }).then((response) => {
-      Alert.alert("Teste criado com sucesso !");
+      Alert.alert("Operação realizada com sucesso !");
       navigation.goBack();
     }).catch((error) => {
       Alert.alert(error.response.data.message);
@@ -185,11 +185,6 @@ const FormularioTeste: React.FC = () => {
 
   useEffect(async () => {
     if (visualizar) {
-      styles.listaRespostas = {
-        maxHeight: '62%',
-        minHeight: '62%'
-      }
-
       await api.get("empresariais/questoes", {
         params: {
           testes_id: teste.id,
@@ -204,11 +199,27 @@ const FormularioTeste: React.FC = () => {
     }
   }, [])
 
+  useEffect(async () => {
+    if (visualizar) {
+      styles.listaRespostas = {
+        maxHeight: '56%',
+        minHeight: '56%'
+      }
+    } else {
+      styles.listaRespostas = {
+        maxHeight: '46%',
+        minHeight: '46%'
+      }
+    }
+
+    setQuestoes([...questoes]);
+  }, [visualizar])
+
   const Page1 = () => {
     return (
       <ScrollView>
         <KeyboardAvoidingView
-          style={{ marginHorizontal: "8%", paddingVertical: '10%' }}
+          style={{ marginHorizontal: "8%", paddingTop: '10%' }}
         >
           <Text style={styles.label}>Título</Text>
           <TextInput placeholder="Informe um título"
@@ -233,6 +244,18 @@ const FormularioTeste: React.FC = () => {
               Próximo
             </Button>
           </View>
+
+          {
+            visualizar ?
+              <View style={styles.containerButton}>
+                <Button onPress={async () => { setVisualizar(false) }}>
+                  Editar Informações
+                </Button>
+              </View>
+              :
+              null
+          }
+
         </KeyboardAvoidingView>
       </ScrollView>
     );
@@ -360,6 +383,17 @@ const FormularioTeste: React.FC = () => {
                   Finalizar
                 </Button>
               </View>
+        }
+
+        {
+          visualizar ?
+            <View style={styles.containerButton}>
+              <Button onPress={async () => { setVisualizar(false) }}>
+                Editar Informações
+              </Button>
+            </View>
+            :
+            null
         }
 
       </KeyboardAvoidingView>
