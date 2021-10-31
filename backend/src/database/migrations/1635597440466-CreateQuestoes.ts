@@ -18,6 +18,13 @@ export class CreateQuestoes1635597440466 implements MigrationInterface {
             isNullable: false
           },
           {
+            name: 'tipo',
+            type: 'int',
+            isNullable: false,
+            default: 0,
+            comment: '0 - Acerto / 1 - Pontuação / 2 - DISC'
+          },
+          {
             name: 'testes_id',
             type: 'uuid',
             isNullable: false

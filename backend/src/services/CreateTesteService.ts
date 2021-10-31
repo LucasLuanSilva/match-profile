@@ -9,10 +9,12 @@ import UsuariosEmpresariaisRepository from "../repositories/UsuariosEmpresariais
 interface IRespostaRequest {
   resposta: string;
   correta: number;
+  pontuacao: number;
 }
 
 interface IQuestoesRequest {
   pergunta: string;
+  tipo: number;
   respostas: Array<IRespostaRequest>
 }
 
@@ -114,10 +116,11 @@ class CreateTesteService {
       await transactionalEntityManager.save(teste);
 
       for (var i in questoes) {
-        const { pergunta, respostas } = questoes[i];
+        const { pergunta, tipo, respostas } = questoes[i];
 
         const questao = questoesRepository.create({
           pergunta,
+          tipo,
           testes_id: teste.id,
           testes_versao: teste.versao
         });
@@ -125,12 +128,13 @@ class CreateTesteService {
         await transactionalEntityManager.save(questao);
 
         for (var j in respostas) {
-          const { resposta, correta } = respostas[j];
+          const { resposta, correta, pontuacao } = respostas[j];
 
           const objResposta = respostasRepository.create({
             questoes_id: questao.id,
             resposta,
-            correta
+            correta,
+            pontuacao
           });
 
           await transactionalEntityManager.save(objResposta);

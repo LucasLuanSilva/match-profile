@@ -21,6 +21,12 @@ export class CreateRespostasPreenchidas1635608222562 implements MigrationInterfa
             name: 'testes_atribuidos_id',
             type: 'uuid',
             isNullable: false
+          },
+          {
+            name: 'nivel',
+            type: 'int',
+            isNullable: false,
+            default: 0
           }
         ],
         foreignKeys: [

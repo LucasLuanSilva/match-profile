@@ -24,6 +24,9 @@ class RespostaPreenchida {
   @ManyToOne(() => TesteAtribuido)
   testeAtribuido: TesteAtribuido
 
+  @Column()
+  nivel: number;
+
 }
 
 export default RespostaPreenchida;

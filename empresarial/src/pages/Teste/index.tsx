@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, FlatList, Alert, TouchableOpacity, Text } from 'react-native';
 import { Container } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
@@ -45,6 +45,11 @@ const Teste: React.FC = () => {
 
   return (
     <Container>
+      <TouchableOpacity onPress={() => {
+
+      }} style={styles.buttonTesteDISC}>
+        <Text>Teste D.I.S.C</Text>
+      </TouchableOpacity>
 
       <FlatList
         style={styles.list}
@@ -69,6 +74,9 @@ const styles = StyleSheet.create({
   list: {
     minHeight: '85%',
     maxHeight: '85%'
+  },
+  buttonTesteDISC: {
+    marginVertical: '5%'
   }
 });
 

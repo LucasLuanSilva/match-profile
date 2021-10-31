@@ -20,6 +20,9 @@ class Resposta {
   @Column()
   correta: number;
 
+  @Column()
+  pontuacao: number;
+
   constructor() {
     if (!this.id) {
       this.id = uuid();

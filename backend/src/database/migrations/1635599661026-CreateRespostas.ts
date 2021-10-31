@@ -28,6 +28,12 @@ export class CreateRespostas1635599661026 implements MigrationInterface {
             isNullable: false,
             default: 0,
             comment: '0 - Não / 1 - Sim'
+          },
+          {
+            name: 'pontuacao',
+            type: 'int',
+            isNullable: false,
+            default: 0
           }
         ],
         foreignKeys: [
