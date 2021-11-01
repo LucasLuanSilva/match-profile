@@ -41,6 +41,7 @@ import CreateVagaController from './controllers/CreateVagaController';
 import UpdateVagaController from './controllers/UpdateVagaController';
 import DeleteVagaController from './controllers/DeleteVagaController';
 import DeleteVagaTesteController from './controllers/DeleteVagaTesteController';
+import ListVagasTestesController from './controllers/ListVagasTestesController';
 
 const routes = Router();
 
@@ -84,6 +85,7 @@ const createVagaController = new CreateVagaController();
 const updateVagaController = new UpdateVagaController();
 const deleteVagaController = new DeleteVagaController();
 const deleteVagaTesteController = new DeleteVagaTesteController();
+const listVagasTestesController = new ListVagasTestesController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -118,7 +120,7 @@ routes.get('/telefones', ensureAuthenticatedUsuarios, listTelefonesController.ha
 routes.get('/cursos/:curriculos_id', ensureAuthenticatedUsuarios, listCursosController.handle);
 routes.get('/graduacao/:curriculos_id', ensureAuthenticatedUsuarios, listGraduacaoController.handle);
 routes.get('/experiencias/:curriculos_id', ensureAuthenticatedUsuarios, listExperienciasController.handle);
-
+routes.get('/vagas_testes/:vagas_id', ensureAuthenticatedUsuarios, listVagasTestesController.handle);
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
@@ -127,6 +129,7 @@ routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listT
 routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEmpresariaisController.handle);
 routes.get('/empresariais/questoes', ensureAuthenticatedEmpresariais, listQuestoesController.handle);
 routes.get('/empresariais/vagas', ensureAuthenticatedEmpresariais, listVagasEmpresariaisController.handle);
+routes.get('/empresariais/vagas_testes/:vagas_id', ensureAuthenticatedEmpresariais, listVagasTestesController.handle);
 
 
 //// DELETE ////
@@ -142,7 +145,7 @@ routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, del
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
 routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
 routes.delete('/empresariais/vagas/:id', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
-routes.delete('/empresariais/vagas_testes/:vagas_id/:testes_id/:testes_versao', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
+routes.delete('/empresariais/vagas_testes/:vagas_id/:testes_id/:testes_versao', ensureAuthenticatedEmpresariais, deleteVagaTesteController.handle);
 
 //// UPDATE ////
 
