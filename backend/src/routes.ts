@@ -39,6 +39,7 @@ import DeleteTesteController from './controllers/DeleteTesteController';
 import ListVagasEmpresariaisController from './controllers/ListVagasEmpresariaisController';
 import CreateVagaController from './controllers/CreateVagaController';
 import UpdateVagaController from './controllers/UpdateVagaController';
+import DeleteVagaController from './controllers/DeleteVagaController';
 
 const routes = Router();
 
@@ -80,6 +81,7 @@ const deleteTesteController = new DeleteTesteController();
 const listVagasEmpresariaisController = new ListVagasEmpresariaisController();
 const createVagaController = new CreateVagaController();
 const updateVagaController = new UpdateVagaController();
+const deleteVagaController = new DeleteVagaController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -137,6 +139,7 @@ routes.delete('/graduacao/:id', ensureAuthenticatedUsuarios, deleteGraduacaoCont
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
 routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
+routes.delete('/empresariais/vagas/:id', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
 
 
 //// UPDATE ////
