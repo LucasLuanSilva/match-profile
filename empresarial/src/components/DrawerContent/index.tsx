@@ -28,6 +28,11 @@ const DrawerContent = (props: DrawerContentComponentProps): React.ReactElement =
       icon: 'home',
     },
     {
+      label: 'Vagas',
+      route: 'Vaga',
+      icon: 'briefcase',
+    },
+    {
       label: 'Testes',
       route: 'Teste',
       icon: 'clipboard',

@@ -32,6 +32,7 @@ import ListTestesEmpresariaisController from './controllers/ListTestesEmpresaria
 import CreateTesteController from './controllers/CreateTesteController';
 import ListQuestoesController from './controllers/ListQuestoesController';
 import DeleteTesteController from './controllers/DeleteTesteController';
+import ListVagasEmpresariaisController from './controllers/ListVagasEmpresariaisController';
 
 const routes = Router();
 
@@ -66,6 +67,7 @@ const listTestesEmpresariaisController = new ListTestesEmpresariaisController();
 const createTesteController = new CreateTesteController();
 const listQuestoesController = new ListQuestoesController();
 const deleteTesteController = new DeleteTesteController();
+const listVagasEmpresariaisController = new ListVagasEmpresariaisController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -105,6 +107,7 @@ routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuari
 routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listTelefonesEmpresariaisController.handle);
 routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEmpresariaisController.handle);
 routes.get('/empresariais/questoes', ensureAuthenticatedEmpresariais, listQuestoesController.handle);
+routes.get('/empresariais/vagas', ensureAuthenticatedEmpresariais, listVagasEmpresariaisController.handle);
 
 
 //// DELETE ////
