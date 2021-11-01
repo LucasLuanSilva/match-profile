@@ -42,7 +42,6 @@ const FormularioVaga: React.FC = () => {
   const [currentPosition, setPosition] = useState(0);
 
   const nextPosition = () => {
-    console.log(vaga.titulo)
     if (vaga.titulo.trim().length == 0) {
       return Alert.alert("Informe um título para a vaga!");
     }
@@ -70,9 +69,9 @@ const FormularioVaga: React.FC = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const registrarUsuario = async () => {
+  const registrarVaga = async () => {
 
-    await api.post('empresariais/usuarios', { ...vaga, testes }).then((response) => {
+    await api.post('empresariais/vagas', { ...vaga, testes }).then((response) => {
       Alert.alert("Cadastro realizado com sucesso !");
 
       navigation.goBack();
@@ -81,9 +80,9 @@ const FormularioVaga: React.FC = () => {
     });
   }
 
-  const atualizarUsuario = async () => {
-    await api.put('empresariais/usuarios', vaga).then((response) => {
-      Alert.alert("Usuário atualizado com sucesso !");
+  const atualizarVaga = async () => {
+    await api.put('empresariais/vagas', vaga).then((response) => {
+      Alert.alert("Vaga atualizada com sucesso !");
       navigation.goBack();
     }).catch((error) => {
       Alert.alert(error.response.data.message);
@@ -130,9 +129,13 @@ const FormularioVaga: React.FC = () => {
     toggleModal();
   }
 
-  const deletarTeste = async (id, index) => {
+  const deletarTeste = async (item) => {
     if (vaga.id != 0) {
-      await api.delete('empresariais/vagas_testes/' + id).then((response) => {
+      await api.delete('empresariais/vagas_testes/' +
+        vaga.id + '/' +
+        item.id + '/' +
+        item.versao
+      ).then((response) => {
         carregaTesteVinculados();
       }).catch((error) => {
         Alert.alert(error.response.data.message);
@@ -236,7 +239,7 @@ const FormularioVaga: React.FC = () => {
           renderItem={({ item, index }) => (
             <ListItem
               title={item.titulo}
-              handleRight={!visualizar ? () => deletarTeste(item.id, index) : undefined}
+              handleRight={!visualizar ? () => deletarTeste(item) : undefined}
             />
           )}
           ItemSeparatorComponent={() => Separator()}
@@ -249,6 +252,8 @@ const FormularioVaga: React.FC = () => {
                 <Button onPress={() => { backPosition() }}>
                   Voltar
                 </Button>
+              </View>
+              <View style={styles.containerButton}>
                 <Button onPress={() => { setVisualizar(false) }}>
                   Editar Informações
                 </Button>
@@ -267,7 +272,7 @@ const FormularioVaga: React.FC = () => {
                   Voltar
                 </Button>
                 <Button style={{ width: '49%' }} onPress={async () => {
-                  vaga.id != 0 ? await atualizarUsuario() : await registrarUsuario()
+                  vaga.id != 0 ? await atualizarVaga() : await registrarVaga()
                 }}>
                   Finalizar
                 </Button>
