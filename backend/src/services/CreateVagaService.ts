@@ -1,5 +1,7 @@
 import { getConnection, getCustomRepository } from "typeorm";
 import CustomError from "../class/CustomError";
+import VagasRepository from "../repositories/VagasRepository";
+import VagasTestesRepository from "../repositories/VagasTestesRepository";
 
 interface ITesteRequest {
   id: string;
@@ -9,6 +11,8 @@ interface ITesteRequest {
 interface IVagaRequest {
   titulo: string;
   descricao: string;
+  usuarios_empresariais_id_criou: string;
+  usuarios_empresariais_empresas_id_criou: string;
   testes: Array<ITesteRequest>;
 }
 
@@ -16,22 +20,42 @@ class CreateVagaService {
   async execute({
     titulo,
     descricao,
+    usuarios_empresariais_id_criou,
+    usuarios_empresariais_empresas_id_criou,
     testes
   }: IVagaRequest) {
-    const experienciasRepository = getCustomRepository(ExperienciasRepository)
+    const vagasRepository = getCustomRepository(VagasRepository);
+    const vagasTestesRepository = getCustomRepository(VagasTestesRepository);
 
-    const experiencia = await experienciasRepository.create({
-      empresa,
-      cargo,
+    if (!titulo) {
+      throw new CustomError(400, 'Informe um título!');
+    }
+
+    const vaga = vagasRepository.create({
+      titulo,
       descricao,
-      data_inicio: new Date(data_inicio),
-      data_termino: new Date(data_termino),
-      curriculos_id
+      situacao: 1,
+      usuarios_empresariais_id_criou,
+      usuarios_empresariais_empresas_id_criou,
+      usuarios_empresariais_id_alterou: usuarios_empresariais_id_criou,
+      usuarios_empresariais_empresas_id_alterou: usuarios_empresariais_empresas_id_criou,
     });
 
-    await experienciasRepository.save(experiencia);
+    await getConnection().transaction(async transactionalEntityManager => {
+      await transactionalEntityManager.save(vaga);
 
-    return experiencia;
+      for (var i in testes) {
+        const vagaTeste = vagasTestesRepository.create({
+          vagas_id: vaga.id,
+          testes_id: testes[i].id,
+          testes_versao: Number(testes[i].versao)
+        });
+
+        await transactionalEntityManager.save(vagaTeste);
+      }
+    });
+
+    return vaga;
   }
 }
 
