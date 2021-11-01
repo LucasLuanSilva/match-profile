@@ -10,6 +10,7 @@ interface IListItem {
   subtitleStyle?: ViewStyle;
   handleRight?: any;
   onPress?: any;
+  containerStyle?: any;
 }
 
 export default function ListItem({
@@ -18,7 +19,8 @@ export default function ListItem({
   subtitle,
   subtitleStyle,
   handleRight,
-  onPress
+  onPress,
+  containerStyle
 }: IListItem) {
   function RightActions({ progress, dragX, onPress }) {
     const scale = dragX.interpolate({
@@ -66,15 +68,21 @@ export default function ListItem({
   }
 
   return (
-    <Swipeable
-      renderRightActions={(progress, dragX) => (
-        <RightActions progress={progress} dragX={dragX} onPress={handleRight} />
-      )}>
-      <TouchableOpacity onPress={onPress} style={styles.container}>
+    handleRight ?
+      <Swipeable
+        renderRightActions={(progress, dragX) => (
+          <RightActions progress={progress} dragX={dragX} onPress={handleRight} />
+        )}>
+        <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
+          <Title />
+          <Subtitle />
+        </TouchableOpacity>
+      </Swipeable>
+      :
+      <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
         <Title />
         <Subtitle />
       </TouchableOpacity>
-    </Swipeable>
   );
 }
 

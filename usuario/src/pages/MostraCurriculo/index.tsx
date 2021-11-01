@@ -12,19 +12,7 @@ const MostraCurriculo: React.FC =()=> {
     const dados = route.params.id;
 
     function handleItemClick({index}){ 
-			// if(index == 0 || index == 1){
-			// 	await getUsuario()
-			// if(index == 2){
-			// 	carregaTelefones()
-			// }else if(index == 3){
-			// 	listaGraduacao()
-			// }else if(index == 4){
-			// 	listaExperiencia()
-			// }else if(index == 5){
-			// 	listaCurso()
-			// }
 			
-	
     };
     
     function editaCurriculo(){

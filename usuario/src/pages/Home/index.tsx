@@ -39,7 +39,7 @@ const Home: React.FC =()=> {
                 </TouchableOpacity>
             </View>
             <View style={styles.buttonHome}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Vagas')}}>
                     <View style={styles.buttonHomeBlue}>
                       <Text style={styles.subtitletext}>Vagas</Text>
                       <Image style={styles.imagens}
