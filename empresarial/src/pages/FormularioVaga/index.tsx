@@ -42,7 +42,6 @@ const FormularioVaga: React.FC = () => {
   const [currentPosition, setPosition] = useState(0);
 
   const nextPosition = () => {
-    console.log(vaga.titulo)
     if (vaga.titulo.trim().length == 0) {
       return Alert.alert("Informe um título para a vaga!");
     }
@@ -130,9 +129,13 @@ const FormularioVaga: React.FC = () => {
     toggleModal();
   }
 
-  const deletarTeste = async (id, index) => {
+  const deletarTeste = async (item) => {
     if (vaga.id != 0) {
-      await api.delete('empresariais/vagas_testes/' + id).then((response) => {
+      await api.delete('empresariais/vagas_testes/' +
+        vaga.id + '/' +
+        item.id + '/' +
+        item.versao
+      ).then((response) => {
         carregaTesteVinculados();
       }).catch((error) => {
         Alert.alert(error.response.data.message);
@@ -236,7 +239,7 @@ const FormularioVaga: React.FC = () => {
           renderItem={({ item, index }) => (
             <ListItem
               title={item.titulo}
-              handleRight={!visualizar ? () => deletarTeste(item.id, index) : undefined}
+              handleRight={!visualizar ? () => deletarTeste(item) : undefined}
             />
           )}
           ItemSeparatorComponent={() => Separator()}
