@@ -11,7 +11,20 @@ const MostraCurriculo: React.FC =()=> {
     const route = useRoute();
     const dados = route.params.id;
 
-    function handleItemClick({index}) {    
+    function handleItemClick({index}){ 
+			// if(index == 0 || index == 1){
+			// 	await getUsuario()
+			// if(index == 2){
+			// 	carregaTelefones()
+			// }else if(index == 3){
+			// 	listaGraduacao()
+			// }else if(index == 4){
+			// 	listaExperiencia()
+			// }else if(index == 5){
+			// 	listaCurso()
+			// }
+			
+	
     };
     
     function editaCurriculo(){
@@ -21,16 +34,22 @@ const MostraCurriculo: React.FC =()=> {
     const [load, setLoad] = useState(true);
 
     useEffect(async()=>{
-      await listaCurso()
-      await getUsuario()
-			await carregaTelefones()
+			await getUsuario()
+			await	carregaTelefones()
+			await listaGraduacao()
+			await	listaExperiencia()
+			await	listaCurso()
       navigation.addListener('focus', () => setLoad(!load))
     }, [load, navigation]);
   
 
     const [cursos, setCursos] = useState([]);
 
-		const [telefones, setTelefones] = useState([]);
+	const [telefones, setTelefones] = useState([]);
+
+	const [experiencias, setExperiencias] = useState([]);
+
+	const [graduacaos, setGraduacaos] = useState([]);
     
     const [usuario, setUsuario] = useState({
       id: '',
@@ -112,11 +131,11 @@ const MostraCurriculo: React.FC =()=> {
 							id: i,
 							name: response.data[i].contato
 								+ '\n'
-								+ response.data[i].ddd + response.data[i].numero
+								+'('+ response.data[i].ddd +')'+ response.data[i].numero
 						}
-		
+
 						telefonesFormatados.push(telefone);
-		
+
 						telefonesFormatados.push({
 							id: i,
 							customInnerItem: (
@@ -126,12 +145,82 @@ const MostraCurriculo: React.FC =()=> {
 							)
 						});
 					}
-		
+
 					setTelefones(telefonesFormatados);
 				}).catch((error) => {
 					Alert.alert(error.response.data.message);
 				});
 			};
+
+			const listaExperiencia = async () => {
+      
+				await api.get('experiencias/' + dados).then(
+					(response) => {
+						let exps = []
+						for (var i in response.data) {
+							const exp = {
+								id: i,
+								name: response.data[i].cargo
+									+ '\n'
+									+ response.data[i].empresa
+							}
+			
+							exps.push(exp);
+			
+							exps.push({
+								id: i,
+								customInnerItem: (
+									<View style={{
+										height: 1
+									}} />
+								)
+							});
+						}
+						setExperiencias(exps);
+					}
+				)
+				.catch(
+					(error) => {
+						Alert.alert(error.response.data.message);
+						console.log(error)
+					}
+				);
+			}
+
+			const listaGraduacao = async () => {
+      
+				await api.get('graduacao/' + dados).then(
+					(response) => {
+						let grads = []
+						for (var i in response.data) {
+							const exp = {
+								id: i,
+								name: response.data[i].nivel
+									+ '\n'
+									+ response.data[i].instituicao
+							}
+			
+							grads.push(exp);
+			
+							grads.push({
+								id: i,
+								customInnerItem: (
+									<View style={{
+										height: 1
+									}} />
+								)
+							});
+						}
+						setGraduacaos(grads);
+					}
+				)
+				.catch(
+					(error) => {
+						Alert.alert(error.response.data.message);
+						console.log(error)
+					}
+				);
+			}
 
     const CONTENT = [
 				{
@@ -204,7 +293,7 @@ const MostraCurriculo: React.FC =()=> {
         {
             id: '4',
             categoryName: 'Escolaridade',
-            subCategory: [{id: '22', name: 'Sub Cat 22'}],
+            subCategory: graduacaos
         },
         {
             id: '5',
@@ -214,7 +303,7 @@ const MostraCurriculo: React.FC =()=> {
         {
             id: '6',
             categoryName: 'Experiências',
-            subCategory: [{id: '22', name: 'Sub Cat 22'}],
+            subCategory: experiencias
         },
         
     ];

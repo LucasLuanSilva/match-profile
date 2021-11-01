@@ -19,7 +19,7 @@ class CreateCursoService {
     curriculos_id
   }: ICursoRequest) {
     const cursosRepository = getCustomRepository(CursosRepository)
-    console.log(data_inicio)
+    
     const curso = await cursosRepository.create({
         nome,
         instituicao,
