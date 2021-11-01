@@ -142,7 +142,7 @@ routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, del
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
 routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
 routes.delete('/empresariais/vagas/:id', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
-routes.delete('/empresariais/vagas/:vagas_id/:testes_id/:testes_versao', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
+routes.delete('/empresariais/vagas_testes/:vagas_id/:testes_id/:testes_versao', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
 
 //// UPDATE ////
 
