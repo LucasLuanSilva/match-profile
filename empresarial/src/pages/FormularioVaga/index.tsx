@@ -70,9 +70,9 @@ const FormularioVaga: React.FC = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const registrarUsuario = async () => {
+  const registrarVaga = async () => {
 
-    await api.post('empresariais/usuarios', { ...vaga, testes }).then((response) => {
+    await api.post('empresariais/vagas', { ...vaga, testes }).then((response) => {
       Alert.alert("Cadastro realizado com sucesso !");
 
       navigation.goBack();
@@ -81,9 +81,9 @@ const FormularioVaga: React.FC = () => {
     });
   }
 
-  const atualizarUsuario = async () => {
-    await api.put('empresariais/usuarios', vaga).then((response) => {
-      Alert.alert("Usuário atualizado com sucesso !");
+  const atualizarVaga = async () => {
+    await api.put('empresariais/vagas', vaga).then((response) => {
+      Alert.alert("Vaga atualizada com sucesso !");
       navigation.goBack();
     }).catch((error) => {
       Alert.alert(error.response.data.message);
@@ -249,6 +249,8 @@ const FormularioVaga: React.FC = () => {
                 <Button onPress={() => { backPosition() }}>
                   Voltar
                 </Button>
+              </View>
+              <View style={styles.containerButton}>
                 <Button onPress={() => { setVisualizar(false) }}>
                   Editar Informações
                 </Button>
@@ -267,7 +269,7 @@ const FormularioVaga: React.FC = () => {
                   Voltar
                 </Button>
                 <Button style={{ width: '49%' }} onPress={async () => {
-                  vaga.id != 0 ? await atualizarUsuario() : await registrarUsuario()
+                  vaga.id != 0 ? await atualizarVaga() : await registrarVaga()
                 }}>
                   Finalizar
                 </Button>
