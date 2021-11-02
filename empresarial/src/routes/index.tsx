@@ -11,6 +11,7 @@ import Teste from '../pages/Teste';
 import FormularioTeste from '../pages/FormularioTeste';
 import Vaga from '../pages/Vaga';
 import FormularioVaga from '../pages/FormularioVaga';
+import EnviarTeste from '../pages/EnviarTeste';
 
 const Drawer = createDrawerNavigator();
 
@@ -54,6 +55,7 @@ const StackNavigation: React.FC = () => {
       <Stack.Screen name="Cadastro" options={{ title: 'Formulário de Usuário' }} component={FormularioUsuario} />
       <Stack.Screen name="FormularioTeste" options={{ title: 'Formulário de Teste' }} component={FormularioTeste} />
       <Stack.Screen name="FormularioVaga" options={{ title: 'Formulário de Vaga' }} component={FormularioVaga} />
+      <Stack.Screen name="EnviarTeste" options={{ title: 'Enviar Teste' }} component={EnviarTeste} />
 
     </Stack.Navigator>
   );

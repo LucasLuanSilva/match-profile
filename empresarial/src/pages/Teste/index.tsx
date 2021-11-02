@@ -57,6 +57,7 @@ const Teste: React.FC = () => {
             <ListItem
               title={item.titulo}
               onPress={() => visualizarTeste(item)}
+              handleLeft={() => { navigation.navigate('EnviarTeste', { teste: item }) }}
               containerStyle={styles.buttonTesteDISC}
               titleStyle={styles.labelTesteDISC}
             />
@@ -64,6 +65,7 @@ const Teste: React.FC = () => {
             <ListItem
               title={item.titulo}
               handleRight={() => { excluirTeste(item) }}
+              handleLeft={() => { navigation.navigate('EnviarTeste', { teste: item }) }}
               onPress={() => visualizarTeste(item)}
             />
         )}

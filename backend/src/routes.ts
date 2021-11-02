@@ -47,6 +47,7 @@ import ListVagasTestesController from './controllers/ListVagasTestesController';
 import CreateVagaTesteController from './controllers/CreateVagaTesteController';
 import CreateCandidatoController from './controllers/CreateCandidatoController';
 import CreateTesteAtribuidoController from './controllers/CreateTesteAtribuidoController';
+import ListCandidatosController from './controllers/ListCandidatosController';
 
 const routes = Router();
 
@@ -96,6 +97,7 @@ const listVagasTestesController = new ListVagasTestesController();
 const createVagaTesteController = new CreateVagaTesteController();
 const createCandidatoController = new CreateCandidatoController();
 const createTesteAtribuidoController = new CreateTesteAtribuidoController();
+const listCandidatosController = new ListCandidatosController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -135,6 +137,7 @@ routes.get('/graduacao/:curriculos_id', ensureAuthenticatedUsuarios, listGraduac
 routes.get('/experiencias/:curriculos_id', ensureAuthenticatedUsuarios, listExperienciasController.handle);
 routes.get('/vagas_testes/:vagas_id', ensureAuthenticatedUsuarios, listVagasTestesController.handle);
 routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
+routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
 routes.get('/testes_atribuidos', ensureAuthenticatedUsuarios, listTestesAtribuidosController.handle);
 
 // EMPRESARIAL
@@ -145,6 +148,7 @@ routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEm
 routes.get('/empresariais/questoes', ensureAuthenticatedEmpresariais, listQuestoesController.handle);
 routes.get('/empresariais/vagas', ensureAuthenticatedEmpresariais, listVagasEmpresariaisController.handle);
 routes.get('/empresariais/vagas_testes/:vagas_id', ensureAuthenticatedEmpresariais, listVagasTestesController.handle);
+routes.get('/empresariais/candidatos', ensureAuthenticatedUsuarios, listCandidatosController.handle);
 
 
 //// DELETE ////
