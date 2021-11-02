@@ -37,7 +37,12 @@ const Configuracao: React.FC = () => {
     }
   });
 
-  const [telefones, setTelefones] = useState([]);
+  const [telefones, setTelefones] = useState([
+    {
+      id: '1',
+      name: ''
+    }
+  ]);
 
   const getUsuario = async () => {
     await api.get("empresariais/usuarios", { params: { logado: true } })
@@ -51,12 +56,20 @@ const Configuracao: React.FC = () => {
           ['email', usuario[0].email],
         ]);
 
-        setUsuario(usuario[0])
+        setUsuario(usuario[0]);
+
+        await carregaTelefones(usuario[0].id);
       });
   };
 
-  const carregaTelefones = async () => {
-    await api.get('empresariais/telefones/' + usuario.id).then((response) => {
+  useEffect(async () => {
+    await getUsuario();
+
+    navigation.addListener('focus', () => setLoad(!load))
+  }, [load, navigation]);
+
+  const carregaTelefones = async (usuarios_id) => {
+    await api.get('empresariais/telefones/' + usuarios_id).then((response) => {
       let telefonesFormatados = [];
       for (var i in response.data) {
         const telefone = {
@@ -78,18 +91,18 @@ const Configuracao: React.FC = () => {
         });
       }
 
-      setTelefones(telefonesFormatados);
+      if (telefonesFormatados.length > 0) {
+        setTelefones(telefonesFormatados);
+      } else {
+        setTelefones([{
+          id: '1',
+          nome: ''
+        }])
+      }
     }).catch((error) => {
-      Alert.alert(error.response.data.message);
+      Alert.alert("Erro ao buscar telefone!");
     });
   };
-
-  useEffect(async () => {
-    await getUsuario();
-
-    await carregaTelefones();
-    navigation.addListener('focus', () => setLoad(!load))
-  }, [load, navigation]);
 
   const editarUsuario = () => {
     navigation.navigate('Cadastro', { usuario })
