@@ -111,34 +111,34 @@ const MostraCurriculo: React.FC =()=> {
         );
       }
 
-			const carregaTelefones = async () => {
-				await api.get('telefones').then((response) => {
-					let telefonesFormatados = [];
-					for (var i in response.data) {
-						const telefone = {
-							id: i,
-							name: response.data[i].contato
-								+ '\n'
-								+'('+ response.data[i].ddd +')'+ response.data[i].numero
-						}
+	const carregaTelefones = async () => {
+		await api.get('telefones').then((response) => {
+			let telefonesFormatados = [];
+			for (var i in response.data) {
+				const telefone = {
+					id: i,
+					name: response.data[i].contato
+						+ '\n'
+						+'('+ response.data[i].ddd +')'+ response.data[i].numero
+				}
 
-						telefonesFormatados.push(telefone);
+				telefonesFormatados.push(telefone);
 
-						telefonesFormatados.push({
-							id: i,
-							customInnerItem: (
-								<View style={{
-									height: 1
-								}} />
-							)
-						});
-					}
-
-					setTelefones(telefonesFormatados);
-				}).catch((error) => {
-					Alert.alert(error.response.data.message);
+				telefonesFormatados.push({
+					id: i,
+					customInnerItem: (
+						<View style={{
+							height: 1
+						}} />
+					)
 				});
-			};
+			}
+
+				setTelefones(telefonesFormatados);
+			}).catch((error) => {
+				Alert.alert(error.response.data.message);
+			});
+		};
 
 			const listaExperiencia = async () => {
       

@@ -9,6 +9,7 @@ interface IListItem {
   subtitle?: string;
   subtitleStyle?: ViewStyle;
   handleRight?: any;
+  handleLeft?: any;
   onPress?: any;
   containerStyle?: any;
 }
@@ -19,6 +20,7 @@ export default function ListItem({
   subtitle,
   subtitleStyle,
   handleRight,
+  handleLeft,
   onPress,
   containerStyle
 }: IListItem) {
@@ -34,6 +36,23 @@ export default function ListItem({
         <Animated.View
           style={[{ paddingHorizontal: 10 }, { transform: [{ scale: scale }] }]}>
           <Icon name={'trash'} size={40} color="#FFF" />
+        </Animated.View>
+      </TouchableOpacity>
+    );
+  }
+
+  function LeftActions({ progress, dragX, onPress }) {
+    const scale = dragX.interpolate({
+      inputRange: [0, 150],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+
+    return (
+      <TouchableOpacity onPress={onPress} style={styles.leftAction}>
+        <Animated.View
+          style={[{ paddingHorizontal: 10 }, { transform: [{ scale: scale }] }]}>
+          <Icon name={'send'} size={40} color="#FFF" />
         </Animated.View>
       </TouchableOpacity>
     );
@@ -68,21 +87,49 @@ export default function ListItem({
   }
 
   return (
-    handleRight ?
+    handleRight && handleLeft ?
       <Swipeable
         renderRightActions={(progress, dragX) => (
           <RightActions progress={progress} dragX={dragX} onPress={handleRight} />
-        )}>
+        )}
+        renderLeftActions={(progress, dragX) => (
+          <LeftActions progress={progress} dragX={dragX} onPress={handleLeft} />
+        )}
+      >
         <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
           <Title />
           <Subtitle />
         </TouchableOpacity>
       </Swipeable>
       :
-      <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
-        <Title />
-        <Subtitle />
-      </TouchableOpacity>
+      handleRight ?
+        <Swipeable
+          renderRightActions={(progress, dragX) => (
+            <RightActions progress={progress} dragX={dragX} onPress={handleRight} />
+          )}
+        >
+          <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
+            <Title />
+            <Subtitle />
+          </TouchableOpacity>
+        </Swipeable>
+        :
+        handleLeft ?
+          <Swipeable
+            renderLeftActions={(progress, dragX) => (
+              <LeftActions progress={progress} dragX={dragX} onPress={handleLeft} />
+            )}
+          >
+            <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
+              <Title />
+              <Subtitle />
+            </TouchableOpacity>
+          </Swipeable>
+          :
+          <TouchableOpacity onPress={onPress} style={containerStyle ? containerStyle : styles.container}>
+            <Title />
+            <Subtitle />
+          </TouchableOpacity>
   );
 }
 
@@ -104,6 +151,12 @@ const styles = StyleSheet.create({
   },
   rightAction: {
     backgroundColor: '#FF0000',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderRadius: 10,
+  },
+  leftAction: {
+    backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'flex-end',
     borderRadius: 10,
