@@ -135,6 +135,7 @@ routes.get('/graduacao/:curriculos_id', ensureAuthenticatedUsuarios, listGraduac
 routes.get('/experiencias/:curriculos_id', ensureAuthenticatedUsuarios, listExperienciasController.handle);
 routes.get('/vagas_testes/:vagas_id', ensureAuthenticatedUsuarios, listVagasTestesController.handle);
 routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
+routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
