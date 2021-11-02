@@ -45,6 +45,7 @@ import DeleteVagaTesteController from './controllers/DeleteVagaTesteController';
 import ListVagasTestesController from './controllers/ListVagasTestesController';
 import CreateVagaTesteController from './controllers/CreateVagaTesteController';
 import CreateCandidatoController from './controllers/CreateCandidatoController';
+import CreateTesteAtribuidoController from './controllers/CreateTesteAtribuidoController';
 
 const routes = Router();
 
@@ -92,6 +93,7 @@ const deleteVagaTesteController = new DeleteVagaTesteController();
 const listVagasTestesController = new ListVagasTestesController();
 const createVagaTesteController = new CreateVagaTesteController();
 const createCandidatoController = new CreateCandidatoController();
+const createTesteAtribuidoController = new CreateTesteAtribuidoController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -115,6 +117,7 @@ routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTe
 routes.post('/empresariais/testes', ensureAuthenticatedEmpresariais, createTesteController.handle);
 routes.post('/empresariais/vagas', ensureAuthenticatedEmpresariais, createVagaController.handle);
 routes.post('/empresariais/vagas_testes', ensureAuthenticatedEmpresariais, createVagaTesteController.handle);
+routes.post('/empresariais/testes_atribuidos', ensureAuthenticatedEmpresariais, createTesteAtribuidoController.handle);
 
 
 //// GET ////
