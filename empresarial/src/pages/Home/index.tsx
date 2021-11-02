@@ -14,9 +14,9 @@ const Home: React.FC = () => {
               source={require('../../images/testes.png')} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() => { navigation.navigate('Candidato') }} >
           <View style={styles.buttonHomeBlue}>
-            <Text style={styles.subtitletext}>Perfis</Text>
+            <Text style={styles.subtitletext}>Candidatos</Text>
             <Image style={styles.imagens}
               source={require('../../images/meu_curriculo.png')} />
           </View>

@@ -12,6 +12,7 @@ import FormularioTeste from '../pages/FormularioTeste';
 import Vaga from '../pages/Vaga';
 import FormularioVaga from '../pages/FormularioVaga';
 import EnviarTeste from '../pages/EnviarTeste';
+import Candidato from '../pages/Candidato';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +33,7 @@ const DrawerNavigation: React.FC = () => {
       <Drawer.Screen name="Configuracao" options={{ title: 'Configurações' }} component={Configuracao} />
       <Drawer.Screen name="Teste" options={{ title: 'Testes' }} component={Teste} />
       <Drawer.Screen name="Vaga" options={{ title: 'Vagas' }} component={Vaga} />
+      <Drawer.Screen name="Candidato" options={{ title: 'Candidatos' }} component={Candidato} />
 
     </Drawer.Navigator>
   );
