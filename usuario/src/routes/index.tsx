@@ -5,11 +5,13 @@ import Login from '../pages/Login';
 import Cadastro from '../pages/Cadastro';
 import Cadastro2 from '../pages/Cadastro/cadastro2';
 import Home from '../pages/Home';
-import ListaTestes from '../pages/Testes/listatestes';
+import ListaTestes from '../pages/ListaTestes';
+import Teste from '../pages/Teste';
 import EditaCurriculo from '../pages/EditaCurriculo';
 import MostraCurriculo from '../pages/MostraCurriculo';
 import Vagas from '../pages/ListaVagas';
 import MostraVaga from '../pages/MostraVaga';
+import Configuracao from '../pages/Configuracao';
 import DrawerContent from '../components/DrawerContent';
 
 export type RootDrawerParamList = {
@@ -55,8 +57,10 @@ const AuthRoutes: React.FC = () => (
       <Auth.Screen name="EditaCurriculo"  options={{ title: 'Preenchimento Currículo' }} component={EditaCurriculo}/>
       <Auth.Screen name="MostraCurriculo"  options={{ title: 'Meu Currículo' }} component={MostraCurriculo}/>
       <Auth.Screen name="ListaTestes"  options={{ title: 'Testes' }} component={ListaTestes}/>
+      <Auth.Screen name="Teste"  options={{ title: 'Teste' }} component={Teste}/>
       <Auth.Screen name="Vagas"  options={{ title: 'Vagas' }} component={Vagas}/>
       <Auth.Screen name="MostraVaga"  options={{ title: 'Vaga' }} component={MostraVaga}/>
+      <Auth.Screen name="Configuracao"  options={{ title: 'Configurações' }} component={Configuracao}/>
     </Auth.Navigator>
 );
 export default AuthRoutes;

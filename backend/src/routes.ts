@@ -33,6 +33,7 @@ import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpre
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
 import { ensureAuthenticatedUsuarios } from './middlewares/ensureAuthenticatedUsuarios';
 import ListTestesEmpresariaisController from './controllers/ListTestesEmpresariaisController';
+import ListTestesAtribuidosController from './controllers/ListTestesAtribuidosController';
 import CreateTesteController from './controllers/CreateTesteController';
 import ListQuestoesController from './controllers/ListQuestoesController';
 import DeleteTesteController from './controllers/DeleteTesteController';
@@ -83,6 +84,7 @@ const updateCursoController = new UpdateCursoController();
 const updateExperienciaController = new UpdateExperienciaController();
 const updateGraduacaoController = new UpdateGraduacaoController();
 const listTestesEmpresariaisController = new ListTestesEmpresariaisController();
+const listTestesAtribuidosController = new ListTestesAtribuidosController();
 const createTesteController = new CreateTesteController();
 const listQuestoesController = new ListQuestoesController();
 const deleteTesteController = new DeleteTesteController();
@@ -137,6 +139,7 @@ routes.get('/experiencias/:curriculos_id', ensureAuthenticatedUsuarios, listExpe
 routes.get('/vagas_testes/:vagas_id', ensureAuthenticatedUsuarios, listVagasTestesController.handle);
 routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
 routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
+routes.get('/testes_atribuidos', ensureAuthenticatedUsuarios, listTestesAtribuidosController.handle);
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, listUsuariosEmpresariaisController.handle);

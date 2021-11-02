@@ -46,7 +46,7 @@ const Home: React.FC =()=> {
                           source={require('../../images/vagas.png')}/>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity >
+                <TouchableOpacity onPress={()=>{navigation.navigate('Configuracao')}}>
                     <View style={styles.buttonHomeBlue}>
                       <Text style={styles.subtitletext}>Configurações</Text>
                       <Image style={styles.imagens}
