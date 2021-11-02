@@ -43,7 +43,7 @@ export default function ListItem({
 
   function LeftActions({ progress, dragX, onPress }) {
     const scale = dragX.interpolate({
-      inputRange: [0, 150],
+      inputRange: [0, 130],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
