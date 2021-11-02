@@ -47,6 +47,7 @@ import CreateVagaTesteController from './controllers/CreateVagaTesteController';
 import CreateCandidatoController from './controllers/CreateCandidatoController';
 import CreateTesteAtribuidoController from './controllers/CreateTesteAtribuidoController';
 import ListCandidatosController from './controllers/ListCandidatosController';
+import { ensureAuthenticatedEmpresariaisNivel } from './middlewares/ensureAuthenticatedEmpresariaisNivel';
 
 const routes = Router();
 
@@ -114,7 +115,7 @@ routes.post('/candidatos', ensureAuthenticatedUsuarios, createCandidatoControlle
 // EMPRESARIAL
 routes.post('/empresas', createEmpresaController.handle);
 routes.post('/empresariais/login', authenticateUsuarioEmpresarialController.handle);
-routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, createUsuarioEmpresarialController.handle);
+routes.post('/empresariais/usuarios', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, createUsuarioEmpresarialController.handle);
 routes.post('/empresariais/telefones', ensureAuthenticatedEmpresariais, createTelefoneEmpresarialController.handle);
 routes.post('/empresariais/testes', ensureAuthenticatedEmpresariais, createTesteController.handle);
 routes.post('/empresariais/vagas', ensureAuthenticatedEmpresariais, createVagaController.handle);
@@ -138,7 +139,7 @@ routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
 routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
 
 // EMPRESARIAL
-routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
+routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/usuarios', ensureAuthenticatedEmpresariais, listUsuariosEmpresariaisController.handle);
 routes.get('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, listTelefonesEmpresariaisController.handle);
 routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEmpresariaisController.handle);
@@ -157,7 +158,7 @@ routes.delete('/experiencia/:id', ensureAuthenticatedUsuarios, deleteExperiencia
 routes.delete('/graduacao/:id', ensureAuthenticatedUsuarios, deleteGraduacaoController.handle);
 
 // EMPRESARIAL
-routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, deleteUsuarioEmpresarialController.handle);
+routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, deleteUsuarioEmpresarialController.handle);
 routes.delete('/empresariais/telefones/:id', ensureAuthenticatedEmpresariais, deleteTelefoneController.handle);
 routes.delete('/empresariais/testes/:id/:versao', ensureAuthenticatedEmpresariais, deleteTesteController.handle);
 routes.delete('/empresariais/vagas/:id', ensureAuthenticatedEmpresariais, deleteVagaController.handle);
@@ -172,7 +173,7 @@ routes.put('/experiencias', ensureAuthenticatedUsuarios, updateExperienciaContro
 routes.put('/graduacao', ensureAuthenticatedUsuarios, updateGraduacaoController.handle);
 
 // EMPRESARIAL
-routes.put('/empresariais/usuarios', ensureAuthenticatedEmpresariais, updateUsuarioEmpresarialController.handle);
+routes.put('/empresariais/usuarios', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, updateUsuarioEmpresarialController.handle);
 routes.put('/empresariais/telefones', ensureAuthenticatedEmpresariais, updateTelefoneController.handle);
 routes.put('/empresariais/vagas', ensureAuthenticatedEmpresariais, updateVagaController.handle);
 

@@ -18,7 +18,8 @@ const DrawerContent = (props: DrawerContentComponentProps): React.ReactElement =
   const [usuario, setUsuario] = useState({
     nome: '',
     sobrenome: '',
-    email: ''
+    email: '',
+    nivel: '0'
   });
 
   const menuItems = [
@@ -36,11 +37,6 @@ const DrawerContent = (props: DrawerContentComponentProps): React.ReactElement =
       label: 'Testes',
       route: 'Teste',
       icon: 'clipboard',
-    },
-    {
-      label: 'Usuários',
-      route: 'Usuario',
-      icon: 'user',
     }
   ];
 
@@ -52,19 +48,29 @@ const DrawerContent = (props: DrawerContentComponentProps): React.ReactElement =
   }
 
   useEffect(async () => {
-    const [nome, sobrenome, email] = await AsyncStorage.multiGet([
+    const [nome, sobrenome, email, nivel] = await AsyncStorage.multiGet([
       'nome',
       'sobrenome',
       'email',
+      'nivel',
     ]);
 
     setUsuario({
       ...usuario,
       ['nome']: nome[1],
       ['sobrenome']: sobrenome[1],
-      ['email']: email[1]
-    })
+      ['email']: email[1],
+      ['nivel']: nivel[1]
+    });
   }, [props.state])
+
+  if (usuario.nivel == '1') {
+    menuItems.push({
+      label: 'Usuários',
+      route: 'Usuario',
+      icon: 'user',
+    });
+  }
 
   return (
     <Container>

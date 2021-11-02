@@ -41,13 +41,14 @@ const AuthProvider: React.FC = ({ children }) => {
 
       const { data } = await api.get("empresariais/usuarios", { params: { logado: true } })
 
-      const { id, nome, sobrenome } = data[0];
+      const { id, nome, sobrenome, nivel } = data[0];
 
       await AsyncStorage.multiSet([
         ['id', id],
         ['nome', nome],
         ['sobrenome', sobrenome],
         ['email', email],
+        ['nivel', String(nivel)],
       ]);
     } catch (error) {
       throw error;
@@ -60,7 +61,8 @@ const AuthProvider: React.FC = ({ children }) => {
       '&usuario:id',
       '&usuario:nome',
       '&usuario:sobrenome',
-      '&usuario:email'
+      '&usuario:email',
+      '&usuario:nivel'
     ]);
 
     api.interceptors.request.use((req) => {
