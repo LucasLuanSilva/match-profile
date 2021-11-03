@@ -13,6 +13,9 @@ import Vaga from '../pages/Vaga';
 import FormularioVaga from '../pages/FormularioVaga';
 import EnviarTeste from '../pages/EnviarTeste';
 import Candidato from '../pages/Candidato';
+import PerfilCandidato from '../pages/PerfilCandidato';
+import TesteCandidato from '../pages/TesteCandidato';
+import CurriculoCandidato from '../pages/CurriculoCandidato';
 
 const Drawer = createDrawerNavigator();
 
@@ -58,6 +61,9 @@ const StackNavigation: React.FC = () => {
       <Stack.Screen name="FormularioTeste" options={{ title: 'Formulário de Teste' }} component={FormularioTeste} />
       <Stack.Screen name="FormularioVaga" options={{ title: 'Formulário de Vaga' }} component={FormularioVaga} />
       <Stack.Screen name="EnviarTeste" options={{ title: 'Enviar Teste' }} component={EnviarTeste} />
+      <Stack.Screen name="PerfilCandidato" options={{ title: 'Perfil' }} component={PerfilCandidato} />
+      <Stack.Screen name="TesteCandidato" options={{ title: 'Testes do Candidato' }} component={TesteCandidato} />
+      <Stack.Screen name="CurriculoCandidato" options={{ title: 'Curriculo do Candidato' }} component={CurriculoCandidato} />
 
     </Stack.Navigator>
   );

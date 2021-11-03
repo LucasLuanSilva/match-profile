@@ -7,8 +7,6 @@ import api from '../../services/api';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-gesture-handler';
 import formataCPF from '../../functions/FormataCPF';
-import Button from '../../components/Button';
-import Modal from "react-native-modal";
 
 const Candidato: React.FC = () => {
 
@@ -21,15 +19,6 @@ const Candidato: React.FC = () => {
 
   const [search, setSearch] = useState('');
   const [typeSearch, setTypeSearch] = useState('cpf');
-
-  const [candidato, setCandidato] = useState({
-    id: '',
-    usuario: {
-      id: '',
-      nome: '',
-      sobrenome: ''
-    }
-  });
 
   const listaCandidatos = async () => {
     await api.get("empresariais/candidatos")
@@ -65,54 +54,13 @@ const Candidato: React.FC = () => {
   }
 
   const selecionarCandidato = (item) => {
-    setCandidato(item);
-
-    toggleModal();
+    navigation.navigate('PerfilCandidato', { candidato: item });
   }
-
-  const enviarTeste = async () => {
-
-  }
-
-  const [isModalVisible, setModalVisible] = useState(false);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
-  const modalConfirmacao = () => {
-    return (
-      <View>
-        <Modal
-          isVisible={isModalVisible}
-          onBackdropPress={() => toggleModal()}
-        >
-          <View style={styles.modal}>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.title}>Enviar para: </Text>
-              <Text style={styles.label}>{candidato.usuario.nome + " " + candidato.usuario.sobrenome}</Text>
-            </View>
-            <Text style={styles.label}>Realmente deseja enviar este teste ?</Text>
-
-            <View style={styles.containerButton}>
-              <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { toggleModal() }}>
-                Não
-              </Button>
-              <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { enviarTeste() }}>
-                Sim
-              </Button>
-            </View>
-          </View>
-        </Modal>
-      </View>
-    )
-  }
-
   return (
     <Container>
-      {modalConfirmacao()}
       <View style={styles.viewSearch}>
         <View style={styles.selectPicker}>
           <Picker
@@ -187,20 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between'
-  },
-  modal: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 20
-  },
-  containerButton: {
-    marginTop: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
+  }
 });
 
 export default Candidato;

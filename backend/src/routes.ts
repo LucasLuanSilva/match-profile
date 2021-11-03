@@ -49,6 +49,7 @@ import CreateCandidatoController from './controllers/CreateCandidatoController';
 import CreateTesteAtribuidoController from './controllers/CreateTesteAtribuidoController';
 import ListCandidatosController from './controllers/ListCandidatosController';
 import { ensureAuthenticatedEmpresariaisNivel } from './middlewares/ensureAuthenticatedEmpresariaisNivel';
+import GetCandidatoController from './controllers/GetCandidatoController';
 
 const routes = Router();
 
@@ -99,6 +100,7 @@ const createVagaTesteController = new CreateVagaTesteController();
 const createCandidatoController = new CreateCandidatoController();
 const createTesteAtribuidoController = new CreateTesteAtribuidoController();
 const listCandidatosController = new ListCandidatosController();
+const getCandidatoController = new GetCandidatoController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -149,7 +151,8 @@ routes.get('/empresariais/testes', ensureAuthenticatedEmpresariais, listTestesEm
 routes.get('/empresariais/questoes', ensureAuthenticatedEmpresariais, listQuestoesController.handle);
 routes.get('/empresariais/vagas', ensureAuthenticatedEmpresariais, listVagasEmpresariaisController.handle);
 routes.get('/empresariais/vagas_testes/:vagas_id', ensureAuthenticatedEmpresariais, listVagasTestesController.handle);
-routes.get('/empresariais/candidatos', ensureAuthenticatedUsuarios, listCandidatosController.handle);
+routes.get('/empresariais/candidatos', ensureAuthenticatedEmpresariais, listCandidatosController.handle);
+routes.get('/empresariais/candidatos/:id', ensureAuthenticatedEmpresariais, getCandidatoController.handle);
 
 
 //// DELETE ////
