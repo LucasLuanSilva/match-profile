@@ -32,12 +32,7 @@ const AuthProvider: React.FC = ({ children }) => {
 
       await AsyncStorage.setItem('token', token);
 
-      api.interceptors.request.use((req) => {
-        if (token) {
-          req.headers.Authorization = `Bearer ${token}`;
-        }
-        return req;
-      });
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       const { data } = await api.get("empresariais/usuarios", { params: { logado: true } })
 
@@ -65,10 +60,7 @@ const AuthProvider: React.FC = ({ children }) => {
       '&usuario:nivel'
     ]);
 
-    api.interceptors.request.use((req) => {
-      req.headers.Authorization = null;
-      return req;
-    });
+    api.defaults.headers.common['Authorization'] = null;
   }, []);
 
   return (
