@@ -11,6 +11,7 @@ import EditaCurriculo from '../pages/EditaCurriculo';
 import MostraCurriculo from '../pages/MostraCurriculo';
 import Vagas from '../pages/ListaVagas';
 import MostraVaga from '../pages/MostraVaga';
+import MostraPerfil from '../pages/MostraPerfil';
 import Configuracao from '../pages/Configuracao';
 import DrawerContent from '../components/DrawerContent';
 
@@ -58,6 +59,7 @@ const AuthRoutes: React.FC = () => (
       <Auth.Screen name="MostraCurriculo"  options={{ title: 'Meu Currículo' }} component={MostraCurriculo}/>
       <Auth.Screen name="ListaTestes"  options={{ title: 'Testes' }} component={ListaTestes}/>
       <Auth.Screen name="Teste"  options={{ title: 'Teste' }} component={Teste}/>
+      <Auth.Screen name="MostraPerfil"  options={{ title: 'Perfil' }} component={MostraPerfil}/>
       <Auth.Screen name="Vagas"  options={{ title: 'Vagas' }} component={Vagas}/>
       <Auth.Screen name="MostraVaga"  options={{ title: 'Vaga' }} component={MostraVaga}/>
       <Auth.Screen name="Configuracao"  options={{ title: 'Configurações' }} component={Configuracao}/>

@@ -12,6 +12,7 @@ import CreateCurriculoController from './controllers/CreateCurriculoController';
 import CreateCursoController from './controllers/CreateCursoController';
 import CreateGraduacaoController from './controllers/CreateGraduacaoController';
 import CreateExperienciaController from './controllers/CreateExperienciaController';
+import CreateCompetenciaController from './controllers/CreateCompetenciaController';
 import DeleteTelefoneController from './controllers/DeleteTelefoneController';
 import DeleteCursoController from './controllers/DeleteCursoController';
 import DeleteExperienciaController from './controllers/DeleteExperienciaController';
@@ -24,10 +25,12 @@ import ListUsuariosEmpresariaisController from './controllers/ListUsuariosEmpres
 import ListUsuariosController from './controllers/ListUsuariosController';
 import ListCursosController from './controllers/ListCursosController';
 import ListGraduacaoController from './controllers/ListGraduacaoController';
+import ListCompetenciaController from './controllers/ListCompetenciaController';
 import ListExperienciasController from './controllers/ListExperienciasController';
 import UpdateTelefoneController from './controllers/UpdateTelefoneController';
 import UpdateCursoController from './controllers/UpdateCursoController';
 import UpdateExperienciaController from './controllers/UpdateExperienciaController';
+import UpdateCompetenciaController from './controllers/UpdateCompetenciaController';
 import UpdateGraduacaoController from './controllers/UpdateGraduacaoController';
 import UpdateUsuarioEmpresarialController from './controllers/UpdateUsuarioEmpresarialController';
 import { ensureAuthenticatedEmpresariais } from './middlewares/ensureAuthenticatedEmpresariais';
@@ -37,6 +40,7 @@ import ListTestesAtribuidosController from './controllers/ListTestesAtribuidosCo
 import CreateTesteController from './controllers/CreateTesteController';
 import ListQuestoesController from './controllers/ListQuestoesController';
 import DeleteTesteController from './controllers/DeleteTesteController';
+import DeleteCompetenciaController from './controllers/DeleteCompetenciaController';
 import ListVagasEmpresariaisController from './controllers/ListVagasEmpresariaisController';
 import ListVagasController from './controllers/ListVagasController';
 import CreateVagaController from './controllers/CreateVagaController';
@@ -69,20 +73,24 @@ const atualizaTabelaCidadesController = new AtualizaTabelaCidadesController();
 const listCidadesController = new ListCidadesController();
 const createTelefoneController = new CreateTelefoneController();
 const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
+const createCompetenciaController = new CreateCompetenciaController();
 const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialController();
 const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialController();
 const listTelefonesEmpresariaisController = new ListTelefonesEmpresariaisController();
 const listTelefonesController = new ListTelefonesController();
 const listCursosController = new ListCursosController();
 const listGraduacaoController = new ListGraduacaoController();
+const listCompetenciaController = new ListCompetenciaController();
 const listExperienciasController = new ListExperienciasController();
 const deleteTelefoneController = new DeleteTelefoneController();
 const deleteCursoController = new DeleteCursoController();
+const deleteCompetenciaController = new DeleteCompetenciaController();
 const deleteExperienciaController = new DeleteExperienciaController();
 const deleteGraduacaoController = new DeleteGraduacaoController();
 const updateTelefoneController = new UpdateTelefoneController();
 const updateCursoController = new UpdateCursoController();
 const updateExperienciaController = new UpdateExperienciaController();
+const updateCompetenciaController = new UpdateCompetenciaController();
 const updateGraduacaoController = new UpdateGraduacaoController();
 const listTestesEmpresariaisController = new ListTestesEmpresariaisController();
 const listTestesAtribuidosController = new ListTestesAtribuidosController();
@@ -115,6 +123,7 @@ routes.post('/cursos', ensureAuthenticatedUsuarios, createCursoController.handle
 routes.post('/graduacao', ensureAuthenticatedUsuarios, createGraduacaoController.handle);
 routes.post('/experiencias', ensureAuthenticatedUsuarios, createExperienciaController.handle);
 routes.post('/candidatos', ensureAuthenticatedUsuarios, createCandidatoController.handle);
+routes.post('/competencias', ensureAuthenticatedUsuarios, createCompetenciaController.handle);
 
 // EMPRESARIAL
 routes.post('/empresas', createEmpresaController.handle);
@@ -141,6 +150,7 @@ routes.get('/experiencias/:curriculos_id', ensureAuthenticatedUsuarios, listExpe
 routes.get('/vagas_testes/:vagas_id', ensureAuthenticatedUsuarios, listVagasTestesController.handle);
 routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
 routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
+routes.get('/competencias/:curriculos_id', ensureAuthenticatedUsuarios, listCompetenciaController.handle);
 routes.get('/testes_atribuidos', ensureAuthenticatedUsuarios, listTestesAtribuidosController.handle);
 
 // EMPRESARIAL
@@ -162,6 +172,7 @@ routes.delete('/telefones/:id', ensureAuthenticatedUsuarios, deleteTelefoneContr
 routes.delete('/cursos/:id', ensureAuthenticatedUsuarios, deleteCursoController.handle);
 routes.delete('/experiencia/:id', ensureAuthenticatedUsuarios, deleteExperienciaController.handle);
 routes.delete('/graduacao/:id', ensureAuthenticatedUsuarios, deleteGraduacaoController.handle);
+routes.delete('/competencia/:id', ensureAuthenticatedUsuarios, deleteCompetenciaController.handle);
 
 // EMPRESARIAL
 routes.delete('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, deleteUsuarioEmpresarialController.handle);
@@ -176,6 +187,7 @@ routes.delete('/empresariais/vagas_testes/:vagas_id/:testes_id/:testes_versao', 
 routes.put('/telefones', ensureAuthenticatedUsuarios, updateTelefoneController.handle);
 routes.put('/cursos', ensureAuthenticatedUsuarios, updateCursoController.handle);
 routes.put('/experiencias', ensureAuthenticatedUsuarios, updateExperienciaController.handle);
+routes.put('/competencias', ensureAuthenticatedUsuarios, updateCompetenciaController.handle);
 routes.put('/graduacao', ensureAuthenticatedUsuarios, updateGraduacaoController.handle);
 
 // EMPRESARIAL

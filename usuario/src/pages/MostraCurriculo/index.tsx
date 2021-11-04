@@ -27,6 +27,7 @@ const MostraCurriculo: React.FC =()=> {
 			await listaGraduacao()
 			await	listaExperiencia()
 			await	listaCurso()
+			await listaCompetencia()
       navigation.addListener('focus', () => setLoad(!load))
     }, [load, navigation]);
   
@@ -38,6 +39,8 @@ const MostraCurriculo: React.FC =()=> {
 	const [experiencias, setExperiencias] = useState([]);
 
 	const [graduacaos, setGraduacaos] = useState([]);
+
+	const [competencias, setCompetencias] = useState([]);
     
     const [usuario, setUsuario] = useState({
       id: '',
@@ -76,40 +79,70 @@ const MostraCurriculo: React.FC =()=> {
         );
       }
 
-      const listaCurso = async () => {
-      
-        await api.get('cursos/' + dados).then(
-          (response) => {
-						let cursos = []
-						for (var i in response.data) {
-							const curso = {
-								id: i,
-								name: response.data[i].nome
-									+ '\n'
-									+ response.data[i].instituicao
-							}
-			
-							cursos.push(curso);
-			
-							cursos.push({
-								id: i,
-								customInnerItem: (
-									<View style={{
-										height: 1
-									}} />
-								)
-							});
+	const listaCurso = async () => {
+	
+	await api.get('cursos/' + dados).then(
+		(response) => {
+					let cursos = []
+					for (var i in response.data) {
+						const curso = {
+							id: i,
+							name: response.data[i].nome
+								+ '\n'
+								+ response.data[i].instituicao
 						}
-            setCursos(cursos);
-          }
-        )
-        .catch(
-          (error) => {
-            Alert.alert(error.response.data.message);
-            console.log(error)
-          }
-        );
-      }
+		
+						cursos.push(curso);
+		
+						cursos.push({
+							id: i,
+							customInnerItem: (
+								<View style={{
+									height: 1
+								}} />
+							)
+						});
+					}
+		setCursos(cursos);
+		}
+	)
+	.catch(
+		(error) => {
+		Alert.alert(error.response.data.message);
+		console.log(error)
+		}
+	);
+	}
+
+	const listaCompetencia = async () => {
+		await api.get('competencias/' + dados).then(
+			(response) => {
+				let comps = [];
+				for (var i in response.data) {
+					const comp = {
+						id: i,
+						descricao: response.data[i].descricao
+					}
+					comps.push(comp);
+					comps.push({
+						id: i,
+						customInnerItem: (
+							<View style={{
+								height: 1
+							}} />
+						)
+					});
+				}
+			setCompetencias(comps);
+			}
+		)
+	.catch(
+		(error) => {
+		Alert.alert(error.response.data.message);
+		console.log(error)
+		}
+	);
+	}
 
 	const carregaTelefones = async () => {
 		await api.get('telefones').then((response) => {
@@ -134,7 +167,7 @@ const MostraCurriculo: React.FC =()=> {
 				});
 			}
 
-				setTelefones(telefonesFormatados);
+			setTelefones(telefonesFormatados);
 			}).catch((error) => {
 				Alert.alert(error.response.data.message);
 			});

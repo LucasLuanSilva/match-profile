@@ -24,6 +24,7 @@ const EditaC: React.FC =()=> {
       await listaTelefones()
       await listaCurso()
       await listaExperiencia()
+      await listaCompetencia()
     }, []);
 
     const [currentPosition, setPosition] = useState(0);
@@ -900,11 +901,180 @@ const EditaC: React.FC =()=> {
             <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
               Voltar
             </Button>
+            <Button style={{ width: '49%' }} onPress={async () => { changePosition() }}>
+              Finalizar
+            </Button>
           </View>
       </View>
       );
     }
 
+    const [isModalVisibleComp, setModalVisibleComp] = useState(false);
+
+    const toggleModalComp = () => {
+      setModalVisibleComp(!isModalVisibleComp);
+    };
+
+    const [competencias, setCompetencias] = useState([]);
+    
+    const [competencia, setCompetencia] = useState({
+      id:"",
+      nivel:0,
+      descricao:"",
+      curriculos_id: ""
+    });
+      
+    const incluirCompetencia = async () => {
+      if(competencia.id == ''){
+        competencia.curriculos_id = dados
+        
+        await api.post('competencias', competencia).then(
+          (response) => {
+            console.log(response.data)
+            competencia.id = response.data.id;
+            Alert.alert("Competencia salvo com sucesso");
+            listaCompetencia()
+            toggleModalComp();
+            competencia.id = ''
+            competencia.nivel = 0
+            competencia.descricao = ''
+            competencia.curriculos_id = ''
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.message);
+            console.log(error)
+          }
+        );
+      }else{
+        await api.put('competencias', competencia).then(
+          (response) => {
+            Alert.alert("Competencia salvo com sucesso");
+            toggleModalComp();
+            competencia.id = ''
+            competencia.nivel = 0
+            competencia.descricao = ''
+            competencia.curriculos_id = ''
+            listaCompetencia()
+          }
+        )
+        .catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+            console.log(error)
+          }
+        );
+      }
+    }
+
+    const listaCompetencia = async () => {
+      
+      await api.get('competencias/' + dados).then(
+        (response) => {
+          console.log(response)
+          setCompetencias(response.data);
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.message);
+          console.log(error)
+        }
+      );
+    }
+    
+    const fieldCompetencia = (field) => {
+      return (value) => {
+        setCompetencia({ ...competencia, [field]: value });
+      }
+    }
+
+    const deletarCompetencia = async(index, id) => {
+      var copiaCompetencias = JSON.parse(JSON.stringify(competencias));
+      copiaCompetencias.splice(index, 1);
+  
+      setCompetencias(copiaCompetencias);
+      await api.delete('competencia/'+id).then(
+        (response) => {
+          Alert.alert("Competencia deletado com sucesso");
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+          console.log(error)
+        }
+      );
+    }
+
+    const editarCompetencia=(item)=>{
+      setCompetencia(item)
+      toggleModalComp();
+    }
+
+    const Page5 = () => {
+      return (
+        <View>
+          <Modal  style={styles.modal} isVisible={isModalVisibleComp}>
+            <View style={styles.modal}>
+              <Text style={styles.label}>Descrição</Text>
+              <TextInput placeholder="Descrição"
+                    style={styles.input}
+                    value={competencia.descricao}
+                    onChangeText={fieldCompetencia('descricao')} />
+              <Text style={styles.label}>Tipo</Text>
+              <View style={styles.selectPicker}>
+                <Picker
+                  selectedValue={telefone.tipo}
+                  onValueChange={(itemValue, itemIndex) =>
+                    setCompetencia({ ...competencia, ['nivel']: itemValue })
+                  }
+                >
+                  <Picker.Item key={0} value={0} label="Básico"  />
+                  <Picker.Item key={1} value={1} label="Intermediario"  />
+                  <Picker.Item key={2} value={2} label="Avançado" />
+                </Picker>
+              </View>
+              <View style={styles.containerButton}>
+                <Button style={{ width: '49%', backgroundColor: 'red' }} onPress={() => { toggleModalComp() }}>
+                  Cancelar
+                </Button>
+                <Button style={{ width: '49%', backgroundColor: 'green' }} onPress={() => { incluirCompetencia() }}>
+                  Gravar
+                </Button>
+              </View>
+            </View>
+          </Modal>
+          <Text style={styles.label}>Competências</Text>
+          <FlatList
+              style={styles.listaTelefone}
+              data={competencias}
+              keyExtractor={item => item.id}
+              renderItem={({ item, index }) => (
+                <ListItem
+                  title={item.descricao}
+                  // subtitle={item.empresa}
+                  handleRight={() => deletarCompetencia(index, item.id)}
+                  onPress={() => editarCompetencia(item)}
+                />
+              )}
+              ItemSeparatorComponent={() => Separator()}
+            />
+          <View style={styles.containerButton}>
+            <Button style={{ backgroundColor: 'green' }} onPress={async () => { toggleModalComp() }}>
+              Incluir Competência
+            </Button>
+          </View>
+
+          <View style={styles.containerButton}>
+            <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+              Voltar
+            </Button>
+          </View>
+      </View>
+      );
+    }
 
 
     const CurrentPage = () => {
@@ -914,8 +1084,9 @@ const EditaC: React.FC =()=> {
         return Page3()
       } else if (currentPosition == 3) {
         return Page4()
+      } else if (currentPosition == 4) {
+        return Page5()
       }
-
 
       return Page1()
     }
@@ -926,7 +1097,7 @@ const EditaC: React.FC =()=> {
               <StepIndicator
                   customStyles={customStyles}
                   currentPosition={currentPosition}
-                  stepCount={4}
+                  stepCount={5}
               />
             </View>
             {CurrentPage()}
