@@ -30,10 +30,11 @@ export class CreateRespostas1635599661026 implements MigrationInterface {
             comment: '0 - Não / 1 - Sim'
           },
           {
-            name: 'pontuacao',
+            name: 'perfil',
             type: 'int',
             isNullable: false,
-            default: 0
+            default: 0,
+            comment: '0 - Dominante / 1 - Influente / 2 - Estavel / 3 - Cauteloso'
           }
         ],
         foreignKeys: [

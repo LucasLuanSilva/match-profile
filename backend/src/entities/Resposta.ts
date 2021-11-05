@@ -21,7 +21,7 @@ class Resposta {
   correta: number;
 
   @Column()
-  pontuacao: number;
+  perfil: number;
 
   constructor() {
     if (!this.id) {
