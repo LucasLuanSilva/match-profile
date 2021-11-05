@@ -13,6 +13,7 @@ import CreateCursoController from './controllers/CreateCursoController';
 import CreateGraduacaoController from './controllers/CreateGraduacaoController';
 import CreateExperienciaController from './controllers/CreateExperienciaController';
 import CreateCompetenciaController from './controllers/CreateCompetenciaController';
+import CreateRespostaPreenchidaController from './controllers/CreateRespostaPreenchidaController';
 import DeleteTelefoneController from './controllers/DeleteTelefoneController';
 import DeleteCursoController from './controllers/DeleteCursoController';
 import DeleteExperienciaController from './controllers/DeleteExperienciaController';
@@ -74,6 +75,7 @@ const listCidadesController = new ListCidadesController();
 const createTelefoneController = new CreateTelefoneController();
 const createTelefoneEmpresarialController = new CreateTelefoneEmpresarialController();
 const createCompetenciaController = new CreateCompetenciaController();
+const createRespostaPreenchidaController = new CreateRespostaPreenchidaController();
 const deleteUsuarioEmpresarialController = new DeleteUsuarioEmpresarialController();
 const updateUsuarioEmpresarialController = new UpdateUsuarioEmpresarialController();
 const listTelefonesEmpresariaisController = new ListTelefonesEmpresariaisController();
@@ -124,6 +126,7 @@ routes.post('/graduacao', ensureAuthenticatedUsuarios, createGraduacaoController
 routes.post('/experiencias', ensureAuthenticatedUsuarios, createExperienciaController.handle);
 routes.post('/candidatos', ensureAuthenticatedUsuarios, createCandidatoController.handle);
 routes.post('/competencias', ensureAuthenticatedUsuarios, createCompetenciaController.handle);
+routes.post('/respostas_preenchidas', ensureAuthenticatedUsuarios, createRespostaPreenchidaController.handle);
 
 // EMPRESARIAL
 routes.post('/empresas', createEmpresaController.handle);

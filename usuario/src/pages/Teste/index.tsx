@@ -21,7 +21,10 @@ const Teste: React.FC = () => {
       respostas: [
         {id: 0, 
         resposta: "",
-        nivel:0
+        nivel:0,
+        testes_atribuidos_id:dados[0].testes_id,
+        questoes_id:"",
+        respostas_id:"",
     }] 
   }]);
 
@@ -63,7 +66,7 @@ const Teste: React.FC = () => {
     navigation.addListener('focus', () => setLoad(!load))
   }, [load, navigation]);
 
-  const nextPosition = () => {
+  const nextPosition = async () => {
     if(currentPosition < questoes.length -1){
       for(let i = 0; i < 4; i++){
         if(questoes[currentPosition].respostas[i].nivel == 0){
@@ -79,29 +82,45 @@ const Teste: React.FC = () => {
       }
       setPosition(currentPosition + 1);
     }else{
-      
       let Dominante = 0;
       let Influente = 0;
       let Estavel = 0;
       let Cauteloso = 0;
-    for(let i = 0; i < questoes.length; i++){
+      let respostas = [];
+      for(let i = 0; i < questoes.length; i++){
         Dominante += questoes[i].respostas[0].nivel
         Influente += questoes[i].respostas[1].nivel
         Estavel += questoes[i].respostas[2].nivel
         Cauteloso += questoes[i].respostas[3].nivel
+        respostas.push(questoes[i].respostas);
       }
-      console.log(Dominante)
-      console.log(Influente)
-      console.log(Estavel)
-      console.log(Cauteloso)
-      let valores = []
-      valores.push(Dominante)
-      valores.push(Influente)
-      valores.push(Estavel)
-      valores.push(Cauteloso)
-      let maior = Math.max(...valores);
-      Alert.alert(maior)
-      navigation.navigate("MostraPerfil")
+      console.log(respostas);
+      await api.post('respostas_preenchidas', respostas).then(
+        (response) => {    
+
+        }
+      )
+      .catch(
+        (error) => {
+          Alert.alert(error.response.data.message);
+          console.log(error)
+          return
+        }
+      );
+     
+        Alert.alert("Teste salvo com sucesso");
+        console.log(Dominante)
+        console.log(Influente)
+        console.log(Estavel)
+        console.log(Cauteloso)
+        let valores = []
+        valores.push(Dominante)
+        valores.push(Influente)
+        valores.push(Estavel)
+        valores.push(Cauteloso)
+        let maior = Math.max(...valores);
+        Alert.alert(maior)
+        navigation.navigate("MostraPerfil")
     }
   }
 
@@ -116,8 +135,9 @@ const Teste: React.FC = () => {
   }
 
   const escolheNota = (value) =>{
-  
     questoes[currentPosition].respostas[currentAnswer].nivel = value;
+    questoes[currentPosition].respostas[currentAnswer].questoes_id = String(currentPosition);
+    questoes[currentPosition].respostas[currentAnswer].respostas_id = String(currentAnswer);
     toggleModal()
   }
 
