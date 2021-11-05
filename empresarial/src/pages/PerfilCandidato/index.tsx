@@ -80,7 +80,7 @@ const PerfilCandidato: React.FC = () => {
       </View>
       <View style={styles.containerButton}>
         <Button onPress={() => {
-          navigation.navigate('TesteCandidato', { testesAtribuidos });
+          navigation.navigate('TesteCandidato', { testes: testesAtribuidos });
         }}>
           Testes
         </Button>

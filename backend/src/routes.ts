@@ -55,6 +55,7 @@ import CreateTesteAtribuidoController from './controllers/CreateTesteAtribuidoCo
 import ListCandidatosController from './controllers/ListCandidatosController';
 import { ensureAuthenticatedEmpresariaisNivel } from './middlewares/ensureAuthenticatedEmpresariaisNivel';
 import GetCandidatoController from './controllers/GetCandidatoController';
+import GetRespostasPreenchidasController from './controllers/GetRespostasPreenchidasController';
 
 const routes = Router();
 
@@ -111,6 +112,7 @@ const createCandidatoController = new CreateCandidatoController();
 const createTesteAtribuidoController = new CreateTesteAtribuidoController();
 const listCandidatosController = new ListCandidatosController();
 const getCandidatoController = new GetCandidatoController();
+const getRespostasPreenchidasController = new GetRespostasPreenchidasController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -155,6 +157,7 @@ routes.get('/vagas', ensureAuthenticatedUsuarios, listVagasController.handle);
 routes.get('/questoes', ensureAuthenticatedUsuarios, listQuestoesController.handle);
 routes.get('/competencias/:curriculos_id', ensureAuthenticatedUsuarios, listCompetenciaController.handle);
 routes.get('/testes_atribuidos', ensureAuthenticatedUsuarios, listTestesAtribuidosController.handle);
+routes.get('/respostas_preenchidas', ensureAuthenticatedUsuarios, getRespostasPreenchidasController.handle);
 
 // EMPRESARIAL
 routes.get('/empresariais/usuarios/:id', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, listUsuariosEmpresariaisController.handle);
@@ -166,6 +169,7 @@ routes.get('/empresariais/vagas', ensureAuthenticatedEmpresariais, listVagasEmpr
 routes.get('/empresariais/vagas_testes/:vagas_id', ensureAuthenticatedEmpresariais, listVagasTestesController.handle);
 routes.get('/empresariais/candidatos', ensureAuthenticatedEmpresariais, listCandidatosController.handle);
 routes.get('/empresariais/candidatos/:id', ensureAuthenticatedEmpresariais, getCandidatoController.handle);
+routes.get('/empresariais/respostas_preenchidas', ensureAuthenticatedEmpresariais, getRespostasPreenchidasController.handle);
 
 
 //// DELETE ////

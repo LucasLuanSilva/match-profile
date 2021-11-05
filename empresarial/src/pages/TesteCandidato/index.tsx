@@ -1,33 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, FlatList, Alert } from 'react-native';
 import { Container } from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
 import api from '../../services/api';
 
 const TesteCandidato: React.FC = () => {
 
   const navigation = useNavigation();
-  const [testes, setTestes] = useState([]);
-  const [load, setLoad] = useState(true)
-
-  const listaTestesCandidato = async () => {
-    await api.get("empresariais/testes")
-      .then(res => {
-        const testes = res.data;
-
-        setTestes(testes)
-      });
-  };
-
-  useEffect(async () => {
-    await listaTestesCandidato();
-
-    navigation.addListener('focus', () => setLoad(!load))
-  }, [load, navigation]);
+  const route = useRoute();
+  const [testes, setTestes] = useState(route.params.testes);
 
   const visualizarTeste = (item) => {
-    navigation.navigate('FormularioTeste', { teste: item, visualizar: true })
+    navigation.navigate('FormularioTesteRespondido', { testePreenchido: item })
   }
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
@@ -39,20 +24,20 @@ const TesteCandidato: React.FC = () => {
         data={testes}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          item.tipo == 1 ?
+          item.teste.tipo == 1 ?
             <ListItem
-              title={item.titulo}
+              title={item.teste.titulo}
               subtitle={item.respondido == 1 ? 'Respondido' : 'Não Respondido'}
-              onPress={() => visualizarTeste(item)}
+              onPress={() => visualizarTeste(item.teste)}
               containerStyle={styles.buttonTesteDISC}
               titleStyle={styles.labelTesteDISC}
               subtitleStyle={styles.subTitleTesteDISC}
             />
             :
             <ListItem
-              title={item.titulo}
+              title={item.teste.titulo}
               subtitle={item.respondido == 1 ? 'Respondido' : 'Não Respondido'}
-              onPress={() => visualizarTeste(item)}
+              onPress={() => visualizarTeste(item.teste)}
             />
         )}
         ItemSeparatorComponent={() => <Separator />}
