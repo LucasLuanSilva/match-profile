@@ -160,11 +160,12 @@ class CreateEmpresaService {
         await transactionalEntityManager.save(questao);
 
         for (var j in respostas) {
-          const { resposta } = respostas[j];
+          const { resposta, perfil } = respostas[j];
 
           const objResposta = respostasRepository.create({
             questoes_id: questao.id,
-            resposta
+            resposta,
+            perfil: Number(perfil)
           });
 
           await transactionalEntityManager.save(objResposta);
@@ -186,7 +187,8 @@ class CreateEmpresaService {
           pergunta: 'Tende a agir de forma...',
           respostas: [
             {
-              resposta: 'Assertiva'
+              resposta: 'Assertiva',
+              perfil: 0
             },
             {
               resposta: 'Persuasiva'
