@@ -40,7 +40,7 @@ const Configuracao: React.FC = () => {
   const [telefones, setTelefones] = useState([]);
 
   const getUsuario = async () => {
-    await api.get("usuarios") 
+    await api.get("usuarios")
       .then(async res => {
         console.log(res.data)
         const user = res.data;
@@ -52,9 +52,7 @@ const Configuracao: React.FC = () => {
           ['email', user.email],
         ]);
 
-        setUsuario(user)
-        
-
+        setUsuario(user);
       });
   };
 
@@ -95,6 +93,7 @@ const Configuracao: React.FC = () => {
   }, [load, navigation]);
 
   const editarUsuario = () => {
+    console.log(usuario)
     navigation.navigate('Cadastro', { usuario })
   }
 

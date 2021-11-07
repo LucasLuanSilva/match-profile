@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, useE } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { ExpandableListView } from 'react-native-expandable-listview';
 import Button from '../../components/Button';
 import api from '../../services/api';
 import dayjs from 'dayjs';
+import formataEscolaridade from '../../functions/FormataEscolaridade';
+import formataCPF from '../../functions/FormataCPF';
+import formataTelefone from '../../functions/FormataTelefone';
+import formataCompetencia from '../../functions/FormataCompetencia';
 
 const MostraCurriculo: React.FC = () => {
   const navigation = useNavigation();
@@ -130,11 +134,13 @@ const MostraCurriculo: React.FC = () => {
   const listaCompetencia = async () => {
     await api.get('competencias/' + dados).then(
       (response) => {
+        console.log(response.data)
         let comps = [];
         for (var i in response.data) {
           const comp = {
             id: i,
-            descricao: response.data[i].descricao
+            name: response.data[i].descricao
+              + '\n' + formataCompetencia(response.data[i]).nivelLabel
           }
           comps.push(comp);
           comps.push({
@@ -146,7 +152,17 @@ const MostraCurriculo: React.FC = () => {
             )
           });
         }
-        setCompetencias(comps);
+
+        if (comps.length > 0) {
+          setCompetencias(comps);
+        } else {
+          setCompetencias([
+            {
+              id: '1',
+              name: ''
+            }
+          ]);
+        }
       }
     ).catch(
       (error) => {
@@ -163,7 +179,7 @@ const MostraCurriculo: React.FC = () => {
           id: i,
           name: response.data[i].contato
             + '\n'
-            + '(' + response.data[i].ddd + ')' + response.data[i].numero
+            + formataTelefone(response.data[i].ddd, response.data[i].numero)
         }
 
         telefonesFormatados.push(telefone);
@@ -242,11 +258,12 @@ const MostraCurriculo: React.FC = () => {
       (response) => {
         let grads = []
         for (var i in response.data) {
+          const escolaridade = formataEscolaridade(response.data[i]);
           const exp = {
             id: i,
-            name: response.data[i].nivel
+            name: escolaridade.nivelLabel + ', ' + escolaridade.cursandoLabel
               + '\n'
-              + response.data[i].instituicao
+              + escolaridade.instituicao
           }
 
           grads.push(exp);
@@ -304,7 +321,7 @@ const MostraCurriculo: React.FC = () => {
         },
         {
           id: '3',
-          name: usuario.cpf,
+          name: formataCPF(usuario.cpf),
         },
         {
           id: '4',
@@ -354,7 +371,7 @@ const MostraCurriculo: React.FC = () => {
     },
     {
       id: '5',
-      categoryName: 'Cursos / Competências',
+      categoryName: 'Cursos',
       subCategory: cursos,
     },
     {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Alert, ScrollView, FlatList, KeyboardAvoidingView } from 'react-native';
 import Button from '../../components/Button';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Container } from './styles';
 import { customStyles } from './styles';
 import StepIndicator from 'react-native-step-indicator';
@@ -14,32 +14,57 @@ import TextInputMask from 'react-native-text-input-mask';
 
 const Cadastro: React.FC = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const edita = typeof route.params != 'undefined';
 
-  const [credencial, setCredencial] = useState({
-    empresas_id: 'd6cf0ba6-f803-428c-bed4-66f36c768ad5',
-    cpf: "",
-    nome: "",
-    sobrenome: "",
-    email: "",
-    rg: "",
-    senha: "",
-    cep: "",
-    cidades_codigo_municipio: "",
-    logradouro: "",
-    numero: "",
-    complemento: "",
-    bairro: "",
-    confirmaSenha: ""
-  });
+  const [credencial, setCredencial] = useState(
+    edita && typeof route.params.usuario != 'undefined'
+      ?
+      route.params.usuario
+      :
+      {
+        id: "",
+        cpf: "",
+        nome: "",
+        sobrenome: "",
+        email: "",
+        rg: "",
+        senha: "",
+        cep: "",
+        cidades_codigo_municipio: "",
+        logradouro: "",
+        numero: "",
+        complemento: "",
+        bairro: "",
+        confirmaSenha: "",
+        estado_civil: 0
+      }
+  );
 
   const field = (field) => {
     return (value) => {
       setCredencial({ ...credencial, [field]: value })
     }
-
   }
 
-  useEffect(() => {
+  const listaTelefones = async () => {
+    await api.get('telefones').then(
+      (response) => {
+        setTelefones(response.data);
+      }
+    ).catch(
+      (error) => {
+        Alert.alert(error.response.data.error);
+        console.log(error)
+      }
+    );
+  }
+
+  useEffect(async () => {
+    if (credencial.id != '') {
+      await listaTelefones();
+    }
+
     setEstado('SP');
   }, []);
 
@@ -78,17 +103,30 @@ const Cadastro: React.FC = () => {
       return
     }
 
-    await api.post('usuarios', { ...credencial, telefones }).then(
-      (response) => {
-        Alert.alert("Cadastro efetuado com sucesso");
-        navigation.navigate('Login');
-      }
-    )
-      .catch(
+    if (credencial.id == "") {
+      console.log({ ...credencial, telefones })
+      await api.post('usuarios', { ...credencial, telefones }).then(
+        (response) => {
+          Alert.alert("Cadastro efetuado com sucesso!");
+          navigation.goBack();
+        }
+      ).catch(
         (error) => {
           Alert.alert(error.response.data.message);
         }
       );
+    } else {
+      await api.put('usuarios', credencial).then(
+        (response) => {
+          Alert.alert("Operação realizada com sucesso!");
+          navigation.goBack();
+        }
+      ).catch(
+        (error) => {
+          Alert.alert(error.response.data.message);
+        }
+      );
+    }
   }
   const [telefones, setTelefones] = useState([]);
 
@@ -100,10 +138,23 @@ const Cadastro: React.FC = () => {
     contato: ''
   });
 
-  const deletarTelefone = async (index) => {
+  const deletarTelefone = async (index, id) => {
     var copiaTelefones = JSON.parse(JSON.stringify(telefones));
     copiaTelefones.splice(index, 1);
     setTelefones(copiaTelefones);
+
+    if (credencial.id != '') {
+      await api.delete('telefones/' + id).then(
+        (response) => {
+          Alert.alert("Telefone excluído com sucesso!");
+        }
+      ).catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+          console.log(error)
+        }
+      );
+    }
   }
 
   const backPosition = () => {
@@ -134,8 +185,64 @@ const Cadastro: React.FC = () => {
       return alert("Informe um número valido !");
     }
 
-    setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
-    toggleModalTel()
+    if (credencial.id == "") {
+      if (telefone.id == '') {
+        telefone.id = String(telefones.length);
+        setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
+
+        toggleModalTel();
+      } else {
+        const idx = telefones.findIndex(tel => tel.id == telefone.id);
+        telefones[idx] = JSON.parse(JSON.stringify(telefone));
+
+        toggleModalTel();
+      }
+
+      telefone.id = '';
+      telefone.ddd = '';
+      telefone.numero = '';
+      telefone.tipo = 0;
+      telefone.contato = '';
+    } else {
+      if (telefone.id == '') {
+        await api.post('telefones', telefone).then(
+          (response) => {
+            telefone.id = response.data.id;
+
+            listaTelefones()
+            Alert.alert("Telefone salvo com sucesso!");
+            toggleModalTel();
+            telefone.id = ''
+            telefone.ddd = ''
+            telefone.numero = ''
+            telefone.tipo = 0
+            telefone.contato = ''
+          }
+        ).catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+          }
+        );
+      } else {
+        await api.put('telefones', telefone).then(
+          (response) => {
+            Alert.alert("Telefone salvo com sucesso!");
+            toggleModalTel();
+            telefone.id = ''
+            telefone.ddd = ''
+            telefone.numero = ''
+            telefone.tipo = 0
+            telefone.contato = ''
+            listaTelefones()
+          }
+        ).catch(
+          (error) => {
+            Alert.alert(error.response.data.error);
+            console.log(error)
+          }
+        );
+      }
+    }
   }
 
   const editarTelefone = (tel) => {
@@ -187,6 +294,21 @@ const Cadastro: React.FC = () => {
             style={styles.input}
             value={credencial.rg}
             onChangeText={field('rg')} />
+
+          <Text style={styles.label}>Senha</Text>
+          <TextInput placeholder="Informe sua Senha"
+            style={styles.input}
+            secureTextEntry={true}
+            value={credencial.senha}
+            onChangeText={field('senha')} />
+
+          <Text style={styles.label}>Confirmar Senha</Text>
+          <TextInput placeholder="Confirme sua Senha"
+            style={styles.input}
+            secureTextEntry={true}
+            value={credencial.confirmaSenha}
+            onChangeText={field('confirmaSenha')} />
+
           <View style={styles.containerButton}>
             <Button onPress={async () => { changePosition() }}>
               Próximo
@@ -274,6 +396,7 @@ const Cadastro: React.FC = () => {
   const Page3 = () => {
     return (
       <Container>
+
         <Modal isVisible={isModalVisibleTel}>
           <View style={styles.modal}>
             <Text style={styles.label}>Tipo</Text>
@@ -281,12 +404,12 @@ const Cadastro: React.FC = () => {
               <Picker
                 selectedValue={telefone.tipo}
                 onValueChange={(itemValue, itemIndex) =>
-                  setTelefone({ ...telefone, ['tipo']: itemIndex })
+                  setTelefone({ ...telefone, ['tipo']: itemValue })
                 }
               >
-                <Picker.Item label="Residencial" />
-                <Picker.Item label="Pessoal" />
-                <Picker.Item label="Contato" />
+                <Picker.Item key={0} value={0} label="Residencial" />
+                <Picker.Item key={1} value={1} label="Pessoal" />
+                <Picker.Item key={2} value={2} label="Contato" />
               </Picker>
             </View>
             <Text style={styles.label}>Número</Text>
@@ -318,6 +441,24 @@ const Cadastro: React.FC = () => {
             </View>
           </View>
         </Modal>
+
+        <Text style={styles.label}>Estado Civil</Text>
+        <View style={styles.selectPicker}>
+          <Picker
+            key="estado_civil"
+            selectedValue={credencial.estado_civil}
+            onValueChange={(itemValue) =>
+              setCredencial({ ...credencial, ['estado_civil']: itemValue })
+            }
+          >
+            <Picker.Item key={0} label="Solteiro" value={0} />
+            <Picker.Item key={1} label="Casado" value={1} />
+            <Picker.Item key={2} label="Separado" value={2} />
+            <Picker.Item key={3} label="Divorciado " value={3} />
+            <Picker.Item key={4} label="Viúvo " value={4} />
+          </Picker>
+        </View>
+
         <Text style={styles.label}>Telefones</Text>
         <FlatList
           style={styles.listaTelefone}
@@ -328,7 +469,7 @@ const Cadastro: React.FC = () => {
             <ListItem
               title={formataTelefone(item.ddd, item.numero)}
               subtitle={item.contato}
-              handleRight={() => deletarTelefone(index)}
+              handleRight={() => deletarTelefone(index, item.id)}
               onPress={() => editarTelefone(item)}
             />
           )}
@@ -339,18 +480,6 @@ const Cadastro: React.FC = () => {
             Incluir Telefone
           </Button>
         </View>
-        <Text style={styles.label}>Senha</Text>
-        <TextInput placeholder="Informe sua Senha"
-          style={styles.input}
-          secureTextEntry={true}
-          value={credencial.senha}
-          onChangeText={field('senha')} />
-        <Text style={styles.label}>Confirmar Senha</Text>
-        <TextInput placeholder="Confirme sua Senha"
-          style={styles.input}
-          secureTextEntry={true}
-          value={credencial.confirmaSenha}
-          onChangeText={field('confirmaSenha')} />
         <View style={styles.containerButton}>
           <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
             Voltar
@@ -420,8 +549,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   listaTelefone: {
-    maxHeight: '45%',
-    minHeight: '45%',
+    maxHeight: '58%',
+    minHeight: '58%',
   },
   modal: {
     alignContent: 'center',

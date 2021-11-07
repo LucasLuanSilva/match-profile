@@ -56,6 +56,7 @@ import ListCandidatosController from './controllers/ListCandidatosController';
 import { ensureAuthenticatedEmpresariaisNivel } from './middlewares/ensureAuthenticatedEmpresariaisNivel';
 import GetCandidatoController from './controllers/GetCandidatoController';
 import GetRespostasPreenchidasController from './controllers/GetRespostasPreenchidasController';
+import UpdateUsuarioController from './controllers/UpdateUsuarioController';
 
 const routes = Router();
 
@@ -113,6 +114,7 @@ const createTesteAtribuidoController = new CreateTesteAtribuidoController();
 const listCandidatosController = new ListCandidatosController();
 const getCandidatoController = new GetCandidatoController();
 const getRespostasPreenchidasController = new GetRespostasPreenchidasController();
+const updateUsuarioController = new UpdateUsuarioController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -196,6 +198,7 @@ routes.put('/cursos', ensureAuthenticatedUsuarios, updateCursoController.handle)
 routes.put('/experiencias', ensureAuthenticatedUsuarios, updateExperienciaController.handle);
 routes.put('/competencias', ensureAuthenticatedUsuarios, updateCompetenciaController.handle);
 routes.put('/graduacao', ensureAuthenticatedUsuarios, updateGraduacaoController.handle);
+routes.put('/usuarios', ensureAuthenticatedUsuarios, updateUsuarioController.handle);
 
 // EMPRESARIAL
 routes.put('/empresariais/usuarios', ensureAuthenticatedEmpresariais, ensureAuthenticatedEmpresariaisNivel, updateUsuarioEmpresarialController.handle);

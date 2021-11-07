@@ -6,12 +6,14 @@ class ListUsuariosService {
   async execute(id?: string) {
     const usuariosRepository = getCustomRepository(UsuariosRepository);
 
-    const usuario = await usuariosRepository.findOne({ where: {
-      id
-    },
-    relations: ['cidade'] })
+    const usuario = await usuariosRepository.findOne({
+      where: {
+        id
+      },
+      relations: ['cidade']
+    })
 
-    return usuario;
+    return classToPlain(usuario);
   }
 }
 

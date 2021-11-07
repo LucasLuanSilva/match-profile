@@ -37,7 +37,7 @@ const FormularioUsuario: React.FC = () => {
         rg: '',
         senha: '',
         confirmarSenha: '',
-        estado_civil: '0',
+        estado_civil: 0,
         cep: '',
         cidades_codigo_municipio: '',
         logradouro: '',

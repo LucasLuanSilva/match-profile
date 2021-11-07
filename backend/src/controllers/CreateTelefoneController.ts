@@ -5,7 +5,6 @@ import { decode } from 'jsonwebtoken';
 class CreateTelefoneController {
   async handle(request: Request, response: Response) {
     const {
-      usuarios_id,
       ddd,
       numero,
       tipo,
@@ -14,12 +13,17 @@ class CreateTelefoneController {
 
     const createTelefoneService = new CreateTelefoneService();
 
+    const authToken = request.headers.authorization;
+    const [, token] = authToken.split(" ");
+
+    const { id } = decode(token);
+
     const telefone = await createTelefoneService.execute({
       ddd,
       numero,
       tipo,
       contato,
-      usuarios_id
+      usuarios_id: id
     });
 
     return response.json(telefone);

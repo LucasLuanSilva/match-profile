@@ -12,6 +12,8 @@ import Input from '../../components/Input';
 import dayjs from 'dayjs';
 import api from '../../services/api';
 import ListItem from '../../components/ListItem'
+import formataEscolaridade from '../../functions/FormataEscolaridade';
+import formataCompetencia from '../../functions/FormataCompetencia';
 
 
 
@@ -22,10 +24,11 @@ const EditaC: React.FC = () => {
   console.log(dados);
 
   useEffect(async () => {
-    await listaTelefones()
-    await listaCurso()
-    await listaExperiencia()
-    await listaCompetencia()
+    await listaTelefones();
+    await listaGraduacao();
+    await listaCurso();
+    await listaExperiencia();
+    await listaCompetencia();
   }, []);
 
   const [currentPosition, setPosition] = useState(0);
@@ -75,15 +78,14 @@ const EditaC: React.FC = () => {
     setTelefones(copiaTelefones);
     await api.delete('telefones/' + id).then(
       (response) => {
-        Alert.alert("Telefone deletado com sucesso");
+        Alert.alert("Telefone excluído com sucesso!");
       }
-    )
-      .catch(
-        (error) => {
-          Alert.alert(error.response.data.error);
-          console.log(error)
-        }
-      );
+    ).catch(
+      (error) => {
+        Alert.alert(error.response.data.error);
+        console.log(error)
+      }
+    );
   }
 
   const backPosition = () => {
@@ -111,15 +113,16 @@ const EditaC: React.FC = () => {
     telefone.numero = fone.substr(2);
 
     if (telefone.numero.length < 8) {
-      return alert("Informe um número valido !");
+      return Alert.alert("Informe um número valido !");
     }
+
     if (telefone.id == '') {
       await api.post('telefones', telefone).then(
         (response) => {
           telefone.id = response.data.id;
-          // setTelefones([...telefones, JSON.parse(JSON.stringify(telefone))]);
+
           listaTelefones()
-          Alert.alert("Telefone salvo com sucesso");
+          Alert.alert("Telefone salvo com sucesso!");
           toggleModalTel();
           telefone.id = ''
           telefone.ddd = ''
@@ -127,16 +130,15 @@ const EditaC: React.FC = () => {
           telefone.tipo = 0
           telefone.contato = ''
         }
-      )
-        .catch(
-          (error) => {
-            Alert.alert(error.response.data.error);
-          }
-        );
+      ).catch(
+        (error) => {
+          Alert.alert(error.response.data.error);
+        }
+      );
     } else {
       await api.put('telefones', telefone).then(
         (response) => {
-          Alert.alert("Telefone salvo com sucesso");
+          Alert.alert("Telefone salvo com sucesso!");
           toggleModalTel();
           telefone.id = ''
           telefone.ddd = ''
@@ -145,27 +147,26 @@ const EditaC: React.FC = () => {
           telefone.contato = ''
           listaTelefones()
         }
-      )
-        .catch(
-          (error) => {
-            Alert.alert(error.response.data.error);
-            console.log(error)
-          }
-        );
-    }
-  }
-  const listaTelefones = async () => {
-    await api.get('telefones').then(
-      (response) => {
-        setTelefones(response.data);
-      }
-    )
-      .catch(
+      ).catch(
         (error) => {
           Alert.alert(error.response.data.error);
           console.log(error)
         }
       );
+    }
+  }
+
+  const listaTelefones = async () => {
+    await api.get('telefones').then(
+      (response) => {
+        setTelefones(response.data);
+      }
+    ).catch(
+      (error) => {
+        Alert.alert(error.response.data.error);
+        console.log(error)
+      }
+    );
   }
 
   const editarTelefone = (tel) => {
@@ -183,13 +184,13 @@ const EditaC: React.FC = () => {
             <View style={styles.selectPicker}>
               <Picker
                 selectedValue={telefone.tipo}
-                onValueChange={(itemValue, itemIndex) =>
-                  setTelefone({ ...telefone, ['tipo']: itemIndex })
+                onValueChange={(value, itemIndex) =>
+                  setTelefone({ ...telefone, ['tipo']: value })
                 }
               >
-                <Picker.Item label="Residencial" />
-                <Picker.Item label="Pessoal" />
-                <Picker.Item label="Contato" />
+                <Picker.Item key={0} value={0} label="Residencial" />
+                <Picker.Item key={1} value={1} label="Pessoal" />
+                <Picker.Item key={2} value={2} label="Contato" />
               </Picker>
             </View>
             <Text style={styles.label}>Número</Text>
@@ -301,7 +302,7 @@ const EditaC: React.FC = () => {
       console.log("AQUII02")
       await api.put('graduacao', graduacao).then(
         (response) => {
-          Alert.alert("Graduacao salvo com sucesso");
+          Alert.alert("Graduacao salva com sucesso!");
           toggleModalGraduacao();
           graduacao.id = ''
           graduacao.nome = ''
@@ -354,7 +355,7 @@ const EditaC: React.FC = () => {
     setGraduacaos(copiaGraduacaos);
     await api.delete('graduacao/' + id).then(
       (response) => {
-        Alert.alert("Graduacao deletado com sucesso");
+        Alert.alert("Graduacao excluído com sucesso!");
       }
     )
       .catch(
@@ -373,8 +374,8 @@ const EditaC: React.FC = () => {
   const Page2 = () => {
     return (
       <View>
-        <Modal style={styles.modal} isVisible={isModalVisibleGraduacao}>
-          <View style={styles.modal} >
+        <Modal isVisible={isModalVisibleGraduacao}>
+          <View style={styles.modal}>
             <Text style={styles.label}>Escolaridade</Text>
             <View style={styles.selectPicker}>
               <Picker
@@ -382,12 +383,12 @@ const EditaC: React.FC = () => {
                 selectedValue={graduacao.nivel}
                 onValueChange={fieldGraduacao('nivel')}
               >
-                <Picker.Item key={1} label="Ensino Fundamental Incompleto" value={1} />
-                <Picker.Item key={2} label="Ensino Fundamental Completo" value={2} />
-                <Picker.Item key={3} label="Ensino Médio Incompleto" value={3} />
-                <Picker.Item key={4} label="Ensino Médio Completo" value={4} />
-                <Picker.Item key={5} label="Ensino Superior Incompleto" value={5} />
-                <Picker.Item key={6} label="Ensino Superior Completo" value={6} />
+                <Picker.Item key={0} label="Ensino Fundamental" value={0} />
+                <Picker.Item key={1} label="Ensino Médio" value={1} />
+                <Picker.Item key={2} label="Ensino Superior" value={2} />
+                <Picker.Item key={3} label="Pós-graduação" value={3} />
+                <Picker.Item key={4} label="Mestrado" value={4} />
+                <Picker.Item key={5} label="Doutorado" value={5} />
               </Picker>
             </View>
             <View style={styles.selectPicker}>
@@ -396,8 +397,9 @@ const EditaC: React.FC = () => {
                 selectedValue={graduacao.cursando}
                 onValueChange={fieldGraduacao('cursando')}
               >
-                <Picker.Item key={0} label="Cursando" value={0} />
-                <Picker.Item key={1} label="Completo" value={1} />
+                <Picker.Item key={0} label="Incompleto" value={0} />
+                <Picker.Item key={1} label="Cursando" value={1} />
+                <Picker.Item key={2} label="Completo" value={2} />
               </Picker>
             </View>
             <Text style={styles.label}>Instituição</Text>
@@ -452,7 +454,7 @@ const EditaC: React.FC = () => {
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <ListItem
-              title={item.nivel}
+              title={formataEscolaridade(item).nivelLabel}
               subtitle={item.instituicao}
               handleRight={() => deletarGraduacao(index, item.id)}
               onPress={() => editarGraduacao(item)}
@@ -502,7 +504,7 @@ const EditaC: React.FC = () => {
         (response) => {
           console.log(response.data)
           curso.id = response.data.id;
-          Alert.alert("Curso salvo com sucesso");
+          Alert.alert("Curso salvo com sucesso!");
           listaCurso()
           toggleModalCurso();
           curso.id = ''
@@ -522,7 +524,7 @@ const EditaC: React.FC = () => {
     } else {
       await api.put('cursos', curso).then(
         (response) => {
-          Alert.alert("Curso salvo com sucesso");
+          Alert.alert("Curso salvo com sucesso!");
           toggleModalCurso();
           curso.id = ''
           curso.nome = ''
@@ -582,7 +584,7 @@ const EditaC: React.FC = () => {
     setCursos(copiaCursos);
     await api.delete('cursos/' + id).then(
       (response) => {
-        Alert.alert("Curso deletado com sucesso");
+        Alert.alert("Curso excluído com sucesso!");
       }
     )
       .catch(
@@ -601,8 +603,8 @@ const EditaC: React.FC = () => {
   const Page3 = () => {
     return (
       <View>
-        <Modal style={styles.modal} isVisible={isModalVisibleCurso}>
-          <View style={styles.modal} >
+        <Modal isVisible={isModalVisibleCurso}>
+          <View style={styles.modal}>
             <Text style={styles.label}>Curso</Text>
             <TextInput placeholder="Informe seu curso"
               style={styles.input}
@@ -712,7 +714,7 @@ const EditaC: React.FC = () => {
         (response) => {
           console.log(response.data)
           experiencia.id = response.data.id;
-          Alert.alert("Experiencia salvo com sucesso");
+          Alert.alert("Experiência salva com sucesso!");
           listaExperiencia()
           toggleModalExp();
           experiencia.id = ''
@@ -733,7 +735,7 @@ const EditaC: React.FC = () => {
     } else {
       await api.put('experiencias', experiencia).then(
         (response) => {
-          Alert.alert("Experiencia salvo com sucesso");
+          Alert.alert("Experiência salva com sucesso!");
           toggleModalExp();
           experiencia.id = ''
           experiencia.cargo = ''
@@ -794,7 +796,7 @@ const EditaC: React.FC = () => {
     setExperiencias(copiaExperiencias);
     await api.delete('experiencias/' + id).then(
       (response) => {
-        Alert.alert("Experiencia deletado com sucesso");
+        Alert.alert("Experiencia excluído com sucesso!");
       }
     )
       .catch(
@@ -812,7 +814,7 @@ const EditaC: React.FC = () => {
   const Page4 = () => {
     return (
       <View>
-        <Modal style={styles.modal} isVisible={isModalVisibleExp}>
+        <Modal isVisible={isModalVisibleExp}>
           <View style={styles.modal}>
             <Text style={styles.label}>Empresa</Text>
             <TextInput placeholder="Empresa"
@@ -926,7 +928,7 @@ const EditaC: React.FC = () => {
         (response) => {
           console.log(response.data)
           competencia.id = response.data.id;
-          Alert.alert("Competencia salvo com sucesso");
+          Alert.alert("Competência salva com sucesso!");
           listaCompetencia()
           toggleModalComp();
           competencia.id = ''
@@ -944,7 +946,7 @@ const EditaC: React.FC = () => {
     } else {
       await api.put('competencias', competencia).then(
         (response) => {
-          Alert.alert("Competencia salvo com sucesso");
+          Alert.alert("Competência salva com sucesso!");
           toggleModalComp();
           competencia.id = ''
           competencia.nivel = 0
@@ -991,7 +993,7 @@ const EditaC: React.FC = () => {
     setCompetencias(copiaCompetencias);
     await api.delete('competencia/' + id).then(
       (response) => {
-        Alert.alert("Competencia deletado com sucesso");
+        Alert.alert("Competencia excluído com sucesso!");
       }
     )
       .catch(
@@ -1010,23 +1012,23 @@ const EditaC: React.FC = () => {
   const Page5 = () => {
     return (
       <View>
-        <Modal style={styles.modal} isVisible={isModalVisibleComp}>
+        <Modal isVisible={isModalVisibleComp}>
           <View style={styles.modal}>
             <Text style={styles.label}>Descrição</Text>
             <TextInput placeholder="Descrição"
               style={styles.input}
               value={competencia.descricao}
               onChangeText={fieldCompetencia('descricao')} />
-            <Text style={styles.label}>Tipo</Text>
+            <Text style={styles.label}>Nível</Text>
             <View style={styles.selectPicker}>
               <Picker
-                selectedValue={telefone.tipo}
-                onValueChange={(itemValue, itemIndex) =>
-                  setCompetencia({ ...competencia, ['nivel']: itemValue })
+                selectedValue={competencia.nivel}
+                onValueChange={(value, itemIndex) =>
+                  setCompetencia({ ...competencia, ['nivel']: value })
                 }
               >
                 <Picker.Item key={0} value={0} label="Básico" />
-                <Picker.Item key={1} value={1} label="Intermediario" />
+                <Picker.Item key={1} value={1} label="Intermediário" />
                 <Picker.Item key={2} value={2} label="Avançado" />
               </Picker>
             </View>
@@ -1047,7 +1049,7 @@ const EditaC: React.FC = () => {
           renderItem={({ item, index }) => (
             <ListItem
               title={item.descricao}
-              // subtitle={item.empresa}
+              subtitle={formataCompetencia(item).nivelLabel}
               handleRight={() => deletarCompetencia(index, item.id)}
               onPress={() => editarCompetencia(item)}
             />
@@ -1152,7 +1154,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: 'white',
     borderRadius: 10,
-    padding: 12
+    padding: 20
   },
   inputeDate: {
     minWidth: '49%',

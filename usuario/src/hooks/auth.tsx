@@ -47,6 +47,19 @@ const AuthProvider: React.FC = ({ children }) => {
       await AsyncStorage.setItem('token', token);
 
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+      await api.get("usuarios")
+        .then(async res => {
+          console.log(res.data)
+          const user = res.data;
+
+          await AsyncStorage.multiSet([
+            ['id', user.id],
+            ['nome', user.nome],
+            ['sobrenome', user.sobrenome],
+            ['email', user.email],
+          ]);
+        });
     } catch (error) {
       throw error;
     }
