@@ -191,13 +191,16 @@ class CreateEmpresaService {
               perfil: 0
             },
             {
-              resposta: 'Persuasiva'
+              resposta: 'Persuasiva',
+              perfil: 1
             },
             {
-              resposta: 'Paciente'
+              resposta: 'Paciente',
+              perfil: 2
             },
             {
-              resposta: 'Contemplativa'
+              resposta: 'Contemplativa',
+              perfil: 3
             }
           ]
         },
@@ -205,16 +208,20 @@ class CreateEmpresaService {
           pergunta: 'Confortável com...',
           respostas: [
             {
-              resposta: 'Ser decisivo'
+              resposta: 'Ser decisivo',
+              perfil:0
             },
             {
-              resposta: 'Amizade social'
+              resposta: 'Amizade social',
+              perfil:1
             },
             {
-              resposta: 'Ser parte de um time'
+              resposta: 'Ser parte de um time',
+              perfil:2
             },
             {
-              resposta: 'Planejamento e ordem'
+              resposta: 'Planejamento e ordem',
+              perfil:3
             }
           ]
         },
@@ -222,16 +229,20 @@ class CreateEmpresaService {
           pergunta: 'Desejo de...',
           respostas: [
             {
-              resposta: 'Variedade'
+              resposta: 'Variedade',
+              perfil:0
             },
             {
-              resposta: 'Menos estrutura'
+              resposta: 'Menos estrutura',
+              perfil:1
             },
             {
-              resposta: 'Harmonia'
+              resposta: 'Harmonia',
+              perfil:2
             },
             {
-              resposta: 'Lógica'
+              resposta: 'Lógica',
+              perfil:3
             }
           ]
         },
@@ -239,16 +250,20 @@ class CreateEmpresaService {
           pergunta: 'Sob estresse pode se tornar...',
           respostas: [
             {
-              resposta: 'Ditatorial'
+              resposta: 'Ditatorial',
+              perfil:0
             },
             {
-              resposta: 'Sarcástico'
+              resposta: 'Sarcástico',
+              perfil:1
             },
             {
-              resposta: 'Submisso'
+              resposta: 'Submisso',
+              perfil:2
             },
             {
-              resposta: 'Arredio'
+              resposta: 'Arredio',
+              perfil:3
             }
           ]
         },
@@ -256,16 +271,20 @@ class CreateEmpresaService {
           pergunta: 'Característica principal...',
           respostas: [
             {
-              resposta: 'Franco'
+              resposta: 'Franco',
+              perfil:0
             },
             {
-              resposta: 'Otimista'
+              resposta: 'Otimista',
+              perfil:1
             },
             {
-              resposta: 'Serviçal'
+              resposta: 'Serviçal',
+              perfil:2
             },
             {
-              resposta: 'Ordeiro'
+              resposta: 'Ordeiro',
+              perfil:3
             }
           ]
         },
@@ -273,16 +292,20 @@ class CreateEmpresaService {
           pergunta: 'Quando em conflito, esse estilo...',
           respostas: [
             {
-              resposta: 'Demanda ação'
+              resposta: 'Demanda ação',
+              perfil:0
             },
             {
-              resposta: 'Ataca'
+              resposta: 'Ataca',
+              perfil:1
             },
             {
-              resposta: 'Reclama'
+              resposta: 'Reclama',
+              perfil:2
             },
             {
-              resposta: 'Evita'
+              resposta: 'Evita',
+              perfil:3
             }
           ]
         },
@@ -290,16 +313,20 @@ class CreateEmpresaService {
           pergunta: 'Força aparente...',
           respostas: [
             {
-              resposta: 'Solucionador de problemas'
+              resposta: 'Solucionador de problemas',
+              perfil:0
             },
             {
-              resposta: 'Encorajador'
+              resposta: 'Encorajador',
+              perfil:1
             },
             {
-              resposta: 'Supporter'
+              resposta: 'Supporter',
+              perfil:2
             },
             {
-              resposta: 'Organizador'
+              resposta: 'Organizador',
+              perfil:3
             }
           ]
         },
@@ -307,16 +334,20 @@ class CreateEmpresaService {
           pergunta: 'Com erros...',
           respostas: [
             {
-              resposta: 'Informa o erro diretamente'
+              resposta: 'Informa o erro diretamente',
+              perfil:0
             },
             {
-              resposta: 'Chama a pessoa e explica o erro'
+              resposta: 'Chama a pessoa e explica o erro',
+              perfil:1
             },
             {
-              resposta: 'Fica calado e aceita o erro'
+              resposta: 'Fica calado e aceita o erro',
+              perfil:2
             },
             {
-              resposta: 'Se incomoda e questiona'
+              resposta: 'Se incomoda e questiona',
+              perfil:3
             }
           ]
         },
@@ -324,16 +355,20 @@ class CreateEmpresaService {
           pergunta: 'Sob estresse pode se tornar...',
           respostas: [
             {
-              resposta: 'Crítico'
+              resposta: 'Crítico',
+              perfil:0
             },
             {
-              resposta: 'Superficial'
+              resposta: 'Superficial',
+              perfil:1
             },
             {
-              resposta: 'Indeciso'
+              resposta: 'Indeciso',
+              perfil:2
             },
             {
-              resposta: 'Cabeça dura'
+              resposta: 'Cabeça dura',
+              perfil:3
             }
           ]
         },
@@ -341,16 +376,20 @@ class CreateEmpresaService {
           pergunta: 'Pode ser considerado...',
           respostas: [
             {
-              resposta: 'Impaciente'
+              resposta: 'Impaciente',
+              perfil:0
             },
             {
-              resposta: 'Inoportuno'
+              resposta: 'Inoportuno',
+              perfil:1
             },
             {
-              resposta: 'Indeciso'
+              resposta: 'Indeciso',
+              perfil:2
             },
             {
-              resposta: 'Inseguro'
+              resposta: 'Inseguro',
+              perfil:3
             }
           ]
         },
@@ -358,16 +397,20 @@ class CreateEmpresaService {
           pergunta: 'Necessita de...',
           respostas: [
             {
-              resposta: 'Controle'
+              resposta: 'Controle',
+              perfil:0
             },
             {
-              resposta: 'Aprovação'
+              resposta: 'Aprovação',
+              perfil:1
             },
             {
-              resposta: 'Rotina'
+              resposta: 'Rotina',
+              perfil:2
             },
             {
-              resposta: 'Padrão'
+              resposta: 'Padrão',
+              perfil:3
             }
           ]
         },
@@ -375,16 +418,20 @@ class CreateEmpresaService {
           pergunta: 'Limitação desse perfil...',
           respostas: [
             {
-              resposta: 'Direto'
+              resposta: 'Direto',
+              perfil:0
             },
             {
-              resposta: 'Desorganizado'
+              resposta: 'Desorganizado',
+              perfil:1
             },
             {
-              resposta: 'Indireto'
+              resposta: 'Indireto',
+              perfil:2
             },
             {
-              resposta: 'Detalhista'
+              resposta: 'Detalhista',
+              perfil:3
             }
           ]
         },
@@ -392,16 +439,20 @@ class CreateEmpresaService {
           pergunta: 'Possui medo de...',
           respostas: [
             {
-              resposta: 'Perder'
+              resposta: 'Perder',
+              perfil:0
             },
             {
-              resposta: 'Rejeição'
+              resposta: 'Rejeição',
+              perfil:1
             },
             {
-              resposta: 'Mudanças bruscas'
+              resposta: 'Mudanças bruscas',
+              perfil:2
             },
             {
-              resposta: 'Estar errado'
+              resposta: 'Estar errado',
+              perfil:3
             }
           ]
         },
@@ -409,16 +460,20 @@ class CreateEmpresaService {
           pergunta: 'Mensura desempenho com...',
           respostas: [
             {
-              resposta: 'Resultados'
+              resposta: 'Resultados',
+              perfil:0
             },
             {
-              resposta: 'Reconhecimento'
+              resposta: 'Reconhecimento',
+              perfil:1
             },
             {
-              resposta: 'Compatibilidade'
+              resposta: 'Compatibilidade',
+              perfil:2
             },
             {
-              resposta: 'Precisão'
+              resposta: 'Precisão',
+              perfil:3
             }
           ]
         },
@@ -426,16 +481,20 @@ class CreateEmpresaService {
           pergunta: 'Com subalternos, costuma ser...',
           respostas: [
             {
-              resposta: 'Orgulhoso'
+              resposta: 'Orgulhoso',
+              perfil:0
             },
             {
-              resposta: 'Permissivo'
+              resposta: 'Permissivo',
+              perfil:1
             },
             {
-              resposta: 'Humilde'
+              resposta: 'Humilde',
+              perfil:2
             },
             {
-              resposta: 'Cauteloso'
+              resposta: 'Cauteloso',
+              perfil:3
             }
           ]
         },
@@ -443,16 +502,20 @@ class CreateEmpresaService {
           pergunta: 'Abordagem primária...',
           respostas: [
             {
-              resposta: 'Independente'
+              resposta: 'Independente',
+              perfil:0
             },
             {
-              resposta: 'Interativo'
+              resposta: 'Interativo',
+              perfil:1
             },
             {
-              resposta: 'Estável'
+              resposta: 'Estável',
+              perfil:2
             },
             {
-              resposta: 'Corretivo'
+              resposta: 'Corretivo',
+              perfil:3
             }
           ]
         },
@@ -460,16 +523,20 @@ class CreateEmpresaService {
           pergunta: 'Outra limitação desse perfil...',
           respostas: [
             {
-              resposta: 'Intenso'
+              resposta: 'Intenso',
+              perfil:0
             },
             {
-              resposta: 'Não tradicional'
+              resposta: 'Não tradicional',
+              perfil:1
             },
             {
-              resposta: 'Indeciso'
+              resposta: 'Indeciso',
+              perfil:2
             },
             {
-              resposta: 'Impessoal'
+              resposta: 'Impessoal',
+              perfil:3
             }
           ]
         },
@@ -477,16 +544,20 @@ class CreateEmpresaService {
           pergunta: 'Ponto cego...',
           respostas: [
             {
-              resposta: 'Ser responsabilizado'
+              resposta: 'Ser responsabilizado',
+              perfil:0
             },
             {
-              resposta: 'Realizar compromissos'
+              resposta: 'Realizar compromissos',
+              perfil:1
             },
             {
-              resposta: 'Necessidade de mudança'
+              resposta: 'Necessidade de mudança',
+              perfil:2
             },
             {
-              resposta: 'Tomada de decisão'
+              resposta: 'Tomada de decisão',
+              perfil:3
             }
           ]
         },
@@ -494,16 +565,20 @@ class CreateEmpresaService {
           pergunta: 'Mensura desempenho com...',
           respostas: [
             {
-              resposta: 'Histórico'
+              resposta: 'Histórico',
+              perfil:0
             },
             {
-              resposta: 'Elogios'
+              resposta: 'Elogios',
+              perfil:1
             },
             {
-              resposta: 'Contribuição'
+              resposta: 'Contribuição',
+              perfil:2
             },
             {
-              resposta: 'Qualidade dos resultados'
+              resposta: 'Qualidade dos resultados',
+              perfil:3
             }
           ]
         },
@@ -511,16 +586,20 @@ class CreateEmpresaService {
           pergunta: 'Prefere tarefas...',
           respostas: [
             {
-              resposta: 'Desafiadoras'
+              resposta: 'Desafiadoras',
+              perfil:0
             },
             {
-              resposta: 'Relacionada a pessoas'
+              resposta: 'Relacionada a pessoas',
+              perfil:1
             },
             {
-              resposta: 'Agendadas'
+              resposta: 'Agendadas',
+              perfil:2
             },
             {
-              resposta: 'Estruturadas'
+              resposta: 'Estruturadas',
+              perfil:3
             }
           ]
         },
@@ -528,16 +607,20 @@ class CreateEmpresaService {
           pergunta: 'Com atrasos...',
           respostas: [
             {
-              resposta: 'Se irrita e confronta'
+              resposta: 'Se irrita e confronta',
+              perfil:0
             },
             {
-              resposta: 'Nem liga, está distraído'
+              resposta: 'Nem liga, está distraído',
+              perfil:1
             },
             {
-              resposta: 'Sabe do atraso, mas aceita'
+              resposta: 'Sabe do atraso, mas aceita',
+              perfil:2
             },
             {
-              resposta: 'Reclama e analisa a situação'
+              resposta: 'Reclama e analisa a situação',
+              perfil:3
             }
           ]
         },
@@ -545,16 +628,20 @@ class CreateEmpresaService {
           pergunta: 'Em situações extremas...',
           respostas: [
             {
-              resposta: 'Se preocupa demais com metas'
+              resposta: 'Se preocupa demais com metas',
+              perfil:0
             },
             {
-              resposta: 'Fala sem pensar'
+              resposta: 'Fala sem pensar',
+              perfil:1
             },
             {
-              resposta: 'Procrastina ao invés de fazer'
+              resposta: 'Procrastina ao invés de fazer',
+              perfil:2
             },
             {
-              resposta: 'Analisa demais'
+              resposta: 'Analisa demais',
+              perfil:3
             }
           ]
         },
@@ -562,16 +649,20 @@ class CreateEmpresaService {
           pergunta: 'Precisa melhorar...',
           respostas: [
             {
-              resposta: 'Empatia e Paciência'
+              resposta: 'Empatia e Paciência',
+              perfil:0
             },
             {
-              resposta: 'Controle emocional'
+              resposta: 'Controle emocional',
+              perfil:1
             },
             {
-              resposta: 'Ser assertivo sob pressão'
+              resposta: 'Ser assertivo sob pressão',
+              perfil:2
             },
             {
-              resposta: 'Se preocupar menos sobre tudo'
+              resposta: 'Se preocupar menos sobre tudo',
+              perfil:3
             }
           ]
         },
@@ -579,16 +670,20 @@ class CreateEmpresaService {
           pergunta: 'Em uma discussão...',
           respostas: [
             {
-              resposta: 'Busca ter a razão'
+              resposta: 'Busca ter a razão',
+              perfil:0
             },
             {
-              resposta: 'Busca diminuir o conflito'
+              resposta: 'Busca diminuir o conflito',
+              perfil:1
             },
             {
-              resposta: 'Busca concordância'
+              resposta: 'Busca concordância',
+              perfil:2
             },
             {
-              resposta: 'Busca comprovar sua opinião'
+              resposta: 'Busca comprovar sua opinião',
+              perfil:3
             }
           ]
         },
@@ -596,16 +691,20 @@ class CreateEmpresaService {
           pergunta: 'Quando vai às compras...',
           respostas: [
             {
-              resposta: 'Sabe o que quer'
+              resposta: 'Sabe o que quer',
+              perfil:0
             },
             {
-              resposta: 'Se diverte'
+              resposta: 'Se diverte',
+              perfil:1
             },
             {
-              resposta: 'Fica indeciso'
+              resposta: 'Fica indeciso',
+              perfil:2
             },
             {
-              resposta: 'Busca ofertas'
+              resposta: 'Busca ofertas',
+              perfil:3
             }
           ]
         },

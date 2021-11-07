@@ -16,13 +16,14 @@ const Teste: React.FC = () => {
   const route = useRoute();
   const dados = useState(route.params.item);
 
+
   const [questoes, setQuestoes] = useState([
     { pergunta: '', 
       respostas: [
         {id: 0, 
         resposta: "",
         nivel:0,
-        testes_atribuidos_id:dados[0].testes_id,
+        testes_atribuidos_id:"",
         questoes_id:"",
         respostas_id:"",
     }] 
@@ -46,6 +47,13 @@ const Teste: React.FC = () => {
       }
     }).then(res => {
         const questoes = res.data;
+        for(var i in questoes){
+          let resp = questoes[i].respostas
+          for(var j in resp){
+            questoes[i].respostas[j].respostas_id = resp[j].id
+          }
+        }
+        
         setQuestoes(questoes)
       }).catch((error) => {
         Alert.alert(error.response.data.message);
@@ -63,10 +71,10 @@ const Teste: React.FC = () => {
       p.push(questoes[i].pergunta)
     }
     setPerguntas(p);
-    navigation.addListener('focus', () => setLoad(!load))
-  }, [load, navigation]);
+  }, []);
 
   const nextPosition = async () => {
+    incluirRespostas()
     if(currentPosition < questoes.length -1){
       for(let i = 0; i < 4; i++){
         if(questoes[currentPosition].respostas[i].nivel == 0){
@@ -80,50 +88,34 @@ const Teste: React.FC = () => {
           }
         }
       }
+      console.log(currentPosition)
       setPosition(currentPosition + 1);
+      console.log(currentPosition)
+      console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
     }else{
-      let Dominante = 0;
-      let Influente = 0;
-      let Estavel = 0;
-      let Cauteloso = 0;
-      let respostas = [];
-      for(let i = 0; i < questoes.length; i++){
-        Dominante += questoes[i].respostas[0].nivel
-        Influente += questoes[i].respostas[1].nivel
-        Estavel += questoes[i].respostas[2].nivel
-        Cauteloso += questoes[i].respostas[3].nivel
+      incluirRespostas()
+
+      navigation.navigate("MostraPerfil")
+    }
+  }
+  const incluirRespostas = async () =>{
+    let respostas = [];
+      for(var i in questoes){
         respostas.push(questoes[i].respostas);
       }
-      console.log(respostas);
       await api.post('respostas_preenchidas', respostas).then(
         (response) => {    
-
+          Alert.alert(response.data);
         }
       )
       .catch(
         (error) => {
           Alert.alert(error.response.data.message);
-          console.log(error)
+          console.log(error.response.data.message)
           return
         }
       );
-     
-        Alert.alert("Teste salvo com sucesso");
-        console.log(Dominante)
-        console.log(Influente)
-        console.log(Estavel)
-        console.log(Cauteloso)
-        let valores = []
-        valores.push(Dominante)
-        valores.push(Influente)
-        valores.push(Estavel)
-        valores.push(Cauteloso)
-        let maior = Math.max(...valores);
-        Alert.alert(maior)
-        navigation.navigate("MostraPerfil")
-    }
   }
-
   const backPosition = () => {
     if(currentPosition<0)
       setPosition(currentPosition - 1);
@@ -136,8 +128,8 @@ const Teste: React.FC = () => {
 
   const escolheNota = (value) =>{
     questoes[currentPosition].respostas[currentAnswer].nivel = value;
-    questoes[currentPosition].respostas[currentAnswer].questoes_id = String(currentPosition);
-    questoes[currentPosition].respostas[currentAnswer].respostas_id = String(currentAnswer);
+    questoes[currentPosition].respostas[currentAnswer].testes_atribuidos_id = dados[0].id
+    console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
     toggleModal()
   }
 
@@ -229,7 +221,7 @@ const styles = StyleSheet.create({
   },
   modal:{
     backgroundColor:'white',
-    height:400,
+    height:300,
     borderRadius:30,
     padding:10
   },

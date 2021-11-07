@@ -18,7 +18,7 @@ const ListaTestes: React.FC =()=> {
 
     const listaTestes = async () => {
       await api.get('testes_atribuidos').then((response) => {
-        
+        console.log(response.data)
         setTestes(response.data);
         }).catch((error) => {
           Alert.alert(error.response.data.message);

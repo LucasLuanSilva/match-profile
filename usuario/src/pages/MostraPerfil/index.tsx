@@ -19,18 +19,6 @@ const MostraPerfil: React.FC = () => {
     descricao: ''
   });
 
-//   const candidatarVaga = async () => {
-//     await api.post('candidatos', { vagas_id: vaga.id }).then((response) => {
-//       navigation.goBack();
-
-//       Alert.alert("Currículo enviado com sucesso!");
-//     }).catch(
-//       (error) => {
-//         Alert.alert(error.response.data.message);
-//       }
-//     );
-//   }
-
   return (
     <View>
       <View style={styles.buttonHome}>
