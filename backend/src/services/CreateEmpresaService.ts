@@ -209,19 +209,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Ser decisivo',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Amizade social',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Ser parte de um time',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Planejamento e ordem',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -230,19 +230,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Variedade',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Menos estrutura',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Harmonia',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Lógica',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -251,19 +251,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Ditatorial',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Sarcástico',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Submisso',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Arredio',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -272,19 +272,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Franco',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Otimista',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Serviçal',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Ordeiro',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -293,19 +293,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Demanda ação',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Ataca',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Reclama',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Evita',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -314,19 +314,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Solucionador de problemas',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Encorajador',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Supporter',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Organizador',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -335,19 +335,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Informa o erro diretamente',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Chama a pessoa e explica o erro',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Fica calado e aceita o erro',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Se incomoda e questiona',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -356,19 +356,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Crítico',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Superficial',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Indeciso',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Cabeça dura',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -377,19 +377,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Impaciente',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Inoportuno',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Indeciso',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Inseguro',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -398,19 +398,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Controle',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Aprovação',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Rotina',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Padrão',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -419,19 +419,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Direto',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Desorganizado',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Indireto',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Detalhista',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -440,19 +440,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Perder',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Rejeição',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Mudanças bruscas',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Estar errado',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -461,19 +461,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Resultados',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Reconhecimento',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Compatibilidade',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Precisão',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -482,19 +482,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Orgulhoso',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Permissivo',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Humilde',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Cauteloso',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -503,19 +503,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Independente',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Interativo',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Estável',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Corretivo',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -524,19 +524,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Intenso',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Não tradicional',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Indeciso',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Impessoal',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -545,19 +545,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Ser responsabilizado',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Realizar compromissos',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Necessidade de mudança',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Tomada de decisão',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -566,19 +566,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Histórico',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Elogios',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Contribuição',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Qualidade dos resultados',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -587,19 +587,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Desafiadoras',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Relacionada a pessoas',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Agendadas',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Estruturadas',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -608,19 +608,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Se irrita e confronta',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Nem liga, está distraído',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Sabe do atraso, mas aceita',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Reclama e analisa a situação',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -629,19 +629,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Se preocupa demais com metas',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Fala sem pensar',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Procrastina ao invés de fazer',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Analisa demais',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -650,19 +650,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Empatia e Paciência',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Controle emocional',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Ser assertivo sob pressão',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Se preocupar menos sobre tudo',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -671,19 +671,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Busca ter a razão',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Busca diminuir o conflito',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Busca concordância',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Busca comprovar sua opinião',
-              perfil:3
+              perfil: 3
             }
           ]
         },
@@ -692,19 +692,19 @@ class CreateEmpresaService {
           respostas: [
             {
               resposta: 'Sabe o que quer',
-              perfil:0
+              perfil: 0
             },
             {
               resposta: 'Se diverte',
-              perfil:1
+              perfil: 1
             },
             {
               resposta: 'Fica indeciso',
-              perfil:2
+              perfil: 2
             },
             {
               resposta: 'Busca ofertas',
-              perfil:3
+              perfil: 3
             }
           ]
         },
