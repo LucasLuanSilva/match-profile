@@ -28,7 +28,7 @@ const TesteCandidato: React.FC = () => {
             <ListItem
               title={item.teste.titulo}
               subtitle={item.respondido == 1 ? 'Respondido' : 'Não Respondido'}
-              onPress={() => visualizarTeste(item.teste)}
+              onPress={() => visualizarTeste(item)}
               containerStyle={styles.buttonTesteDISC}
               titleStyle={styles.labelTesteDISC}
               subtitleStyle={styles.subTitleTesteDISC}
@@ -37,7 +37,7 @@ const TesteCandidato: React.FC = () => {
             <ListItem
               title={item.teste.titulo}
               subtitle={item.respondido == 1 ? 'Respondido' : 'Não Respondido'}
-              onPress={() => visualizarTeste(item.teste)}
+              onPress={() => visualizarTeste(item)}
             />
         )}
         ItemSeparatorComponent={() => <Separator />}

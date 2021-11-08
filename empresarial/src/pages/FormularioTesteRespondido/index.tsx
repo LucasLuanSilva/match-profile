@@ -33,16 +33,17 @@ const FormularioTesteRespondido: React.FC = () => {
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
   useEffect(async () => {
-    await api.get("empresariais/questoes", {
+    console.log(testePreenchido.id);
+    await api.get("empresariais/respostas_preenchidas", {
       params: {
-        testes_atribuidos_id: testePreenchido.testes_atribuidos_id,
+        testes_atribuidos_id: testePreenchido.id,
         testes_id: testePreenchido.teste.id,
         testes_versao: testePreenchido.teste.versao
       }
     })
       .then(res => {
         const questoes = res.data;
-        console.log(questoes)
+        console.log(questoes[0].respostas)
 
         setQuestoes(questoes)
       });
@@ -107,10 +108,16 @@ const FormularioTesteRespondido: React.FC = () => {
           data={questoes[currentPosition].respostas}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
-            <ListItem
-              title={item.resposta}
-              subtitle={item.correta == 1 ? 'Correta' : undefined}
-            />
+            testePreenchido.teste.tipo == 1 ?
+              <ListItem
+                title={item.resposta}
+                subtitle={item.nivel}
+              />
+              :
+              <ListItem
+                title={item.resposta}
+                subtitle={item.selecionada ? 'Selecionada' : ''}
+              />
           )}
           ItemSeparatorComponent={() => Separator()}
         />
