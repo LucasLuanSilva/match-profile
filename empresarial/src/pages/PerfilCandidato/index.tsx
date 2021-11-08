@@ -22,6 +22,7 @@ const PerfilCandidato: React.FC = () => {
   const [experiencias, setExperiencias] = useState([]);
   const [competencias, setCompetencias] = useState([]);
   const [testesAtribuidos, setTestesAtribuidos] = useState([]);
+  const [perfilDISC, setPerfilDISC] = useState('');
 
   useEffect(async () => {
     const { id, data } = route.params.candidato;
@@ -49,20 +50,100 @@ const PerfilCandidato: React.FC = () => {
       setExperiencias(experiencias);
       setCompetencias(competencias);
       setTestesAtribuidos(testesAtribuidos);
+      calculaResultadoDISC(testesAtribuidos);
     }).catch((error) => {
       Alert.alert(error.response.data.message);
       navigation.goBack();
     });
 
+
+
     navigation.addListener('focus', () => setLoad(!load))
   }, [load, navigation]);
+
+  const calculaResultadoDISC = async (testesAtribuidos) => {
+    let perfil = "Teste DISC não respondido";
+
+    let idxDISC = testesAtribuidos.findIndex(({ teste }) => teste.tipo == 1);
+
+    if (idxDISC != -1 && testesAtribuidos[idxDISC].respondido == 1) {
+      let questoes = [];
+
+      await api.get("empresariais/respostas_preenchidas", {
+        params: {
+          testes_atribuidos_id: testesAtribuidos[idxDISC].id,
+          testes_id: testesAtribuidos[idxDISC].testes_id,
+          testes_versao: testesAtribuidos[idxDISC].testes_versao
+        }
+      }).then(res => {
+        questoes = res.data;
+      }).catch((error) => {
+        Alert.alert(error.response.data.message);
+      });
+
+      let Dominante = 0;
+      let Influente = 0;
+      let Estavel = 0;
+      let Cauteloso = 0;
+
+      console.log(questoes)
+      for (var i in questoes) {
+        for (var j in questoes[i].respostas) {
+          let index = questoes[i].respostas[j].perfil;
+
+          switch (index) {
+            case 0:
+              Dominante += questoes[i].respostas[j].nivel;
+              break;
+            case 1:
+              Influente += questoes[i].respostas[j].nivel;
+              break;
+            case 2:
+              Estavel += questoes[i].respostas[j].nivel;
+              break;
+            case 3:
+              Cauteloso += questoes[i].respostas[j].nivel;
+              break;
+          }
+        }
+      }
+
+      let valores = [];
+
+      valores.push(Dominante);
+      valores.push(Influente);
+      valores.push(Estavel);
+      valores.push(Cauteloso);
+
+      let valor = valores.indexOf(Math.max(...valores));
+      switch (valor) {
+        case 0:
+          perfil = "Perfil dominante.";
+          break;
+        case 1:
+          perfil = "Perfil influente.";
+          break;
+        case 2:
+          perfil = "Perfil estável.";
+          break;
+        case 3:
+          perfil = "Perfil cauteloso.";
+          break;
+        default:
+          perfil = "Perfil indefinido.";
+          break;
+      }
+    }
+
+    setPerfilDISC(perfil);
+  }
 
   return (
     <Container>
       <Text style={styles.title}>{usuario.nome + ' ' + usuario.sobrenome}</Text>
 
       <View style={styles.containerView}>
-
+        <Text style={styles.labelPerfil}>{perfilDISC}</Text>
       </View>
       <View style={styles.containerButton}>
         <Button onPress={() => {
@@ -98,6 +179,10 @@ const PerfilCandidato: React.FC = () => {
 const styles = StyleSheet.create({
   label: {
     fontSize: 16,
+  },
+  labelPerfil: {
+    fontSize: 20,
+    color: 'black'
   },
   title: {
     fontSize: 20,
