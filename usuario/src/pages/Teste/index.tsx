@@ -6,16 +6,13 @@ import StepIndicator from 'react-native-step-indicator';
 import ListItem from '../../components/ListItem';
 import api from '../../services/api';
 import Button from '../../components/Button';
-import { Picker } from '@react-native-picker/picker'
 import Modal from "react-native-modal";
 
 const Teste: React.FC = () => {
 
   const navigation = useNavigation();
-  const [load, setLoad] = useState(true)
   const route = useRoute();
-  const dados = useState(route.params.item);
-
+  const testeAtribuido = useState(route.params.item);
 
   const [questoes, setQuestoes] = useState([
     {
@@ -31,8 +28,6 @@ const Teste: React.FC = () => {
         }]
     }]);
 
-  const [perguntas, setPerguntas] = useState([]);
-
   const [isModalVisible, setModalVisible] = useState(false);
 
   const [currentPosition, setPosition] = useState(0);
@@ -41,11 +36,11 @@ const Teste: React.FC = () => {
 
   const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
 
-  const getTeste = async () => {
+  const getQuestoes = async () => {
     await api.get("questoes", {
       params: {
-        testes_id: dados[0].testes_id,
-        testes_versao: dados[0].testes_versao
+        testes_id: testeAtribuido[0].testes_id,
+        testes_versao: testeAtribuido[0].testes_versao
       }
     }).then(res => {
       const questoes = res.data;
@@ -62,65 +57,167 @@ const Teste: React.FC = () => {
     });
   };
 
+  const getRespostasPreenchidas = async () => {
+    await api.get("respostas_preenchidas", {
+      params: {
+        testes_atribuidos_id: testeAtribuido[0].id,
+        testes_id: testeAtribuido[0].testes_id,
+        testes_versao: testeAtribuido[0].testes_versao
+      }
+    }).then(res => {
+      const questoes = res.data;
+      console.log("questoes")
+
+      setQuestoes(questoes)
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
+  }
+
   const toggleModal = () => {
+    if (testeAtribuido[0].respondido == 1)
+      return;
+
     setModalVisible(!isModalVisible);
   };
 
   useEffect(async () => {
-    await getTeste()
-    let p = []
-    for (var i in questoes) {
-      p.push(questoes[i].pergunta)
+    if (testeAtribuido[0].respondido == 1) {
+      console.log('uno')
+      await getRespostasPreenchidas();
+    } else {
+      await getQuestoes();
     }
-    setPerguntas(p);
   }, []);
 
   const nextPosition = async () => {
-    incluirRespostas()
     if (currentPosition < questoes.length - 1) {
-      for (let i = 0; i < 4; i++) {
-        if (questoes[currentPosition].respostas[i].nivel == 0) {
-          Alert.alert("Favor preencher todas as respostas")
-          return
-        }
-        for (let j = 0; j < 4; j++) {
-          if ((questoes[currentPosition].respostas[i].nivel == questoes[currentPosition].respostas[j].nivel) && (i != j)) {
-            Alert.alert("Favor não inserir valores iguais")
+      if (testeAtribuido[0].teste.tipo == 1) {
+        for (let i = 0; i < 4; i++) {
+          if (questoes[currentPosition].respostas[i].nivel == 0) {
+            Alert.alert("Favor preencher todas as respostas")
             return
+          }
+          for (let j = 0; j < 4; j++) {
+            if ((questoes[currentPosition].respostas[i].nivel == questoes[currentPosition].respostas[j].nivel) && (i != j)) {
+              Alert.alert("Favor não inserir valores iguais")
+              return
+            }
+          }
+        }
+      } else {
+        if (questoes[currentPosition].respostas.findIndex(({ selecionada }) => selecionada == true) == -1) {
+          return Alert.alert("Selecione uma resposta");
+        }
+      }
+
+      setPosition(currentPosition + 1);
+    } else {
+      gravarRespostas();
+    }
+  }
+
+  const gravarRespostas = async () => {
+    if (testeAtribuido[0].respondido == 1) {
+      if (testeAtribuido[0].teste.tipo == 1) {
+        const resultadoDISC = calculaResultadoDISC();
+
+        Alert.alert("Seu perfil é " + resultadoDISC + " !");
+      } else {
+        Alert.alert("Teste já respondido !");
+      }
+
+      return;
+    }
+
+    let respostas = [];
+
+    if (testeAtribuido[0].teste.tipo == 1) {
+      for (var i in questoes) {
+        respostas = respostas.concat(questoes[i].respostas);
+      }
+    } else {
+      for (var i in questoes) {
+        for (var j in questoes[i].respostas) {
+          if (questoes[i].respostas[j].selecionada) {
+            respostas.push(questoes[i].respostas[j]);
           }
         }
       }
-      console.log(currentPosition)
-      setPosition(currentPosition + 1);
-      console.log(currentPosition)
-      console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
-    } else {
-      incluirRespostas()
+    }
 
-      navigation.navigate("MostraPerfil")
-    }
-  }
-  const incluirRespostas = async () => {
-    let respostas = [];
-    for (var i in questoes) {
-      respostas.push(questoes[i].respostas);
-    }
-    await api.post('respostas_preenchidas', respostas).then(
+    await api.post('respostas_preenchidas', { testes_atribuidos_id: testeAtribuido[0].id, respostas }).then(
       (response) => {
+        navigation.goBack();
+
         Alert.alert(response.data);
       }
-    )
-      .catch(
-        (error) => {
-          Alert.alert(error.response.data.message);
-          console.log(error.response.data.message)
-          return
-        }
-      );
+    ).catch(
+      (error) => {
+        Alert.alert(error.response.data.message);
+        return
+      }
+    );
   }
+
+  const calculaResultadoDISC = () => {
+    let Dominante = 0;
+    let Influente = 0;
+    let Estavel = 0;
+    let Cauteloso = 0;
+
+    for (var i in questoes) {
+      for (var j in questoes[i].respostas) {
+        let index = questoes[i].respostas[j].perfil;
+
+        switch (index) {
+          case 0:
+            Dominante += questoes[i].respostas[j].nivel;
+            break;
+          case 1:
+            Influente += questoes[i].respostas[j].nivel;
+            break;
+          case 2:
+            Estavel += questoes[i].respostas[j].nivel;
+            break;
+          case 3:
+            Cauteloso += questoes[i].respostas[j].nivel;
+            break;
+        }
+      }
+    }
+
+    let valores = [];
+    let perfil = "";
+    valores.push(Dominante);
+    valores.push(Influente);
+    valores.push(Estavel);
+    valores.push(Cauteloso);
+
+    let valor = valores.indexOf(Math.max(...valores));
+    switch (valor) {
+      case 0:
+        perfil = "Dominante";
+        break;
+      case 1:
+        perfil = "Influente";
+        break;
+      case 2:
+        perfil = "Estavel";
+        break;
+      case 3:
+        perfil = "Cauteloso";
+        break;
+      default:
+        perfil = "Indefinido";
+        break;
+    }
+
+    return perfil;
+  }
+
   const backPosition = () => {
-    if (currentPosition < 0)
-      setPosition(currentPosition - 1);
+    setPosition(currentPosition - 1);
   }
 
   const escolheAlternativa = (index) => {
@@ -130,9 +227,21 @@ const Teste: React.FC = () => {
 
   const escolheNota = (value) => {
     questoes[currentPosition].respostas[currentAnswer].nivel = value;
-    questoes[currentPosition].respostas[currentAnswer].testes_atribuidos_id = dados[0].id
-    console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
-    toggleModal()
+
+    toggleModal();
+  }
+
+  const marcarResposta = (resposta) => {
+    if (testeAtribuido[0].respondido == 1)
+      return;
+
+    if (typeof resposta.selecionada == 'undefined' || !resposta.selecionada) {
+      resposta.selecionada = true;
+    } else {
+      resposta.selecionada = false;
+    }
+
+    setQuestoes([...questoes])
   }
 
   return (
@@ -151,11 +260,22 @@ const Teste: React.FC = () => {
         data={questoes[currentPosition].respostas}
         keyExtractor={item => item.id}
         renderItem={({ item, index }) => (
-          <ListItem
-            title={item.resposta}
-            subtitle={item.nivel}
-            onPress={() => { escolheAlternativa(index) }}
-          />
+          testeAtribuido[0].teste.tipo == 1 ?
+            <ListItem
+              title={item.resposta}
+              subtitle={item.nivel}
+              onPress={() => {
+                escolheAlternativa(index);
+              }}
+            />
+            :
+            <ListItem
+              title={item.resposta}
+              subtitle={typeof item.selecionada != 'undefined' && item.selecionada ? 'Selecionada' : ''}
+              onPress={() => {
+                marcarResposta(item);
+              }}
+            />
         )}
         ItemSeparatorComponent={() => Separator()}
       />
@@ -175,18 +295,38 @@ const Teste: React.FC = () => {
           </TouchableOpacity>
         </View>
       </Modal>
-      <View style={styles.containerButton}>
-        <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
-          Voltar
-        </Button>
-        <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
-          Proxima
-        </Button>
-      </View>
+
+      {
+        (currentPosition == questoes.length - 1) ?
+          <View style={styles.containerButton}>
+            <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+              Voltar
+            </Button>
+            <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
+              Finalizar
+            </Button>
+          </View>
+          :
+          currentPosition == 0 ?
+            <View style={styles.containerButton}>
+              <Button onPress={() => { nextPosition() }}>
+                Proxima
+              </Button>
+            </View>
+            :
+            <View style={styles.containerButton}>
+              <Button style={{ width: '49%' }} onPress={() => { backPosition() }}>
+                Voltar
+              </Button>
+              <Button style={{ width: '49%' }} onPress={() => { nextPosition() }}>
+                Proxima
+              </Button>
+            </View>
+      }
+
     </View>
   )
 }
-
 
 const styles = StyleSheet.create({
   label: {
@@ -219,13 +359,15 @@ const styles = StyleSheet.create({
   listaRespostas: {
     maxHeight: '60%',
     minHeight: '60%',
-    maxWidth: "90%"
+    maxWidth: "100%"
   },
   modal: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
     backgroundColor: 'white',
-    height: 300,
-    borderRadius: 30,
-    padding: 10
+    borderRadius: 10,
+    padding: 20
   },
   botao1: {
     backgroundColor: 'red',
@@ -256,8 +398,7 @@ const styles = StyleSheet.create({
     margin: 0.5,
   },
   container: {
-    marginHorizontal: '10%',
-    flex: 1
+    marginHorizontal: '8%'
   }
 });
 

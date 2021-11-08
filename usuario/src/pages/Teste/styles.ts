@@ -21,7 +21,6 @@ export const customStyles = {
   stepIndicatorLabelUnFinishedColor: '#aaaaaa',
   labelColor: '#999999',
   labelSize: 25,
-  currentStepLabelColor: '#3B55E6',
-
+  currentStepLabelColor: '#3B55E6'
 }
 

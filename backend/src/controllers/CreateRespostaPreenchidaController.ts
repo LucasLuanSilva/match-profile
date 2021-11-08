@@ -3,12 +3,13 @@ import CreateRespostaPreenchidaService from '../services/CreateRespostaPreenchid
 
 class CreateRespostaPreenchidaController {
   async handle(request: Request, response: Response) {
-    const respostas = request.body;
+    const { testes_atribuidos_id, respostas } = request.body;
 
     const createRespostaPreenchidaService = new CreateRespostaPreenchidaService();
 
     const respostaPreenchida = await createRespostaPreenchidaService.execute({
-        respostas
+      testes_atribuidos_id,
+      respostas
     });
 
     return response.json(respostaPreenchida);

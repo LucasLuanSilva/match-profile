@@ -4,56 +4,60 @@ import { useNavigation } from '@react-navigation/native';
 import ListItem from '../../components/ListItem';
 import api from '../../services/api';
 
-const ListaTestes: React.FC =()=> {
-    const navigation = useNavigation();
-    const [testes, setTestes] = useState([ ]);
+const ListaTestes: React.FC = () => {
+  const navigation = useNavigation();
+  const [testes, setTestes] = useState([]);
 
-    const [load, setLoad] = useState(true);
+  const [load, setLoad] = useState(true);
 
-    useEffect(async()=>{
-			await listaTestes()
-			
-      navigation.addListener('focus', () => setLoad(!load))
-    }, [load, navigation]);
+  useEffect(async () => {
+    await listaTestes()
 
-    const listaTestes = async () => {
-      await api.get('testes_atribuidos').then((response) => {
-        console.log(response.data)
-        setTestes(response.data);
-        }).catch((error) => {
-          Alert.alert(error.response.data.message);
-        });
-      };
+    navigation.addListener('focus', () => setLoad(!load))
+  }, [load, navigation]);
 
-    const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
+  const listaTestes = async () => {
+    await api.get('testes_atribuidos').then((response) => {
+      console.log(response.data)
+      setTestes(response.data);
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
+  };
 
-    return(
-        <View>
-          <FlatList
-            style={styles.list}
-            data={testes}
-            horizontal={false}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <ListItem
-                title={item.teste.titulo}
-                subtitle={item.vaga.titulo}
-                handleRight={() => alert('Tarefa foi excluida!')}
-                onPress={() => navigation.navigate('Teste', {item})}
-              />
-            )}
-            ItemSeparatorComponent={() => <Separator />}
+  const formataSituacao = (situacao) => {
+    if (situacao == 1) {
+      return "Respondido";
+    }
+
+    return "Não Respondido"
+  }
+
+  const Separator = () => <View style={{ flex: 1, height: 1, backgroundColor: '#DDD' }}></View>
+
+  return (
+    <View style={{ padding: '8%' }}>
+      <FlatList
+        style={styles.list}
+        data={testes}
+        horizontal={false}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <ListItem
+            title={item.teste.titulo}
+            subtitle={item.vaga.titulo + "\n " + formataSituacao(item.respondido)}
+            onPress={() => navigation.navigate('Teste', { item })}
           />
-        </View>
-
-    )
+        )}
+        ItemSeparatorComponent={() => <Separator />}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-
   list: {
     marginTop: '10%'
   }
-
 });
 export default ListaTestes;

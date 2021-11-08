@@ -35,6 +35,13 @@ class GetRespostasPreenchidasService {
           respostas_id: questoes[i].respostas[j].id,
           testes_atribuidos_id
         });
+
+        questoes[i].respostas[j].selecionada = false;
+        questoes[i].respostas[j].nivel = 0;
+        if (questoes[i].respostas[j].respostas_preenchidas) {
+          questoes[i].respostas[j].selecionada = true;
+          questoes[i].respostas[j].nivel = questoes[i].respostas[j].respostas_preenchidas.nivel;
+        }
       }
     }
 
