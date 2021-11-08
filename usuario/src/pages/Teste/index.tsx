@@ -18,16 +18,18 @@ const Teste: React.FC = () => {
 
 
   const [questoes, setQuestoes] = useState([
-    { pergunta: '', 
+    {
+      pergunta: '',
       respostas: [
-        {id: 0, 
-        resposta: "",
-        nivel:0,
-        testes_atribuidos_id:"",
-        questoes_id:"",
-        respostas_id:"",
-    }] 
-  }]);
+        {
+          id: 0,
+          resposta: "",
+          nivel: 0,
+          testes_atribuidos_id: "",
+          questoes_id: "",
+          respostas_id: "",
+        }]
+    }]);
 
   const [perguntas, setPerguntas] = useState([]);
 
@@ -43,21 +45,21 @@ const Teste: React.FC = () => {
     await api.get("questoes", {
       params: {
         testes_id: dados[0].testes_id,
-        testes_versao:dados[0].testes_versao
+        testes_versao: dados[0].testes_versao
       }
     }).then(res => {
-        const questoes = res.data;
-        for(var i in questoes){
-          let resp = questoes[i].respostas
-          for(var j in resp){
-            questoes[i].respostas[j].respostas_id = resp[j].id
-          }
+      const questoes = res.data;
+      for (var i in questoes) {
+        let resp = questoes[i].respostas
+        for (var j in resp) {
+          questoes[i].respostas[j].respostas_id = resp[j].id
         }
-        
-        setQuestoes(questoes)
-      }).catch((error) => {
-        Alert.alert(error.response.data.message);
-      });
+      }
+
+      setQuestoes(questoes)
+    }).catch((error) => {
+      Alert.alert(error.response.data.message);
+    });
   };
 
   const toggleModal = () => {
@@ -67,7 +69,7 @@ const Teste: React.FC = () => {
   useEffect(async () => {
     await getTeste()
     let p = []
-    for(var i in questoes){
+    for (var i in questoes) {
       p.push(questoes[i].pergunta)
     }
     setPerguntas(p);
@@ -75,14 +77,14 @@ const Teste: React.FC = () => {
 
   const nextPosition = async () => {
     incluirRespostas()
-    if(currentPosition < questoes.length -1){
-      for(let i = 0; i < 4; i++){
-        if(questoes[currentPosition].respostas[i].nivel == 0){
+    if (currentPosition < questoes.length - 1) {
+      for (let i = 0; i < 4; i++) {
+        if (questoes[currentPosition].respostas[i].nivel == 0) {
           Alert.alert("Favor preencher todas as respostas")
           return
         }
-        for(let j = 0; j < 4; j++){
-          if((questoes[currentPosition].respostas[i].nivel == questoes[currentPosition].respostas[j].nivel)&&( i != j)){
+        for (let j = 0; j < 4; j++) {
+          if ((questoes[currentPosition].respostas[i].nivel == questoes[currentPosition].respostas[j].nivel) && (i != j)) {
             Alert.alert("Favor não inserir valores iguais")
             return
           }
@@ -92,22 +94,22 @@ const Teste: React.FC = () => {
       setPosition(currentPosition + 1);
       console.log(currentPosition)
       console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
-    }else{
+    } else {
       incluirRespostas()
 
       navigation.navigate("MostraPerfil")
     }
   }
-  const incluirRespostas = async () =>{
+  const incluirRespostas = async () => {
     let respostas = [];
-      for(var i in questoes){
-        respostas.push(questoes[i].respostas);
+    for (var i in questoes) {
+      respostas.push(questoes[i].respostas);
+    }
+    await api.post('respostas_preenchidas', respostas).then(
+      (response) => {
+        Alert.alert(response.data);
       }
-      await api.post('respostas_preenchidas', respostas).then(
-        (response) => {    
-          Alert.alert(response.data);
-        }
-      )
+    )
       .catch(
         (error) => {
           Alert.alert(error.response.data.message);
@@ -117,16 +119,16 @@ const Teste: React.FC = () => {
       );
   }
   const backPosition = () => {
-    if(currentPosition<0)
+    if (currentPosition < 0)
       setPosition(currentPosition - 1);
   }
 
-  const escolheAlternativa = (index) =>{
+  const escolheAlternativa = (index) => {
     toggleModal()
     setAnswer(index)
   }
 
-  const escolheNota = (value) =>{
+  const escolheNota = (value) => {
     questoes[currentPosition].respostas[currentAnswer].nivel = value;
     questoes[currentPosition].respostas[currentAnswer].testes_atribuidos_id = dados[0].id
     console.log(questoes[currentPosition].respostas[currentAnswer].questoes_id)
@@ -149,26 +151,26 @@ const Teste: React.FC = () => {
         data={questoes[currentPosition].respostas}
         keyExtractor={item => item.id}
         renderItem={({ item, index }) => (
-            <ListItem
-              title={item.resposta}
-              subtitle={item.nivel}
-              onPress={() =>{escolheAlternativa(index)}}
-            />
+          <ListItem
+            title={item.resposta}
+            subtitle={item.nivel}
+            onPress={() => { escolheAlternativa(index) }}
+          />
         )}
         ItemSeparatorComponent={() => Separator()}
       />
       <Modal isVisible={isModalVisible}>
         <View style={styles.modal}>
-          <TouchableOpacity style={styles.botao1} onPress={() =>{escolheNota(1)}} >
+          <TouchableOpacity style={styles.botao1} onPress={() => { escolheNota(1) }} >
             <Text>1</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.botao2} onPress={() =>{escolheNota(2)}} >
+          <TouchableOpacity style={styles.botao2} onPress={() => { escolheNota(2) }} >
             <Text>2</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.botao3} onPress={() =>{escolheNota(3)}} >
+          <TouchableOpacity style={styles.botao3} onPress={() => { escolheNota(3) }} >
             <Text>3</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.botao4} onPress={() =>{escolheNota(4)}} >
+          <TouchableOpacity style={styles.botao4} onPress={() => { escolheNota(4) }} >
             <Text>4</Text>
           </TouchableOpacity>
         </View>
@@ -189,12 +191,12 @@ const Teste: React.FC = () => {
 const styles = StyleSheet.create({
   label: {
     fontSize: 14,
-    marginBottom:10
+    marginBottom: 10
   },
   labelPergunta: {
     fontSize: 20,
-    fontWeight:'bold',
-    marginBottom:20
+    fontWeight: 'bold',
+    marginBottom: 20
   },
   stepIndicator: {
     marginVertical: 20
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   selectPicker: {
-    maxWidth:"20%",
+    maxWidth: "20%",
     height: 45,
     marginBottom: 10,
     borderWidth: 1,
@@ -217,43 +219,43 @@ const styles = StyleSheet.create({
   listaRespostas: {
     maxHeight: '60%',
     minHeight: '60%',
-    maxWidth:"90%"
+    maxWidth: "90%"
   },
-  modal:{
-    backgroundColor:'white',
-    height:300,
-    borderRadius:30,
-    padding:10
+  modal: {
+    backgroundColor: 'white',
+    height: 300,
+    borderRadius: 30,
+    padding: 10
   },
-  botao1:{
+  botao1: {
     backgroundColor: 'red',
     paddingHorizontal: 10,
     paddingVertical: 15,
     borderRadius: 10,
     margin: 0.5,
   },
-  botao2:{
+  botao2: {
     backgroundColor: 'orange',
     paddingHorizontal: 10,
     paddingVertical: 15,
     borderRadius: 10,
     margin: 0.5,
   },
-  botao3:{
+  botao3: {
     backgroundColor: '#90EE90',
     paddingHorizontal: 10,
     paddingVertical: 15,
     borderRadius: 10,
     margin: 0.5,
   },
-  botao4:{
+  botao4: {
     backgroundColor: 'green',
     paddingHorizontal: 10,
     paddingVertical: 15,
     borderRadius: 10,
     margin: 0.5,
   },
-  container:{
+  container: {
     marginHorizontal: '10%',
     flex: 1
   }

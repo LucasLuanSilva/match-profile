@@ -61,6 +61,10 @@ const Login: React.FC = () => {
 
         <Button onPress={() => { login() }}>Entrar</Button>
 
+        <Text style={styles.subText}>Crie uma conta Trial&ensp;
+          <Text onPress={() => { navigation.navigate("FormularioEmpresa"); }} style={styles.textAnchor}>Criar Conta!</Text>
+        </Text>
+
         <Text style={styles.subText}>Ao se inscrever você concorda com nossos&ensp;
           <Text onPress={() => { console.log("teste") }} style={styles.textAnchor}>Termos e Condições</Text>
         </Text>
