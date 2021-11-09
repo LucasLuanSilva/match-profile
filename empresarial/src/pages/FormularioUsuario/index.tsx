@@ -89,7 +89,11 @@ const FormularioUsuario: React.FC = () => {
     await api.get('cidades/' + siglaEstado).then((response) => {
       setCidades(response.data);
 
-      setUsuario({ ...usuario, ['cidades_codigo_municipio']: response.data[0].codigo_municipio });
+      if (edita) {
+        setUsuario({ ...usuario, ['cidades_codigo_municipio']: usuario.cidades_codigo_municipio });
+      } else {
+        setUsuario({ ...usuario, ['cidades_codigo_municipio']: response.data[0].codigo_municipio });
+      }
     }).catch((error) => {
       Alert.alert(error.response.data.message);
     });
@@ -158,9 +162,11 @@ const FormularioUsuario: React.FC = () => {
   useEffect(async () => {
     if (edita) {
       carregaTelefones();
-    }
 
-    setEstado('SP');
+      setEstado(usuario.cidade.uf);
+    } else {
+      setEstado('SP');
+    }
   }, []);
 
   const Page1 = () => {
