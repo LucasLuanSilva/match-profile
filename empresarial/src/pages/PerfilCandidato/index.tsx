@@ -166,7 +166,9 @@ const PerfilCandidato: React.FC = () => {
         </Button>
       </View>
       <View style={styles.containerButton}>
-        <Button onPress={() => { }}>
+        <Button onPress={() => {
+          navigation.navigate('PerfilWebCandidato');
+        }}>
           Perfil Web
         </Button>
       </View>
