@@ -5,12 +5,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { ExpandableListView } from 'react-native-expandable-listview';
 import formataCPF from '../../functions/FormataCPF';
 import formataTelefone from '../../functions/FormataTelefone';
+import formataCompetencia from '../../functions/FormataCompetencia';
+import formataEscolaridade from '../../functions/FormataEscolaridade';
 
 const CurriculoCandidato: React.FC = () => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const [load, setLoad] = useState(true);
 
   const [usuario, setUsuario] = useState(route.params.usuario);
   const [telefones, setTelefones] = useState(route.params.telefones);
@@ -25,7 +26,9 @@ const CurriculoCandidato: React.FC = () => {
       for (var i in telefones) {
         telefonesAux.push({
           id: telefones[i].id,
-          name: formataTelefone(telefones[i].ddd, telefones[i].numero) + ' ' + telefones[i].contato
+          name: telefones[i].contato
+            + '\n'
+            + formataTelefone(telefones[i].ddd, telefones[i].numero)
         });
       }
     } else {
@@ -35,7 +38,15 @@ const CurriculoCandidato: React.FC = () => {
 
     let graduacoesAux = [];
     if (graduacoes.length > 0) {
-
+      for (var i in graduacoes) {
+        const graduacao = formataEscolaridade(graduacoes[i]);
+        graduacoesAux.push({
+          id: graduacoes[i].id,
+          name: graduacao.nivelLabel + ', ' + graduacao.cursandoLabel
+            + '\n'
+            + graduacao.instituicao
+        });
+      }
     } else {
       graduacoesAux.push({ id: 0, name: '' });
     }
@@ -43,7 +54,14 @@ const CurriculoCandidato: React.FC = () => {
 
     let cursosAux = [];
     if (cursos.length > 0) {
-
+      for (var i in cursos) {
+        cursosAux.push({
+          id: cursos[i].id,
+          name: cursos[i].nome
+            + '\n'
+            + cursos[i].instituicao
+        });
+      }
     } else {
       cursosAux.push({ id: 0, name: '' });
     }
@@ -51,7 +69,14 @@ const CurriculoCandidato: React.FC = () => {
 
     let experienciasAux = [];
     if (experiencias.length > 0) {
-
+      for (var i in experiencias) {
+        experienciasAux.push({
+          id: experiencias[i].id,
+          name: experiencias[i].cargo
+            + '\n'
+            + experiencias[i].empresa
+        });
+      }
     } else {
       experienciasAux.push({ id: 0, name: '' });
     }
@@ -59,14 +84,18 @@ const CurriculoCandidato: React.FC = () => {
 
     let competenciasAux = [];
     if (competencias.length > 0) {
-
+      for (var i in competencias) {
+        competenciasAux.push({
+          id: competencias[i].id,
+          name: competencias[i].descricao
+            + '\n' + formataCompetencia(competencias[i]).nivelLabel
+        });
+      }
     } else {
       competenciasAux.push({ id: 0, name: '' });
     }
     setCompetencias(competenciasAux);
-
-    navigation.addListener('focus', () => setLoad(!load))
-  }, [load, navigation]);
+  }, []);
 
   const CONTENT = [
     {

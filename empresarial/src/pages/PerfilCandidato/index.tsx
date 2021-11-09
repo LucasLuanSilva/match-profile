@@ -86,7 +86,6 @@ const PerfilCandidato: React.FC = () => {
       let Estavel = 0;
       let Cauteloso = 0;
 
-      console.log(questoes)
       for (var i in questoes) {
         for (var j in questoes[i].respostas) {
           let index = questoes[i].respostas[j].perfil;
