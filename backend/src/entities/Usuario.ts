@@ -54,6 +54,9 @@ class Usuario {
   @Column()
   bairro: string;
 
+  @Column()
+  twitter: string;
+
   @CreateDateColumn()
   data_criacao: Date;
 

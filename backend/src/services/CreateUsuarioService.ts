@@ -28,6 +28,7 @@ interface IUsuarioRequest {
   numero: string;
   complemento?: string;
   bairro: string;
+  twitter: string;
   situacao: Number;
   telefones?: Array<ITelefoneRequest>
 }
@@ -47,6 +48,7 @@ class CreateUsuarioService {
     numero,
     complemento,
     bairro,
+    twitter,
     situacao,
     telefones
   }: IUsuarioRequest) {
@@ -95,6 +97,7 @@ class CreateUsuarioService {
       numero,
       complemento,
       bairro,
+      twitter,
       situacao
     });
 

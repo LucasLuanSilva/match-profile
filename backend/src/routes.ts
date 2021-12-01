@@ -57,6 +57,7 @@ import { ensureAuthenticatedEmpresariaisNivel } from './middlewares/ensureAuthen
 import GetCandidatoController from './controllers/GetCandidatoController';
 import GetRespostasPreenchidasController from './controllers/GetRespostasPreenchidasController';
 import UpdateUsuarioController from './controllers/UpdateUsuarioController';
+import BuscaInformacoesWebController from './controllers/BuscaInformacoesWebController';
 
 const routes = Router();
 
@@ -115,6 +116,7 @@ const listCandidatosController = new ListCandidatosController();
 const getCandidatoController = new GetCandidatoController();
 const getRespostasPreenchidasController = new GetRespostasPreenchidasController();
 const updateUsuarioController = new UpdateUsuarioController();
+const buscaInformacoesWebController = new BuscaInformacoesWebController();
 
 //// POST ////
 routes.post('/cidades', createCidadeController.handle);
@@ -172,6 +174,7 @@ routes.get('/empresariais/vagas_testes/:vagas_id', ensureAuthenticatedEmpresaria
 routes.get('/empresariais/candidatos', ensureAuthenticatedEmpresariais, listCandidatosController.handle);
 routes.get('/empresariais/candidatos/:id', ensureAuthenticatedEmpresariais, getCandidatoController.handle);
 routes.get('/empresariais/respostas_preenchidas', ensureAuthenticatedEmpresariais, getRespostasPreenchidasController.handle);
+routes.get('/empresariais/candidatos/web/:id', ensureAuthenticatedEmpresariais, buscaInformacoesWebController.handle);
 
 
 //// DELETE ////

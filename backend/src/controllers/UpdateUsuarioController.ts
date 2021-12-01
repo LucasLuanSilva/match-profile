@@ -18,6 +18,7 @@ class UpdateUsuarioController {
       numero,
       complemento,
       bairro,
+      twitter,
       situacao,
       nivel
     } = request.body;
@@ -44,6 +45,7 @@ class UpdateUsuarioController {
       numero,
       complemento,
       bairro,
+      twitter,
       situacao: 1
     });
 

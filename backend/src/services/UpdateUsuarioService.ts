@@ -21,6 +21,7 @@ interface IUsuarioRequest {
   numero: string;
   complemento?: string;
   bairro: string;
+  twitter: string;
   situacao: number;
 }
 
@@ -40,6 +41,7 @@ class UpdateUsuarioService {
     numero,
     complemento,
     bairro,
+    twitter,
     situacao = 1
   }: IUsuarioRequest) {
     const usuariosRepository = getCustomRepository(UsuariosRepository);
@@ -130,6 +132,7 @@ class UpdateUsuarioService {
       numero,
       complemento,
       bairro,
+      twitter,
       data_alteracao,
       situacao
     }

@@ -18,6 +18,7 @@ class CreateUsuarioController {
       numero,
       complemento,
       bairro,
+      twitter,
       situacao,
       telefones
     } = request.body;
@@ -38,6 +39,7 @@ class CreateUsuarioController {
       numero,
       complemento,
       bairro,
+      twitter,
       situacao,
       telefones
     });

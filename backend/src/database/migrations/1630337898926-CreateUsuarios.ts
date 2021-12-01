@@ -80,6 +80,11 @@ export class CreateUsuarios1630337898926 implements MigrationInterface {
             isNullable: false
           },
           {
+            name: 'twitter',
+            type: 'varchar',
+            isNullable: true
+          },
+          {
             name: 'data_criacao',
             type: 'timestamp with time zone',
             isNullable: false,

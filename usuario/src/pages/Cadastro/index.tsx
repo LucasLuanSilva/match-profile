@@ -36,6 +36,7 @@ const Cadastro: React.FC = () => {
         numero: "",
         complemento: "",
         bairro: "",
+        twitter: "",
         confirmaSenha: "",
         estado_civil: 0
       }
@@ -442,6 +443,12 @@ const Cadastro: React.FC = () => {
           </View>
         </Modal>
 
+        <Text style={styles.label}>Twitter</Text>
+        <TextInput placeholder="Twitter"
+          style={styles.input}
+          value={credencial.twitter}
+          onChangeText={field('twitter')} />
+
         <Text style={styles.label}>Estado Civil</Text>
         <View style={styles.selectPicker}>
           <Picker
@@ -549,8 +556,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   listaTelefone: {
-    maxHeight: '58%',
-    minHeight: '58%',
+    maxHeight: '48%',
+    minHeight: '48%',
   },
   modal: {
     alignContent: 'center',
