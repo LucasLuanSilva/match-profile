@@ -28,5 +28,5 @@ envio de currículos e a execução dos testes psicológicos solicitados pelas e
 Este aplicativo foi desenvolvido como TCC de Ciência da Computação, sendo a maior motivação o interesse em conhecer as etapas no desenvolvimento de soluções técnologias desde a concepção da idéia até o desenvolvimento do produto viável mínimo (MVP).
 
 ## Equipe
-Bruno Zanelatti Borin
+Bruno Zanelatti Borin<br>
 Lucas Luan Silva
